@@ -81,29 +81,53 @@ Replace `<number>` with your assigned student number.
 
 ## ☁️ Section 1: Log in to AWS
 
-1. Open the AWS Console:
+1.1. Open the AWS Console:
 
    ```text
    https://console.aws.amazon.com/
    ```
 
-2. Log in using the AWS account information provided by your instructor.
+1.2. Log in using the AWS account information provided by your instructor.
 
-3. Confirm that you are in the correct AWS region.
+1.3. Confirm that you are in the correct AWS region.
 
    AWS region will be used:
 
    ```text
    eu-central-1
    ```
+1.4. Create a key pair.
+
+   This key pair will be used later throughout the lab.
+
+   1.4.1. In the AWS Console search bar, search for and open **EC2**.
+
+   1.4.2. In the left navigation menu, under **Network & Security**, select **Key Pairs**.
+
+   1.4.3. Choose **Create key pair**.
+
+   1.4.4. Configure the key pair using the following values:
+
+      Example:
+      ```text
+      Name: student01-key
+      Key pair type: RSA
+      Private key file format: .pem
+      ```
+
+   1.4.5. Choose **Create key pair**.
+
+   1.4.6. Save the downloaded `.pem` file in a secure location.
+
+      You will need this file later in the lab.
 
 ---
 
 ## 💻 Section 2: Deploying FortiManager in AWS
 
-In this section, you will deploy FortiManager-VM in AWS using the Fortinet AWS Solutions GitHub repository.
+In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE INTL GitHub repository.
 
-Deployment option:
+Deployment selection:
 
 ```text
 FortiManager Standalone (New VPC)
