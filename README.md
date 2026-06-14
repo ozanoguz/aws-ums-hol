@@ -16,12 +16,12 @@
   - [🌐 2.5 Collect FortiManager Access Information](#-25-collect-fortimanager-access-information)
 - [👤 Section 3: Create a FortiManager API Administrator](#-section-3-create-a-fortimanager-api-administrator)
 - [🔌 Section 5: Create the AWS Cloud SDN Connector](#-section-5-create-the-aws-cloud-sdn-connector)
-- [🔄 Section 6: Enable the SDN Connector for UMS](#-section-6-enable-the-sdn-connector-for-ums)
-- [🤖 Section 7: Create an Auto Onboarding Rule](#-section-7-create-an-auto-onboarding-rule)
-- [📄 Section 8: Configure Licensing](#-section-8-configure-licensing)
+- [🔄 Section 5: Enable the SDN Connector for UMS](#-section-6-enable-the-sdn-connector-for-ums)
+- [🤖 Section 6: Create an Auto Onboarding Rule](#-section-7-create-an-auto-onboarding-rule)
+- [📄 Section 7: Configure Licensing](#-section-8-configure-licensing)
   - [⚡ Create a FortiFlex Connector](#-create-a-fortiflex-connector)
-- [🔎 Section 9: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
-- [🛠️ Section 10: Troubleshooting](#️-section-10-troubleshooting)
+- [🔎 Section 8: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
+- [🛠️ Section 9: Troubleshooting](#️-section-10-troubleshooting)
   - [🧰 Useful FortiManager Debug Commands](#-useful-fortimanager-debug-commands)
 - [📤 Submission](#-submission)
 - [📚 References](#-references)
@@ -345,7 +345,7 @@ Follow the steps in the official Fortinet documentation below.
 
 ---
 
-## 🔄 Section 6: Enable the SDN Connector for UMS
+## 🔄 Section 5: Enable the SDN Connector for UMS
 
 1. In FortiManager, go to the UMS or Auto Onboarding configuration area as described in the official Fortinet guide.
 
