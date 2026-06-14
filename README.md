@@ -554,6 +554,32 @@ Terraform v1.15.6
 
 > 📝 Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
 
+---
+
+## Step 4: Return to the CloudShell Home Directory
+
+Before cloning the Fortinet repository, return to your CloudShell home directory.
+
+```bash
+cd ~
+```
+
+---
+
+## Step 5: Clone the Fortinet AWS Terraform Modules Repository
+
+In CloudShell, clone the Fortinet AWS Terraform modules repository.
+
+```bash
+git clone https://github.com/fortinet/terraform-aws-cloud-modules.git
+```
+
+Change into the repository directory.
+
+```bash
+cd terraform-aws-cloud-modules
+```
+
 
 ## 🔎 Section 8: Validate Auto Onboarding
 
