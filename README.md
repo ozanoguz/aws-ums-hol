@@ -604,7 +604,16 @@ Then, edit the "terraform.tfvars" file using `nano`.
 nano terraform.tfvars
 ```
 ---
+The following values should be configured before proceeding.
 
+| Variable | Description | Example |
+|---|---|---|
+| access_key | Provided by instructor | `"AKIAZRGV3E5YVRVCNJ6T"` |
+| AWS region | Region where the deployment will run | `eu-central-1` |
+| FortiManager IP address | Public or private IP address of FortiManager | `x.x.x.x` |
+| FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
+| FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
+| FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
 
 
 
