@@ -606,15 +606,37 @@ nano terraform.tfvars
 ---
 The following values should be configured before proceeding.
 
-| Variable | Description | Example |
+"Root config" section
+| Variable | Description | Value |
 |---|---|---|
-| access_key | Provided by instructor | `"AKIAZRGV3E5YVRVCNJ6T"` |
-| AWS region | Region where the deployment will run | `eu-central-1` |
-| FortiManager IP address | Public or private IP address of FortiManager | `x.x.x.x` |
-| FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
-| FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
-| FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
+| access_key | Provided by instructor | Example syntax: `"AKIAZRGV3E5YVRVCNJ6T"` |
+| secret_key | Provided by instructor | Example syntax: `+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq` |
+| region | AWS region name | `eu-central-1` |
 
+"VPC" section
+| Variable | Description | Value |
+|---|---|---|
+| vpc_cidr_block | VPC CIDR block for auto scale group | "10.0.0.0/16"  |
+| spoke_cidr_list | Password used for FortiGate registration | ["10.1.0.0/16"] |
+| availability_zones | AWS Availability Zones | ["eu-central-1a", "eu-central-1b"] |
+
+"Auto scale group" section
+| Variable | Description | Value |
+|---|---|---|
+| fgt_version | FortiGate version | ["7.6.7"] |
+| license_type | FortiGate license type | "byol" |
+| fgt_password | FortiGate password | "Fortinet2026!" |
+| keypair_name | Name of the key pair | "student01_KEY" |
+| fortiflex_refresh_token | Provided by instructor | "EZEuF7at0AujrqiyqyQ9expxw7ZIem" |
+| fortiflex_sn_list | Provided by instructor | ["FGVMELTM26013814", "FGVMELTM26013814"] |
+| fortiflex_configid_list | Provided by instructor | [80066] |
+
+FortiManager configuration (fmg_integration) section:
+| Variable | Description | Value |
+|---|---|---|
+| ip | FortiManager public IP address | ["x.x.x.x"] |
+| sn | FortiManager Serial Number | "FMVMELTM24000254" |
+| fgt_password | FortiGate password | "Fortinet2026!" |
 
 
 ## 🔎 Section 8: Validate Auto Onboarding
