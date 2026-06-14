@@ -364,35 +364,7 @@ Auto onboarding allows FortiManager to automatically onboard FortiGate instances
 
 Follow the steps in the official Fortinet documentation below.
 
-[Creating an auto onboarding rule](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005)
-
-> ℹ️ Access to the `root` ADOM may be required for this step.
-
-1. Go to:
-
-   ```text
-   Device Manager > Device & Groups
-   ```
-
-2. Select:
-
-   ```text
-   Add Device > Auto Onboarding
-   ```
-
-3. Enable:
-
-   ```text
-   Allow Auto Onboarding
-   ```
-
-4. On the `Onboarding Rule` tab, click:
-
-   ```text
-   Create New
-   ```
-
-5. Configure the onboarding rule.
+[Creating an auto-onboarding rule](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005)
 
    Suggested values:
 
@@ -409,24 +381,12 @@ Follow the steps in the official Fortinet documentation below.
 
    | Field | Value |
    |---|---|
-   | ADOM | `root` or assigned ADOM |
-   | Device Group | `Managed FortiGates` |
+   | ADOM | `root` |
+   | Device Group | `Managed FortiGate` |
    | Install License | Flex VM |
-   | Install Configuration | Manual Configuration or instructor-provided option |
-   | Policy Package | Instructor-provided policy package |
-
-7. Click:
-
-   ```text
-   OK
-   ```
-
-### ✅ Checkpoint
-
-- Auto onboarding is enabled.
-- Auto onboarding rule exists.
-- Rule uses the API administrator created earlier.
-- Rule points to the correct ADOM and device group.
+   | Install Configuration | Manual Configuration |
+   | Policy Package | default |
+   | Maximum Device Number | 4 |
 
 ---
 
