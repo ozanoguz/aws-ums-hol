@@ -592,7 +592,13 @@ cd examples/spk_gwlb_asg_fgt_gwlb_igw
 
 ## Step 7: Open the Terraform Variables File
 
-Edit the "terraform.tfvars" file using `nano`.
+Rename the file before editing it.
+
+```bash
+mv terraform.tfvars.txt terraform.tfvars
+```
+
+Then, edit the "terraform.tfvars" file using `nano`.
 
 ```bash
 nano terraform.tfvars
