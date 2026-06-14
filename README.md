@@ -438,6 +438,7 @@ By the end of this section, you will be able to:
 
 - Open AWS CloudShell.
 - Confirm AWS account and region access.
+- Install Terraform in AWS CloudShell.
 - Download the Fortinet AWS Terraform module package.
 - Edit the `terraform.tfvars` file for an Auto Scaling Group deployment.
 - Add FortiManager integration variables.
@@ -458,9 +459,101 @@ Confirm that you have the following information from your instructor:
 | FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
 | FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
 
-> ⚠️ Do not commit passwords, API keys, or secrets to GitHub.
+---
+
+## Step 1: Open AWS CloudShell
+
+1. Log in to the AWS Management Console.
+2. Confirm that you are in the correct AWS region (eu-central-1).
+3. Click the **CloudShell** icon in the top-right corner of the AWS Console.
+
+The CloudShell icon looks like a terminal prompt.
+
+```text
+>_
+```
+
+Wait for CloudShell to start.
 
 ---
+
+## Step 3: Install Terraform in AWS CloudShell
+
+Terraform may not be installed by default in AWS CloudShell. Install Terraform into your CloudShell home directory.
+
+Run the following commands in CloudShell:
+
+```bash
+mkdir -p ~/bin ~/terraform-install
+cd ~/terraform-install
+```
+
+Set the Terraform version.
+
+```bash
+TERRAFORM_VERSION="1.15.5"
+```
+
+Detect the CloudShell CPU architecture.
+
+```bash
+ARCH="$(uname -m)"
+
+if [ "$ARCH" = "x86_64" ]; then
+  TF_ARCH="amd64"
+elif [ "$ARCH" = "aarch64" ]; then
+  TF_ARCH="arm64"
+else
+  echo "Unsupported architecture: $ARCH"
+  exit 1
+fi
+```
+
+Download the Terraform binary package.
+
+```bash
+curl -fsSLO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
+```
+
+Unzip Terraform.
+
+```bash
+unzip -o "terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
+```
+
+Move Terraform to your CloudShell user binary directory.
+
+```bash
+mv terraform ~/bin/
+chmod +x ~/bin/terraform
+```
+
+Add `~/bin` to your `PATH`.
+
+```bash
+export PATH="$HOME/bin:$PATH"
+```
+
+Make the `PATH` update persistent for future CloudShell sessions.
+
+```bash
+grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
+Verify Terraform installation.
+
+```bash
+terraform version
+```
+
+Expected result:
+
+```text
+Terraform v1.15.5
+```
+
+> 📝 Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
+
 
 ## 🔎 Section 8: Validate Auto Onboarding
 
