@@ -347,24 +347,24 @@ Follow the steps in the official Fortinet documentation below.
 
 ## 🔄 Section 5: Enable the SDN Connector for UMS
 
-1. In FortiManager, go to the UMS or Auto Onboarding configuration area as described in the official Fortinet guide.
+Follow the steps in the official Fortinet documentation below.
 
-2. Select the AWS SDN connector created in the previous section.
-
-3. Enable the connector for UMS.
-
-4. Save the configuration.
+[Enabling the SDN connector for UMS](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674)
 
 ### ✅ Checkpoint
 
 - The AWS SDN connector is enabled for UMS.
-- FortiManager can use the connector for auto onboarding.
+- FortiManager can use the connector for auto-onboarding.
 
 ---
 
-## 🤖 Section 7: Create an Auto Onboarding Rule
+## 🤖 Section 6: Create an Auto Onboarding Rule
 
 Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.
+
+Follow the steps in the official Fortinet documentation below.
+
+[Creating an auto onboarding rule](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005)
 
 > ℹ️ Access to the `root` ADOM may be required for this step.
 
