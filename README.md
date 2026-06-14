@@ -579,6 +579,51 @@ Change into the repository directory.
 ```bash
 cd terraform-aws-cloud-modules
 ```
+---
+
+## Step 6: Go to the Auto Scaling Group Example Directory
+
+The Fortinet documentation uses the following example directory:
+
+```text
+examples/spk_gwlb_asg_fgt_gwlb_igw
+```
+
+Change into that example directory.
+
+```bash
+cd examples/spk_gwlb_asg_fgt_gwlb_igw
+```
+
+Confirm that you are in the correct directory.
+
+```bash
+pwd
+```
+
+Expected path should end with:
+
+```text
+terraform-aws-cloud-modules/examples/spk_gwlb_asg_fgt_gwlb_igw
+```
+---
+
+## Step 7: Open the Terraform Variables File
+
+Edit the following file:
+
+```text
+terraform.tfvars
+```
+
+In CloudShell, open the file with `nano`.
+
+```bash
+nano terraform.tfvars
+```
+---
+
+
 
 
 ## 🔎 Section 8: Validate Auto Onboarding
