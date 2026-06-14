@@ -162,7 +162,7 @@ Confirm that you have the following information from your instructor:
 |---|---|
 | EC2 key pair | Created in Section 1 |
 | Allowed management CIDR | Your public IP or instructor-provided CIDR |
-| LicenseType | `FortiFlex` |
+| FortiFlex token ID | Provided by instructor |
 
 > ⚠️ Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex credentials, or license information.
 
