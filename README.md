@@ -99,66 +99,315 @@ Replace `<number>` with your assigned student number.
 
 ---
 
-## 💻 Section 2: Configure AWS CLI Credentials
+## 💻 Section 2: Deploying FortiManager in AWS
 
-This section is optional if the lab is performed only from the AWS Console. Complete it if your instructor requires AWS CLI access.
+In this section, you will deploy FortiManager-VM in AWS using the Fortinet AWS Solutions GitHub repository.
 
-### 🔎 2.1 Install or Confirm AWS CLI
-
-Run:
-
-```bash
-aws --version
-```
-
-Expected result:
+Deployment option:
 
 ```text
-aws-cli/2.x.x ...
+FortiManager Standalone (New VPC)
 ```
 
-### 🔑 2.2 Configure AWS CLI
-
-Run:
-
-```bash
-aws configure
-```
-
-Enter the values provided by your instructor:
+Repository:
 
 ```text
-AWS Access Key ID [None]: <your-access-key-id>
-AWS Secret Access Key [None]: <your-secret-access-key>
-Default region name [None]: eu-central-1
-Default output format [None]: json
+https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager
 ```
 
-### 🪪 2.3 Verify AWS Identity
-
-Run:
-
-```bash
-aws sts get-caller-identity
-```
-
-Expected result:
-
-```json
-{
-  "UserId": "...",
-  "Account": "...",
-  "Arn": "arn:aws:iam::<account-id>:user/<username>"
-}
-```
-
-### ✅ Checkpoint
-
-- Confirm that the returned AWS account ID matches the account assigned to you.
-- If the account ID is incorrect, stop and ask the instructor for help.
+This deployment creates a new AWS VPC and deploys FortiManager-VM into that new VPC.
 
 ---
 
+### 🎯 Objectives
+
+By the end of this section, you will be able to:
+
+- Launch the FortiManager **New VPC** CloudFormation template.
+- Deploy FortiManager in AWS.
+- Collect the FortiManager access information.
+- Log in to the FortiManager GUI.
+
+---
+
+### ✅ Before You Begin
+
+Confirm that you have the following information from your instructor:
+
+| Item | Example / Notes |
+|---|---|
+| AWS Console URL | `https://console.aws.amazon.com/` |
+| AWS account credentials | Provided by instructor |
+| AWS region | `eu-central-1` |
+| EC2 key pair | Provided by instructor |
+| Allowed management CIDR | Your public IP or instructor-provided CIDR |
+| LicenseType | `FortiFlex` |
+
+> ⚠️ Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex credentials, or license information.
+
+---
+
+### 🔐 2.1 Log in to AWS
+
+1. Open the AWS Console:
+
+   ```text
+   https://console.aws.amazon.com/
+   ```
+
+2. Log in with the credentials provided by your instructor.
+
+3. Confirm that the selected AWS region is:
+
+   ```text
+   eu-central-1
+   ```
+
+---
+
+### 🔎 2.2 Open the FortiManager Repository
+
+Open the Fortinet AWS Solutions FortiManager repository:
+
+```text
+https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager
+```
+
+Locate:
+
+```text
+FortiManager Standalone (New VPC)
+```
+
+---
+
+### 🚀 2.3 Launch the CloudFormation Stack
+
+1. Under **FortiManager Standalone (New VPC)**, click:
+
+   ```text
+   Launch Stack
+   ```
+
+2. Confirm that the CloudFormation page opens in:
+
+   ```text
+   eu-central-1
+   ```
+
+3. Click:
+
+   ```text
+   Next
+   ```
+
+---
+
+### 🧾 2.4 Configure Stack Parameters
+
+Use the values provided by your instructor.
+
+Suggested values:
+
+| Parameter | Value |
+|---|---|
+| Stack name | `student<number>-FortiManager` |
+| VPC CIDR | Default or instructor-provided |
+| Public subnet CIDR | Default or instructor-provided |
+| Availability Zone | AZ in `eu-central-1` |
+| FortiManager version | Instructor-provided |
+| LicenseType | `FortiFlex` |
+| Instance type | Default unless instructed otherwise |
+| Management CIDR | Your public IP `/32` or instructor-provided CIDR |
+| Key pair | Assigned EC2 key pair |
+
+> ⚠️ Do not use `0.0.0.0/0` for management access unless instructed.
+
+---
+
+### ✅ 2.5 Create the Stack
+
+1. Review the stack configuration.
+
+2. Confirm that:
+
+   - Region is `eu-central-1`.
+   - Deployment option is **New VPC**.
+   - `LicenseType` is set to `FortiFlex`.
+   - Key pair is correct.
+   - Management CIDR is correct.
+
+3. Click:
+
+   ```text
+   Create stack
+   ```
+
+4. Wait until the stack status becomes:
+
+   ```text
+   CREATE_COMPLETE
+   ```
+
+---
+
+### 🌐 2.6 Collect FortiManager Access Information
+
+After the stack is complete:
+
+1. Open the CloudFormation stack.
+
+2. Go to:
+
+   ```text
+   Outputs
+   ```
+
+3. Record the FortiManager access information in your private notes.
+
+Typical values include:
+
+| Output | Purpose |
+|---|---|
+| FortiManager URL | Web GUI access |
+| FortiManager username | Admin username |
+| FortiManager password | Initial password or password reference |
+| FortiManager public IP | Public IP address |
+
+Example:
+
+```text
+FortiManager URL: https://<fortimanager-public-ip>
+FortiManager Username: admin
+FortiManager Password: <retrieved-password>
+```
+
+> 🚫 Do not share FortiManager credentials.
+
+---
+
+### 🔐 2.7 Verify Access
+
+1. Go to:
+
+   ```text
+   EC2 > Instances
+   ```
+
+2. Confirm that the FortiManager instance is:
+
+   ```text
+   Running
+   ```
+
+3. Confirm that HTTPS access is allowed from your approved source IP:
+
+   ```text
+   TCP 443
+   ```
+
+4. Remember that FortiGate-to-FortiManager communication later requires:
+
+   ```text
+   TCP 541
+   ```
+
+---
+
+### 🖥️ 2.8 Log in to FortiManager
+
+1. Open the FortiManager URL from the CloudFormation outputs:
+
+   ```text
+   https://<fortimanager-public-ip-or-fqdn>
+   ```
+
+2. Accept the browser certificate warning if prompted.
+
+3. Log in using the FortiManager credentials from the stack output or instructor instructions.
+
+4. Confirm that the FortiManager dashboard loads.
+
+---
+
+### ✅ Checkpoint
+
+Before continuing, confirm:
+
+- [ ] I logged in to my assigned AWS account.
+- [ ] I selected region `eu-central-1`.
+- [ ] I launched **FortiManager Standalone (New VPC)**.
+- [ ] I selected `FortiFlex` for `LicenseType`.
+- [ ] The CloudFormation stack status is `CREATE_COMPLETE`.
+- [ ] The FortiManager EC2 instance is running.
+- [ ] I collected the FortiManager URL and login information.
+- [ ] I verified HTTPS access to FortiManager.
+- [ ] I logged in to the FortiManager GUI.
+- [ ] I did not expose passwords, API keys, access keys, or FortiFlex credentials.
+
+---
+
+### 🛠️ Troubleshooting
+
+#### CloudFormation stack fails
+
+Check:
+
+- AWS region is `eu-central-1`.
+- EC2 key pair is selected.
+- `LicenseType` is set to `FortiFlex`.
+- CIDR ranges are valid.
+- AWS Marketplace subscription and IAM permissions are available.
+
+Review:
+
+```text
+CloudFormation > Stack > Events
+```
+
+---
+
+#### FortiManager GUI does not open
+
+Check:
+
+- EC2 instance is running.
+- Public IP or URL is correct.
+- Security group allows:
+
+  ```text
+  TCP 443
+  ```
+
+- Your source IP matches the allowed management CIDR.
+
+---
+
+#### Cannot log in
+
+Check:
+
+- Username and password from stack outputs or instructor instructions.
+- FortiManager has completed initialization.
+- Browser cache is not causing issues.
+
+Try a private or incognito browser window.
+
+---
+
+### 🧾 Submission Evidence
+
+Capture the following screenshots:
+
+| Screenshot | Required |
+|---|---|
+| CloudFormation stack showing `CREATE_COMPLETE` | Yes |
+| CloudFormation Outputs tab | Yes |
+| FortiManager EC2 instance running | Yes |
+| FortiManager login page or dashboard | Yes |
+| CloudFormation parameters showing `LicenseType = FortiFlex` | Yes |
+
+> 🚫 Do not include passwords, access keys, API keys, FortiFlex credentials, or license information in screenshots.
 ## 🖥️ Section 3: Access FortiManager
 
 1. Open a browser.
