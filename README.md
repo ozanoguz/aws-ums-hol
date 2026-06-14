@@ -390,7 +390,7 @@ Configure the onboarding action.
 
 ---
 
-## 📄 Section 8: Configure Licensing
+## 📄 Section 7: Creating a FortiFlex connector
 
 Complete the FortiFlex connector configuration as provided by your instructor.
 
@@ -398,40 +398,27 @@ Complete the FortiFlex connector configuration as provided by your instructor.
 
 ### ⚡ Create a FortiFlex Connector
 
-Use this option if your instructor provided FortiFlex API credentials.
+Complete this option using the provided FortiFlex API credentials.
 
-1. Go to:
+Follow the steps in the official Fortinet documentation below.
 
-   ```text
-   Fabric View > External Connectors
-   ```
+[Creating a FortiFlex connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208)
 
-2. Click:
+> ⚠️ **Important:** You can skip "FortiCloud" related steps. FortiFlex API credentials are already provided by the instructor.
 
-   ```text
-   Create New
-   ```
-
-3. Select:
-
-   ```text
-   FortiFlex
-   ```
-
-4. Configure the connector.
+[Configure the connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id)
 
    Suggested values:
 
    | Field | Value |
    |---|---|
    | Name | `student<number>-Fortiflex-Connector` |
-   | API Username | Instructor-provided FortiFlex API username |
-   | API Password / Secret | Instructor-provided FortiFlex API secret |
-   | Configuration ID | Instructor-provided value, if required |
-
-5. Save the connector.
-
-6. Test the connector.
+   | API User | Provided by instructor |
+   | API Password | Provided by instructor |
+   | Program SN | Provided by instructor |
+   | Default Config | FGT-UMS-VM04 |
+   
+Save the connector.
 
 ### ✅ Checkpoint
 
@@ -463,12 +450,6 @@ Use this option if your instructor provided FortiFlex API credentials.
 - Devices are placed into the expected ADOM and device group.
 - Licensing is assigned successfully.
 - FortiManager communication with FortiGate is working.
-
-### 🚦 Important Network Requirement
-
-```text
-TCP 541 must be allowed between the FortiGate instances and FortiManager.
-```
 
 ---
 
