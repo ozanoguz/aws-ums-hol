@@ -590,7 +590,7 @@ cd examples/spk_gwlb_asg_fgt_gwlb_igw
 ```
 ---
 
-## Step 7: Open the Terraform Variables File
+## Step 7: Configure the Terraform Variables
 
 Rename the file before editing it.
 
@@ -659,8 +659,52 @@ FortiManager configuration (fmg_integration) section:
 | fmg_password | Pre-shared Key | "fortinet" |
 | api_key | Created in Section 3 | "15aszaem8ncqedisuwe79rbwizj1waub" |
 
+## Step 8: Initialize Terraform
 
-## 🔎 Section 8: Validate Auto Onboarding
+Run Terraform initialization from the example directory.
+
+```bash
+terraform init
+```
+
+Confirm that Terraform downloads the required providers and modules successfully.
+
+---
+
+## Step 9: Review the Terraform Plan
+
+Generate and review the Terraform execution plan.
+
+```bash
+terraform plan
+```
+Review the resources that Terraform will create or modify.
+---
+
+## Step 10: Apply the Terraform Configuration
+
+Deploy the infrastructure.
+
+```bash
+terraform apply --auto-approve
+```
+
+Terraform will create or update the AWS resources.
+
+---
+
+## Step 11: Verify the Deployment
+
+After Terraform completes, verify the following:
+
+1. The Auto Scaling Group is created in AWS.
+2. FortiGate-VM instance is launched.
+3. FortiGate-VM instance can reach FortiManager.
+4. FortiGate-VM instance registered with FortiManager.
+5. The FortiManager UMS group receives the expected instance information.
+
+
+## 🔎 Section 9: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
