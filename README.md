@@ -318,7 +318,7 @@ Typical values include:
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 
-1. Follow the steps in the official Fortinet documentation below.
+Follow the steps in the official Fortinet documentation below.
 
 [Creating an API admin user](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/902153/creating-an-api-admin-user)
 
@@ -326,25 +326,13 @@ The API administrator is used by FortiGate devices to request licensing and onbo
 
 ---
 
-## 🔌 Section 5: Create the AWS Cloud SDN Connector
+## 🔌 Section 4: Create the AWS Cloud SDN Connector
 
-The AWS Cloud SDN connector allows FortiManager to discover AWS resources such as Auto Scaling Groups.
+The AWS Cloud SDN connector allows FortiManager to discover AWS resources including Auto Scaling Groups, VPCs, EC2 instances, etc.
 
-1. In FortiManager, go to:
+Follow the steps in the official Fortinet documentation below.
 
-   ```text
-   Fabric View > External Connectors
-   ```
-
-2. Click:
-
-   ```text
-   Create New
-   ```
-
-3. Select the AWS Cloud SDN connector option.
-
-4. Configure the connector.
+[Creating AWS fabric connectors](https://docs.fortinet.com/document/fortimanager/7.6.5/administration-guide/390041/creating-aws-fabric-connectors)
 
    Suggested values:
 
@@ -353,28 +341,15 @@ The AWS Cloud SDN connector allows FortiManager to discover AWS resources such a
    | Name | `student<number>-AWS-SDN-Connector` |
    | Cloud Provider | AWS |
    | Authentication Type | Access Key |
-   | Access Key ID | Your assigned AWS access key ID |
-   | Secret Access Key | Your assigned AWS secret access key |
+   | Access Key ID | Provided by instructor |
+   | Secret Access Key | Provided by instructor |
    | Region | `eu-central-1` |
 
 5. Save the connector.
 
 6. Test the connector.
 
-7. Validate that FortiManager can see AWS resources by creating or testing a dynamic address object from the SDN connector.
-
-### ✅ Checkpoint
-
-- AWS SDN connector is created.
-- Connector test succeeds.
-- AWS resources are visible from FortiManager.
-
-### 🛠️ Troubleshooting
-
-- If the connector test fails, verify the access key and secret key.
-- Confirm that the AWS region is correct.
-- Confirm that the IAM permissions assigned by the instructor allow FortiManager to read Auto Scaling and EC2 resources.
-- Confirm that your AWS account contains the expected lab resources.
+`Right-click and choose "View Connector Objects"` 
 
 ---
 
