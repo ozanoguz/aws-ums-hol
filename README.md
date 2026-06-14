@@ -60,17 +60,17 @@ Before starting, confirm that you have received the following from your instruct
 Use the following naming convention throughout the lab:
 
 ```text
-student-<number>-<resource-purpose>
+student<number>
 ```
 
 Example:
 
 ```text
-student-01-fmg-api-admin
-student-01-aws-sdn
-student-01-onboarding-rule
-student-01-byol-pool
-student-01-fortiflex-connector
+student01-FortiManager
+student01-FMG-API-admin
+student01-AWS-SDN-Connector
+student01-Onboarding-Rule
+student01-Fortiflex-Connector
 ```
 
 Replace `<number>` with your assigned student number.
