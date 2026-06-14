@@ -610,7 +610,7 @@ The following values should be configured before proceeding.
 | Variable | Description | Value |
 |---|---|---|
 | access_key | Provided by instructor | Example syntax: `"AKIAZRGV3E5YVRVCNJ6T"` |
-| secret_key | Provided by instructor | Example syntax: `+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq` |
+| secret_key | Provided by instructor | Example syntax: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
 | region | AWS region name | `eu-central-1` |
 
 "VPC" section
