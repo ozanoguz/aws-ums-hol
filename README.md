@@ -48,7 +48,7 @@ Before starting, confirm that you have received the following from your instruct
 | AWS access key ID                           | Provided by instructor                      |
 | AWS secret access key                       | Provided by instructor                      |
 | AWS region                                  | `eu-central-1`                              |
-| FortiManager URL                            | Example: `https://<fortimanager-public-ip>` |
+| FortiManager URL                            | `https://<fortimanager-public-ip>`          |
 | FortiFlex API user & password               | Provided by instructor                      |
 
 > Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
