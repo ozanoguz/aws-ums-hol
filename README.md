@@ -89,22 +89,11 @@ Replace `<number>` with your assigned student number.
 
 3. Confirm that you are in the correct AWS region.
 
-   Example:
+   AWS region will be used:
 
    ```text
-   us-east-1
+   eu-central-1
    ```
-
-4. In the AWS Console search bar, search for:
-
-   ```text
-   IAM
-   ```
-
-5. Confirm that your assigned IAM user exists.
-
-6. Do not create new access keys unless your instructor tells you to do so.
-
 ---
 
 ## Section 2: Configure AWS CLI Credentials
