@@ -318,52 +318,11 @@ Typical values include:
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 
-1. Follow the steps in official Fortinet documentation below.
+1. Follow the steps in the official Fortinet documentation below.
 
 [Creating an API admin user](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/902153/creating-an-api-admin-user)
 
-In FortiManager GUI, go to:
-
-   ```text
-   System Settings > Administrators
-   ```
-
-4. Click "Create New" and choose REST API Admin:
-
-   ```text
-   Create New
-   ```
-
-5. Configure the administrator.
-
-   Suggested values:
-
-   | Field | Value |
-   |---|---|
-   | User Name | `student<number>-api-admin` |
-   | Type | API Admin |
-   | Admin Profile | As instructed |
-   | Trusted Hosts | Instructor-provided source networks, if required |
-   | ADOM Access | `root` or assigned ADOM |
-
-6. Generate the API key.
-
-7. Copy the API key and save it in your private lab notes.
-
-   Example private note format:
-
-   ```text
-   FortiManager API Admin: student01-FMG-API-admin
-   FortiManager API Key: <paste-key-here>
-   ```
-
-8. Do not commit the API key to GitHub.
-
-### ✅ Checkpoint
-
-- API administrator exists.
-- API key has been generated and saved securely.
-- API key is not shared with other students.
+> ⚠️ Important Note: Copy the API key and save it in your private lab notes. Keep the credentials for further steps. 
 
 ---
 
