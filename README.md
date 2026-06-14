@@ -42,16 +42,14 @@ Before starting, confirm that you have received the following from your instruct
 | Item                                        | Example / Notes                             |
 | ------------------------------------------- | ------------------------------------------- |
 | AWS Console URL                             | `https://console.aws.amazon.com/`           |
-| AWS account ID or alias                     | Provided by instructor                      |
+| AWS account ID                              | Provided by instructor                      |
 | AWS IAM username                            | Provided by instructor                      |
 | AWS password                                | Provided by instructor                      |
 | AWS access key ID                           | Provided by instructor                      |
 | AWS secret access key                       | Provided by instructor                      |
 | AWS region                                  | `eu-central-1`                              |
 | FortiManager URL                            | Example: `https://<fortimanager-public-ip>` |
-| FortiManager admin username                 | Provided by instructor                      |
-| FortiManager admin password                 | Provided by instructor                      |
-| BYOL license files or FortiFlex credentials | Provided by instructor if required          |
+| FortiFlex API user & password               | Provided by instructor                      |
 
 > Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
 
