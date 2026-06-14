@@ -168,27 +168,9 @@ Confirm that you have the following information from your instructor:
 
 ---
 
-### 🔐 2.1 Log in to AWS
+### 🔎 2.1 Open the FortiManager Repository
 
-1. Open the AWS Console:
-
-   ```text
-   https://console.aws.amazon.com/
-   ```
-
-2. Log in with the credentials provided by your instructor.
-
-3. Confirm that the selected AWS region is:
-
-   ```text
-   eu-central-1
-   ```
-
----
-
-### 🔎 2.2 Open the FortiManager Repository
-
-Open the Fortinet AWS Solutions FortiManager repository:
+Open the Fortinet CSE INTL FortiManager repository:
 
 ```text
 https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager
@@ -202,7 +184,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-### 🚀 2.3 Launch the CloudFormation Stack
+### 🚀 2.2 Launch the CloudFormation Stack
 
 1. Under **FortiManager Standalone (New VPC)**, click:
 
@@ -224,7 +206,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-### 🧾 2.4 Configure Stack Parameters
+### 🧾 2.3 Configure Stack Parameters
 
 Use the values provided by your instructor.
 
@@ -233,20 +215,18 @@ Suggested values:
 | Parameter | Value |
 |---|---|
 | Stack name | `student<number>-FortiManager` |
-| VPC CIDR | Default or instructor-provided |
-| Public subnet CIDR | Default or instructor-provided |
+| VPC CIDR | Default |
+| Public subnet CIDR | Default |
 | Availability Zone | AZ in `eu-central-1` |
-| FortiManager version | Instructor-provided |
+| FortiManager version | `7.6.x` |
 | LicenseType | `FortiFlex` |
-| Instance type | Default unless instructed otherwise |
-| Management CIDR | Your public IP `/32` or instructor-provided CIDR |
-| Key pair | Assigned EC2 key pair |
-
-> ⚠️ Do not use `0.0.0.0/0` for management access unless instructed.
+| Instance type | Default |
+| Management CIDR | Default |
+| Key pair | Created EC2 key pair in Section 1|
 
 ---
 
-### ✅ 2.5 Create the Stack
+### ✅ 2.4 Create the Stack
 
 1. Review the stack configuration.
 
