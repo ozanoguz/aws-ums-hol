@@ -1,5 +1,19 @@
 # 🧪 Lab Guide: Deploy and Configure FortiManager UMS on AWS
 
+## 🔗 Quick Navigation
+
+- [📘 Overview](#-overview)
+- [🎯 Lab Objectives](#-lab-objectives)
+- [🧭 Lab Topology](#-lab-topology)
+- [✅ Prerequisites](#-prerequisites)
+- [🏷️ Naming Convention](#️-naming-convention)
+- [☁️ Section 1: Log in to AWS](#️-section-1-log-in-to-aws)
+- [💻 Section 2: Deploying FortiManager in AWS](#-section-2-deploying-fortimanager-in-aws)
+  - [🔎 2.1 Open the FortiManager Repository](#-21-open-the-fortimanager-repository)
+  - [🚀 2.2 Launch the CloudFormation Stack](#-22-launch-the-cloudformation-stack)
+  - [🧾 2.3 Configure Stack Parameters](#-23-configure-stack-parameters)
+  - [✅ 2.4 Create the Stack](#-24-create-the-stack)
+
 ## 📘 Overview
 
 In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) integration by following the official Fortinet AWS Administration Guide.
