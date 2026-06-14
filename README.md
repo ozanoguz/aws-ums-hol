@@ -375,7 +375,7 @@ Follow the steps in the official Fortinet documentation below.
    | Platform | All platforms |
    | Device Name Prefix | `student<number>-fgt` |
 
-6. Configure the onboarding action.
+Configure the onboarding action.
 
    Suggested values:
 
