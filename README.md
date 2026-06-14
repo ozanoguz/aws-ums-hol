@@ -491,7 +491,7 @@ cd ~/terraform-install
 Set the Terraform version.
 
 ```bash
-TERRAFORM_VERSION="1.15.5"
+TERRAFORM_VERSION="1.15.6"
 ```
 
 Detect the CloudShell CPU architecture.
@@ -549,7 +549,7 @@ terraform version
 Expected result:
 
 ```text
-Terraform v1.15.5
+Terraform v1.15.6
 ```
 
 > 📝 Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
