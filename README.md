@@ -160,10 +160,7 @@ Confirm that you have the following information from your instructor:
 
 | Item | Example / Notes |
 |---|---|
-| AWS Console URL | `https://console.aws.amazon.com/` |
-| AWS account credentials | Provided by instructor |
-| AWS region | `eu-central-1` |
-| EC2 key pair | Provided by instructor |
+| EC2 key pair | Created in Section 1 |
 | Allowed management CIDR | Your public IP or instructor-provided CIDR |
 | LicenseType | `FortiFlex` |
 
