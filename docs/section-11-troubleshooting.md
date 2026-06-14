@@ -18,4 +18,3 @@ To stop debugging:
 diag debug disable
 diag debug reset
 ```
-SAKIN DENEME
