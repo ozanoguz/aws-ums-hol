@@ -237,7 +237,6 @@ Suggested values:
    - Deployment option is **New VPC**.
    - `LicenseType` is set to `FortiFlex`.
    - Key pair is correct.
-   - Management CIDR is correct.
 
 3. Click:
 
@@ -253,187 +252,33 @@ Suggested values:
 
 ---
 
-### 🌐 2.6 Collect FortiManager Access Information
+### 🌐 2.5 Collect FortiManager Access Information
 
 After the stack is complete:
 
-1. Open the CloudFormation stack.
+1. Open the EC2 stack, click "Instances".
 
-2. Go to:
+2. Find the public IP assigned to FortiManager.
 
-   ```text
-   Outputs
-   ```
-
-3. Record the FortiManager access information in your private notes.
-
-Typical values include:
-
-| Output | Purpose |
-|---|---|
-| FortiManager URL | Web GUI access |
-| FortiManager username | Admin username |
-| FortiManager password | Initial password or password reference |
-| FortiManager public IP | Public IP address |
+3. Access the FortiManager GUI using the assigned public IP. The first password is EC2-instance-ID; you will need to change it after first login. 
 
 Example:
 
 ```text
 FortiManager URL: https://<fortimanager-public-ip>
 FortiManager Username: admin
-FortiManager Password: <retrieved-password>
+FortiManager Password: <Instance-ID>
 ```
+
+4. Record the FortiManager access information in your private notes.
+
+Typical values include:
 
 > 🚫 Do not share FortiManager credentials.
 
 ---
 
-### 🔐 2.7 Verify Access
-
-1. Go to:
-
-   ```text
-   EC2 > Instances
-   ```
-
-2. Confirm that the FortiManager instance is:
-
-   ```text
-   Running
-   ```
-
-3. Confirm that HTTPS access is allowed from your approved source IP:
-
-   ```text
-   TCP 443
-   ```
-
-4. Remember that FortiGate-to-FortiManager communication later requires:
-
-   ```text
-   TCP 541
-   ```
-
----
-
-### 🖥️ 2.8 Log in to FortiManager
-
-1. Open the FortiManager URL from the CloudFormation outputs:
-
-   ```text
-   https://<fortimanager-public-ip-or-fqdn>
-   ```
-
-2. Accept the browser certificate warning if prompted.
-
-3. Log in using the FortiManager credentials from the stack output or instructor instructions.
-
-4. Confirm that the FortiManager dashboard loads.
-
----
-
-### ✅ Checkpoint
-
-Before continuing, confirm:
-
-- [ ] I logged in to my assigned AWS account.
-- [ ] I selected region `eu-central-1`.
-- [ ] I launched **FortiManager Standalone (New VPC)**.
-- [ ] I selected `FortiFlex` for `LicenseType`.
-- [ ] The CloudFormation stack status is `CREATE_COMPLETE`.
-- [ ] The FortiManager EC2 instance is running.
-- [ ] I collected the FortiManager URL and login information.
-- [ ] I verified HTTPS access to FortiManager.
-- [ ] I logged in to the FortiManager GUI.
-- [ ] I did not expose passwords, API keys, access keys, or FortiFlex credentials.
-
----
-
-### 🛠️ Troubleshooting
-
-#### CloudFormation stack fails
-
-Check:
-
-- AWS region is `eu-central-1`.
-- EC2 key pair is selected.
-- `LicenseType` is set to `FortiFlex`.
-- CIDR ranges are valid.
-- AWS Marketplace subscription and IAM permissions are available.
-
-Review:
-
-```text
-CloudFormation > Stack > Events
-```
-
----
-
-#### FortiManager GUI does not open
-
-Check:
-
-- EC2 instance is running.
-- Public IP or URL is correct.
-- Security group allows:
-
-  ```text
-  TCP 443
-  ```
-
-- Your source IP matches the allowed management CIDR.
-
----
-
-#### Cannot log in
-
-Check:
-
-- Username and password from stack outputs or instructor instructions.
-- FortiManager has completed initialization.
-- Browser cache is not causing issues.
-
-Try a private or incognito browser window.
-
----
-
-### 🧾 Submission Evidence
-
-Capture the following screenshots:
-
-| Screenshot | Required |
-|---|---|
-| CloudFormation stack showing `CREATE_COMPLETE` | Yes |
-| CloudFormation Outputs tab | Yes |
-| FortiManager EC2 instance running | Yes |
-| FortiManager login page or dashboard | Yes |
-| CloudFormation parameters showing `LicenseType = FortiFlex` | Yes |
-
-> 🚫 Do not include passwords, access keys, API keys, FortiFlex credentials, or license information in screenshots.
-## 🖥️ Section 3: Access FortiManager
-
-1. Open a browser.
-
-2. Go to the FortiManager URL provided by your instructor:
-
-   ```text
-   https://<fortimanager-public-ip-or-fqdn>
-   ```
-
-3. Accept the browser certificate warning if this is a lab self-signed certificate.
-
-4. Log in using the FortiManager credentials provided by your instructor.
-
-5. Confirm that you can access the FortiManager GUI.
-
-### ✅ Checkpoint
-
-- You should be able to see the FortiManager dashboard.
-- You should have permission to access the `root` ADOM or the ADOM assigned by your instructor.
-
----
-
-## 👤 Section 4: Create a FortiManager API Administrator
+## 👤 Section 3: Create a FortiManager API Administrator
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 
