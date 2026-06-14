@@ -9,21 +9,13 @@
 * [🏷️ Naming Convention](#️-naming-convention)
 * [☁️ Section 1: Log in to AWS](#️-section-1-log-in-to-aws)
 * [💻 Section 2: Deploying FortiManager in AWS](#-section-2-deploying-fortimanager-in-aws)
-
-  * [🔎 2.1 Open the FortiManager Repository](#-21-open-the-fortimanager-repository)
-  * [🚀 2.2 Launch the CloudFormation Stack](#-22-launch-the-cloudformation-stack)
-  * [🧾 2.3 Configure Stack Parameters](#-23-configure-stack-parameters)
-  * [✅ 2.4 Create the Stack](#-24-create-the-stack)
-  * [🌐 2.5 Collect FortiManager Access Information](#-25-collect-fortimanager-access-information)
 * [👤 Section 3: Create a FortiManager API Administrator](#-section-3-create-a-fortimanager-api-administrator)
 * [🔌 Section 4: Create the AWS Cloud SDN Connector](#-section-4-create-the-aws-cloud-sdn-connector)
 * [🔄 Section 5: Enable the SDN Connector for UMS](#-section-5-enable-the-sdn-connector-for-ums)
 * [🤖 Section 6: Create an Auto Onboarding Rule](#-section-6-create-an-auto-onboarding-rule)
 * [📄 Section 7: Creating a FortiFlex connector](#-section-7-creating-a-fortiflex-connector)
-
-  * [⚡ Create a FortiFlex Connector](#-create-a-fortiflex-connector)
-* [🔎 Section 9: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
-* [🛠️ Section 10: Troubleshooting](#️-section-10-troubleshooting)
+* [🔎 Section 8: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
+* [🛠️ Section 9: Troubleshooting](#️-section-10-troubleshooting)
 
   * [🧰 Useful FortiManager Debug Commands](#-useful-fortimanager-debug-commands)
 * [📚 References](#-references)
@@ -431,7 +423,7 @@ Save the connector.
 
 ---
 
-## 🔎 Section 9: Validate Auto Onboarding
+## 🔎 Section 8: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
@@ -456,7 +448,7 @@ Save the connector.
 
 ---
 
-## 🛠️ Section 10: Troubleshooting
+## 🛠️ Section 9: Troubleshooting
 
 ### 🧰 Useful FortiManager Debug Commands
 
