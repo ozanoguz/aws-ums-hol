@@ -1,6 +1,6 @@
-# Lab Guide: Deploy and Configure FortiManager UMS on AWS
+# 🧪 Lab Guide: Deploy and Configure FortiManager UMS on AWS
 
-## Overview
+## 📘 Overview
 
 In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) integration by following the official Fortinet AWS Administration Guide.
 
@@ -12,50 +12,52 @@ https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administr
 
 ---
 
-## Lab Objectives
+## 🎯 Lab Objectives
 
 By the end of this lab, you will be able to:
 
-* Log in to your assigned AWS account.
-* Confirm your AWS identity and region.
-* Deploy and access FortiManager.
-* Create a FortiManager API administrator.
-* Configure a FortiManager AWS Cloud SDN connector
-* Create an auto-onboarding rule.
-* Configure a FortiFlex connector in FortiManager.
-* Deploy auto-scaling in AWS using Terraform
-* Validate that FortiManager can discover AWS Auto Scaling resources.
-* Perform scale-out and scale-in using UMS capability.
+- 🔐 Log in to your assigned AWS account.
+- 🌍 Confirm your AWS identity and region.
+- 🚀 Deploy and access FortiManager.
+- 👤 Create a FortiManager API administrator.
+- 🔌 Configure a FortiManager AWS Cloud SDN connector.
+- 🤖 Create an auto-onboarding rule.
+- 📄 Configure a FortiFlex connector in FortiManager.
+- 🛠️ Deploy auto-scaling in AWS using Terraform.
+- 🔎 Validate that FortiManager can discover AWS Auto Scaling resources.
+- 📈 Perform scale-out and scale-in using UMS capability.
 
 ---
 
-## Lab Topology
+## 🧭 Lab Topology
 
+```text
 ... will be generated
+```
 
 ---
 
-## Prerequisites
+## ✅ Prerequisites
 
 Before starting, confirm that you have received the following from your instructor:
 
-| Item                                        | Example / Notes                             |
-| ------------------------------------------- | ------------------------------------------- |
-| AWS Console URL                             | `https://console.aws.amazon.com/`           |
-| AWS account ID                              | Provided by instructor                      |
-| AWS IAM username                            | Provided by instructor                      |
-| AWS password                                | Provided by instructor                      |
-| AWS access key ID                           | Provided by instructor                      |
-| AWS secret access key                       | Provided by instructor                      |
-| AWS region                                  | `eu-central-1`                              |
-| FortiManager URL                            | `https://<fortimanager-public-ip>`          |
-| FortiFlex API user & password               | Provided by instructor                      |
+| Item | Example / Notes |
+|---|---|
+| AWS Console URL | `https://console.aws.amazon.com/` |
+| AWS account ID | Provided by instructor |
+| AWS IAM username | Provided by instructor |
+| AWS password | Provided by instructor |
+| AWS access key ID | Provided by instructor |
+| AWS secret access key | Provided by instructor |
+| AWS region | `eu-central-1` |
+| FortiManager URL | `https://<fortimanager-public-ip>` |
+| FortiFlex API user & password | Provided by instructor |
 
-> Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
+> ⚠️ **Important:** Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
 
 ---
 
-## Naming Convention
+## 🏷️ Naming Convention
 
 Use the following naming convention throughout the lab:
 
@@ -77,7 +79,7 @@ Replace `<number>` with your assigned student number.
 
 ---
 
-## Section 1: Log in to AWS
+## ☁️ Section 1: Log in to AWS
 
 1. Open the AWS Console:
 
@@ -94,13 +96,14 @@ Replace `<number>` with your assigned student number.
    ```text
    eu-central-1
    ```
+
 ---
 
-## Section 2: Configure AWS CLI Credentials
+## 💻 Section 2: Configure AWS CLI Credentials
 
 This section is optional if the lab is performed only from the AWS Console. Complete it if your instructor requires AWS CLI access.
 
-### 2.1 Install or Confirm AWS CLI
+### 🔎 2.1 Install or Confirm AWS CLI
 
 Run:
 
@@ -114,7 +117,7 @@ Expected result:
 aws-cli/2.x.x ...
 ```
 
-### 2.2 Configure AWS CLI
+### 🔑 2.2 Configure AWS CLI
 
 Run:
 
@@ -127,11 +130,11 @@ Enter the values provided by your instructor:
 ```text
 AWS Access Key ID [None]: <your-access-key-id>
 AWS Secret Access Key [None]: <your-secret-access-key>
-Default region name [None]: <your-aws-region>
+Default region name [None]: eu-central-1
 Default output format [None]: json
 ```
 
-### 2.3 Verify AWS Identity
+### 🪪 2.3 Verify AWS Identity
 
 Run:
 
@@ -149,14 +152,14 @@ Expected result:
 }
 ```
 
-Checkpoint:
+### ✅ Checkpoint
 
-* Confirm that the returned AWS account ID matches the account assigned to you.
-* If the account ID is incorrect, stop and ask the instructor for help.
+- Confirm that the returned AWS account ID matches the account assigned to you.
+- If the account ID is incorrect, stop and ask the instructor for help.
 
 ---
 
-## Section 3: Access FortiManager
+## 🖥️ Section 3: Access FortiManager
 
 1. Open a browser.
 
@@ -172,14 +175,14 @@ Checkpoint:
 
 5. Confirm that you can access the FortiManager GUI.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* You should be able to see the FortiManager dashboard.
-* You should have permission to access the `root` ADOM or the ADOM assigned by your instructor.
+- You should be able to see the FortiManager dashboard.
+- You should have permission to access the `root` ADOM or the ADOM assigned by your instructor.
 
 ---
 
-## Section 4: Create a FortiManager API Administrator
+## 👤 Section 4: Create a FortiManager API Administrator
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 
@@ -199,13 +202,13 @@ The API administrator is used by FortiGate devices to request licensing and onbo
 
    Suggested values:
 
-   | Field         | Value                                            |
-   | ------------- | ------------------------------------------------ |
-   | User Name     | `student-<number>-api-admin`                     |
-   | Type          | API Admin                                        |
-   | Admin Profile | As instructed                                    |
+   | Field | Value |
+   |---|---|
+   | User Name | `student-<number>-api-admin` |
+   | Type | API Admin |
+   | Admin Profile | As instructed |
    | Trusted Hosts | Instructor-provided source networks, if required |
-   | ADOM Access   | `root` or assigned ADOM                          |
+   | ADOM Access | `root` or assigned ADOM |
 
 4. Generate the API key.
 
@@ -214,21 +217,21 @@ The API administrator is used by FortiGate devices to request licensing and onbo
    Example private note format:
 
    ```text
-   FortiManager API Admin: student-01-api-admin
+   FortiManager API Admin: student01-FMG-API-admin
    FortiManager API Key: <paste-key-here>
    ```
 
 6. Do not commit the API key to GitHub.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* API administrator exists.
-* API key has been generated and saved securely.
-* API key is not shared with other students.
+- API administrator exists.
+- API key has been generated and saved securely.
+- API key is not shared with other students.
 
 ---
 
-## Section 5: Create the AWS Cloud SDN Connector
+## 🔌 Section 5: Create the AWS Cloud SDN Connector
 
 The AWS Cloud SDN connector allows FortiManager to discover AWS resources such as Auto Scaling Groups.
 
@@ -250,14 +253,14 @@ The AWS Cloud SDN connector allows FortiManager to discover AWS resources such a
 
    Suggested values:
 
-   | Field               | Value                               |
-   | ------------------- | ----------------------------------- |
-   | Name                | `student-<number>-aws-sdn`          |
-   | Cloud Provider      | AWS                                 |
-   | Authentication Type | Access Key                          |
-   | Access Key ID       | Your assigned AWS access key ID     |
-   | Secret Access Key   | Your assigned AWS secret access key |
-   | Region              | Your assigned AWS region            |
+   | Field | Value |
+   |---|---|
+   | Name | `student<number>-AWS-SDN-Connector` |
+   | Cloud Provider | AWS |
+   | Authentication Type | Access Key |
+   | Access Key ID | Your assigned AWS access key ID |
+   | Secret Access Key | Your assigned AWS secret access key |
+   | Region | `eu-central-1` |
 
 5. Save the connector.
 
@@ -265,22 +268,22 @@ The AWS Cloud SDN connector allows FortiManager to discover AWS resources such a
 
 7. Validate that FortiManager can see AWS resources by creating or testing a dynamic address object from the SDN connector.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* AWS SDN connector is created.
-* Connector test succeeds.
-* AWS resources are visible from FortiManager.
+- AWS SDN connector is created.
+- Connector test succeeds.
+- AWS resources are visible from FortiManager.
 
-Troubleshooting:
+### 🛠️ Troubleshooting
 
-* If the connector test fails, verify the access key and secret key.
-* Confirm that the AWS region is correct.
-* Confirm that the IAM permissions assigned by the instructor allow FortiManager to read Auto Scaling and EC2 resources.
-* Confirm that your AWS account contains the expected lab resources.
+- If the connector test fails, verify the access key and secret key.
+- Confirm that the AWS region is correct.
+- Confirm that the IAM permissions assigned by the instructor allow FortiManager to read Auto Scaling and EC2 resources.
+- Confirm that your AWS account contains the expected lab resources.
 
 ---
 
-## Section 6: Enable the SDN Connector for UMS
+## 🔄 Section 6: Enable the SDN Connector for UMS
 
 1. In FortiManager, go to the UMS or Auto Onboarding configuration area as described in the official Fortinet guide.
 
@@ -290,18 +293,18 @@ Troubleshooting:
 
 4. Save the configuration.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* The AWS SDN connector is enabled for UMS.
-* FortiManager can use the connector for auto onboarding.
+- The AWS SDN connector is enabled for UMS.
+- FortiManager can use the connector for auto onboarding.
 
 ---
 
-## Section 7: Create an Auto Onboarding Rule
+## 🤖 Section 7: Create an Auto Onboarding Rule
 
 Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.
 
-> Access to the `root` ADOM may be required for this step.
+> ℹ️ Access to the `root` ADOM may be required for this step.
 
 1. Go to:
 
@@ -331,24 +334,24 @@ Auto onboarding allows FortiManager to automatically onboard FortiGate instances
 
    Suggested values:
 
-   | Field              | Value                             |
-   | ------------------ | --------------------------------- |
-   | Type               | Administrator                     |
-   | Administrator      | API administrator created earlier |
-   | Platform           | All platforms                     |
-   | Device Name Prefix | `student-<number>-fgt`            |
+   | Field | Value |
+   |---|---|
+   | Type | Administrator |
+   | Administrator | API administrator created earlier |
+   | Platform | All platforms |
+   | Device Name Prefix | `student<number>-fgt` |
 
 6. Configure the onboarding action.
 
    Suggested values:
 
-   | Field                 | Value                                              |
-   | --------------------- | -------------------------------------------------- |
-   | ADOM                  | `root` or assigned ADOM                            |
-   | Device Group          | `Managed FortiGates`                               |
-   | Install License       | BYOL License or Flex VM                            |
+   | Field | Value |
+   |---|---|
+   | ADOM | `root` or assigned ADOM |
+   | Device Group | `Managed FortiGates` |
+   | Install License | Flex VM |
    | Install Configuration | Manual Configuration or instructor-provided option |
-   | Policy Package        | Instructor-provided policy package                 |
+   | Policy Package | Instructor-provided policy package |
 
 7. Click:
 
@@ -356,56 +359,22 @@ Auto onboarding allows FortiManager to automatically onboard FortiGate instances
    OK
    ```
 
-Checkpoint:
+### ✅ Checkpoint
 
-* Auto onboarding is enabled.
-* Auto onboarding rule exists.
-* Rule uses the API administrator created earlier.
-* Rule points to the correct ADOM and device group.
-
----
-
-## Section 8: Configure Licensing
-
-Complete either Option A or Option B, depending on your instructor’s lab design.
+- Auto onboarding is enabled.
+- Auto onboarding rule exists.
+- Rule uses the API administrator created earlier.
+- Rule points to the correct ADOM and device group.
 
 ---
 
-### Option A: Add a BYOL License Pool
+## 📄 Section 8: Configure Licensing
 
-Use this option if your instructor provided FortiGate BYOL license files.
-
-1. From the Auto Onboarding menu, select:
-
-   ```text
-   License Pool
-   ```
-
-2. Click:
-
-   ```text
-   Import
-   ```
-
-3. Upload the license file provided by your instructor.
-
-4. Click:
-
-   ```text
-   OK
-   ```
-
-5. Confirm that the license appears in the license pool.
-
-Checkpoint:
-
-* BYOL license file is imported.
-* License is visible in the FortiManager license pool.
-* Auto onboarding rule is configured to use BYOL licensing.
+Complete the FortiFlex connector configuration as provided by your instructor.
 
 ---
 
-### Option B: Create a FortiFlex Connector
+### ⚡ Create a FortiFlex Connector
 
 Use this option if your instructor provided FortiFlex API credentials.
 
@@ -431,26 +400,26 @@ Use this option if your instructor provided FortiFlex API credentials.
 
    Suggested values:
 
-   | Field                 | Value                                      |
-   | --------------------- | ------------------------------------------ |
-   | Name                  | `student-<number>-fortiflex`               |
-   | API Username          | Instructor-provided FortiFlex API username |
-   | API Password / Secret | Instructor-provided FortiFlex API secret   |
-   | Configuration ID      | Instructor-provided value, if required     |
+   | Field | Value |
+   |---|---|
+   | Name | `student<number>-Fortiflex-Connector` |
+   | API Username | Instructor-provided FortiFlex API username |
+   | API Password / Secret | Instructor-provided FortiFlex API secret |
+   | Configuration ID | Instructor-provided value, if required |
 
 5. Save the connector.
 
 6. Test the connector.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* FortiFlex connector exists.
-* Connector test succeeds.
-* Auto onboarding rule is configured to use Flex VM licensing.
+- FortiFlex connector exists.
+- Connector test succeeds.
+- Auto onboarding rule is configured to use Flex VM licensing.
 
 ---
 
-## Section 9: Validate Auto Onboarding
+## 🔎 Section 9: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
@@ -466,14 +435,14 @@ Checkpoint:
 
 5. Confirm device communication.
 
-Checkpoint:
+### ✅ Checkpoint
 
-* FortiGate devices are visible in FortiManager.
-* Devices are placed into the expected ADOM and device group.
-* Licensing is assigned successfully.
-* FortiManager communication with FortiGate is working.
+- FortiGate devices are visible in FortiManager.
+- Devices are placed into the expected ADOM and device group.
+- Licensing is assigned successfully.
+- FortiManager communication with FortiGate is working.
 
-Important network requirement:
+### 🚦 Important Network Requirement
 
 ```text
 TCP 541 must be allowed between the FortiGate instances and FortiManager.
@@ -481,24 +450,22 @@ TCP 541 must be allowed between the FortiGate instances and FortiManager.
 
 ---
 
-## Section 10: Troubleshooting
+## 🛠️ Section 10: Troubleshooting
 
-### Issue: AWS resources are not visible in FortiManager
+### ❌ Issue: AWS resources are not visible in FortiManager
 
 Possible causes:
 
-* Incorrect AWS access key or secret key.
-* Wrong AWS region.
-* Insufficient IAM permissions.
-* AWS Auto Scaling Group does not exist.
-* SDN connector is not enabled for UMS.
+- Incorrect AWS access key or secret key.
+- Wrong AWS region.
+- Insufficient IAM permissions.
+- AWS Auto Scaling Group does not exist.
+- SDN connector is not enabled for UMS.
 
 Actions:
 
 1. Re-test the AWS SDN connector.
-
 2. Confirm the AWS region.
-
 3. Verify AWS identity:
 
    ```bash
@@ -516,15 +483,15 @@ Actions:
 
 ---
 
-### Issue: Auto Scaling Group appears, but FortiGate does not onboard
+### ⚠️ Issue: Auto Scaling Group appears, but FortiGate does not onboard
 
 Possible causes:
 
-* Auto onboarding rule is not enabled.
-* Wrong API administrator selected.
-* API key was not generated or was lost.
-* FortiGate cannot reach FortiManager.
-* TCP 541 is blocked.
+- Auto onboarding rule is not enabled.
+- Wrong API administrator selected.
+- API key was not generated or was lost.
+- FortiGate cannot reach FortiManager.
+- TCP 541 is blocked.
 
 Actions:
 
@@ -536,26 +503,25 @@ Actions:
 
 ---
 
-### Issue: License assignment fails
+### 🪪 Issue: License assignment fails
 
 Possible causes:
 
-* BYOL license file was not uploaded.
-* BYOL license is already consumed.
-* FortiFlex connector credentials are incorrect.
-* FortiFlex entitlement is missing.
-* Auto onboarding rule points to the wrong license method.
+- FortiFlex connector credentials are incorrect.
+- FortiFlex entitlement is missing.
+- Auto onboarding rule points to the wrong license method.
+- Flex VM licensing is not available for the selected configuration.
 
 Actions:
 
-1. Check the License Pool.
-2. Test the FortiFlex connector.
-3. Confirm that the auto onboarding rule uses the intended license method.
+1. Test the FortiFlex connector.
+2. Confirm that the auto onboarding rule uses Flex VM licensing.
+3. Confirm that the FortiFlex configuration ID is correct.
 4. Ask the instructor to verify license availability.
 
 ---
 
-### Useful FortiManager Debug Commands
+### 🧰 Useful FortiManager Debug Commands
 
 Use these only if instructed:
 
@@ -576,42 +542,42 @@ diag debug reset
 
 ---
 
-## Section 11: Lab Completion Checklist
+## 🧾 Section 11: Lab Completion Checklist
 
 Before submitting, confirm the following:
 
-* [ ] I logged in to my assigned AWS account.
-* [ ] I configured or verified AWS CLI access.
-* [ ] I confirmed my AWS identity with `aws sts get-caller-identity`.
-* [ ] I logged in to FortiManager.
-* [ ] I created a FortiManager API administrator.
-* [ ] I generated and securely saved the API key.
-* [ ] I created an AWS Cloud SDN connector.
-* [ ] I tested the AWS SDN connector.
-* [ ] I enabled the SDN connector for UMS.
-* [ ] I created an auto onboarding rule.
-* [ ] I configured BYOL or FortiFlex licensing.
-* [ ] I confirmed that TCP 541 is allowed between FortiGate and FortiManager.
-* [ ] I validated that FortiGate devices or AWS Auto Scaling resources are visible.
-* [ ] I completed cleanup steps if instructed.
+- [ ] 🔐 I logged in to my assigned AWS account.
+- [ ] 💻 I configured or verified AWS CLI access.
+- [ ] 🪪 I confirmed my AWS identity with `aws sts get-caller-identity`.
+- [ ] 🖥️ I logged in to FortiManager.
+- [ ] 👤 I created a FortiManager API administrator.
+- [ ] 🔑 I generated and securely saved the API key.
+- [ ] 🔌 I created an AWS Cloud SDN connector.
+- [ ] ✅ I tested the AWS SDN connector.
+- [ ] 🔄 I enabled the SDN connector for UMS.
+- [ ] 🤖 I created an auto onboarding rule.
+- [ ] 📄 I configured FortiFlex licensing.
+- [ ] 🚦 I confirmed that TCP 541 is allowed between FortiGate and FortiManager.
+- [ ] 🔎 I validated that FortiGate devices or AWS Auto Scaling resources are visible.
+- [ ] 📈 I performed scale-out and scale-in validation using UMS.
+- [ ] 🧹 I completed cleanup steps if instructed.
 
 ---
 
-## Section 12: Cleanup
+## 🧹 Section 12: Cleanup
 
 Only perform cleanup if instructed.
 
-### 12.1 Remove FortiManager Lab Objects
+### 🗑️ 12.1 Remove FortiManager Lab Objects
 
 Delete or disable the following objects created during the lab:
 
-* Auto onboarding rule
-* AWS Cloud SDN connector
-* FortiFlex connector, if created
-* API administrator
-* Uploaded BYOL license, if instructed
+- Auto onboarding rule
+- AWS Cloud SDN connector
+- FortiFlex connector
+- API administrator
 
-### 12.2 Remove Local AWS CLI Credentials
+### 🔐 12.2 Remove Local AWS CLI Credentials
 
 If this was a temporary lab workstation, remove local AWS credentials.
 
@@ -629,7 +595,7 @@ Remove-Item "$env:USERPROFILE\.aws\credentials" -Force
 Remove-Item "$env:USERPROFILE\.aws\config" -Force
 ```
 
-### 12.3 Confirm No Secrets Were Committed
+### 🧪 12.3 Confirm No Secrets Were Committed
 
 If you used Git, run:
 
@@ -639,36 +605,37 @@ git status
 
 Confirm that no files containing the following were committed:
 
-* AWS access key ID
-* AWS secret access key
-* FortiManager API key
-* FortiManager admin password
-* FortiFlex credentials
-* License files
+- AWS access key ID
+- AWS secret access key
+- FortiManager API key
+- FortiManager admin password
+- FortiFlex credentials
+- License files
 
 ---
 
-## Submission
+## 📤 Submission
 
 Submit the following to your instructor:
 
-| Item                                                   | Required |
-| ------------------------------------------------------ | -------- |
-| Screenshot of AWS identity verification                | Yes      |
-| Screenshot of FortiManager AWS SDN connector test      | Yes      |
-| Screenshot of auto onboarding rule                     | Yes      |
-| Screenshot of BYOL license pool or FortiFlex connector | Yes      |
-| Screenshot of onboarded FortiGate or discovered ASG    | Yes      |
-| Notes about any issues encountered                     | Yes      |
+| Item | Required |
+|---|---|
+| Screenshot of AWS identity verification | Yes |
+| Screenshot of FortiManager AWS SDN connector test | Yes |
+| Screenshot of auto onboarding rule | Yes |
+| Screenshot of FortiFlex connector | Yes |
+| Screenshot of onboarded FortiGate or discovered ASG | Yes |
+| Screenshot or notes from scale-out / scale-in validation | Yes |
+| Notes about any issues encountered | Yes |
 
-Do not submit secrets, passwords, API keys, access keys, or license files.
+> 🚫 **Do not submit secrets, passwords, API keys, access keys, or license files.**
 
 ---
 
-## References
+## 📚 References
 
-* Fortinet FortiManager Public Cloud 7.6.0 AWS Administration Guide
+- Fortinet FortiManager Public Cloud 7.6.0 AWS Administration Guide  
   https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817
 
-* AWS CLI Configuration
+- AWS CLI Configuration  
   https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html
