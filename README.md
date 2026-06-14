@@ -592,13 +592,7 @@ cd examples/spk_gwlb_asg_fgt_gwlb_igw
 
 ## Step 7: Open the Terraform Variables File
 
-Edit the following file:
-
-```text
-terraform.tfvars
-```
-
-In CloudShell, open the file with `nano`.
+Edit the "terraform.tfvars" file using `nano`.
 
 ```bash
 nano terraform.tfvars
