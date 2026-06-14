@@ -2,7 +2,7 @@
 
 ## Overview
 
-In this lab, you will configure FortiManager for AWS Universal Management System (UMS) integration by following the official Fortinet AWS Administration Guide.
+In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) integration by following the official Fortinet AWS Administration Guide.
 
 Each student will use an individual AWS account. AWS access keys and secret access keys have already been created by the instructor.
 
@@ -18,38 +18,20 @@ By the end of this lab, you will be able to:
 
 * Log in to your assigned AWS account.
 * Confirm your AWS identity and region.
-* Access FortiManager.
+* Deploy and access FortiManager.
 * Create a FortiManager API administrator.
-* Configure an AWS Cloud SDN connector.
-* Enable the SDN connector for UMS.
-* Create an auto onboarding rule.
-* Configure a BYOL license pool or FortiFlex connector.
+* Configure a FortiManager AWS Cloud SDN connector
+* Create an auto-onboarding rule.
+* Configure a FortiFlex connector in FortiManager.
+* Deploy auto-scaling in AWS using Terraform
 * Validate that FortiManager can discover AWS Auto Scaling resources.
-* Perform basic troubleshooting and cleanup.
+* Perform scale-out and scale-in using UMS capability.
 
 ---
 
 ## Lab Topology
 
-```text
-Student Workstation
-        |
-        | HTTPS / SSH / AWS Console
-        |
-Assigned AWS Account
-        |
-        | AWS Access Key + Secret Access Key
-        |
-AWS Resources
-        |
-        | SDN Connector / Auto Scaling Group
-        |
-FortiManager
-        |
-        | TCP 541
-        |
-FortiGate Instances
-```
+... will be generated
 
 ---
 
@@ -65,7 +47,7 @@ Before starting, confirm that you have received the following from your instruct
 | AWS password                                | Provided by instructor                      |
 | AWS access key ID                           | Provided by instructor                      |
 | AWS secret access key                       | Provided by instructor                      |
-| AWS region                                  | Example: `us-east-1`                        |
+| AWS region                                  | `eu-central-1`                              |
 | FortiManager URL                            | Example: `https://<fortimanager-public-ip>` |
 | FortiManager admin username                 | Provided by instructor                      |
 | FortiManager admin password                 | Provided by instructor                      |
