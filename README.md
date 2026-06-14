@@ -14,6 +14,7 @@
 * [🔄 Section 5: Enable the SDN Connector for UMS](#-section-5-enable-the-sdn-connector-for-ums)
 * [🤖 Section 6: Create an Auto Onboarding Rule](#-section-6-create-an-auto-onboarding-rule)
 * [📄 Section 7: Creating a FortiFlex connector](#-section-7-creating-a-fortiflex-connector)
+* [🧩 Section 8: Deploying Auto Scaling Group using Terraform](#-section-8-deploying-auto-scaling-group-using-terraform)
 * [🔎 Section 8: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
 * [🛠️ Section 9: Troubleshooting](#️-section-10-troubleshooting)
 
@@ -420,6 +421,44 @@ Save the connector.
 - FortiFlex connector exists.
 - Connector test succeeds.
 - Auto onboarding rule is configured to use Flex VM licensing.
+
+---
+
+## 🧩 Section 8: Deploying Auto Scaling Group using Terraform
+
+In this section, you will use **AWS CloudShell** to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
+
+AWS CloudShell is used because it already includes AWS CLI access and Terraform is available in the lab environment.
+
+---
+
+### 🎯 Objectives
+
+By the end of this section, you will be able to:
+
+- Open AWS CloudShell.
+- Confirm AWS account and region access.
+- Download the Fortinet AWS Terraform module package.
+- Edit the `terraform.tfvars` file for an Auto Scaling Group deployment.
+- Add FortiManager integration variables.
+- Run Terraform initialization and deployment commands.
+
+---
+
+### ✅ Before You Begin
+
+Confirm that you have the following information from your instructor:
+
+| Item | Description | Example |
+|---|---|---|
+| AWS Console access | Access to the AWS account used for the lab | Instructor-provided |
+| AWS region | Region where the deployment will run | `eu-central-1` |
+| FortiManager IP address | Public or private IP address of FortiManager | `x.x.x.x` |
+| FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
+| FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
+| FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
+
+> ⚠️ Do not commit passwords, API keys, or secrets to GitHub.
 
 ---
 
