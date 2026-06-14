@@ -127,6 +127,8 @@ Replace `<number>` with your assigned student number.
 
 In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE INTL GitHub repository.
 
+> ⚠️ Important: Before launching the CloudFormation template, you must subscribe to the FortiManager BYOL image in AWS Marketplace. If this step is skipped, the CloudFormation deployment may fail.
+
 Deployment selection:
 
 ```text
