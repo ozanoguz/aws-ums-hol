@@ -620,10 +620,10 @@ The following values should be configured before proceeding.
 | spoke_cidr_list | Password used for FortiGate registration | ["10.1.0.0/16"] |
 | availability_zones | AWS Availability Zones | ["eu-central-1a", "eu-central-1b"] |
 
-"Auto scale group" section
+"Auto scale group" section > "fgt_byol_asg" configuration
 | Variable | Description | Value |
 |---|---|---|
-| fgt_version | FortiGate version | ["7.6.7"] |
+| fgt_version | FortiGate version | "7.6.7" |
 | license_type | FortiGate license type | "byol" |
 | fgt_password | FortiGate password | "Fortinet2026!" |
 | keypair_name | Name of the key pair | "student01_KEY" |
@@ -637,6 +637,27 @@ FortiManager configuration (fmg_integration) section:
 | ip | FortiManager public IP address | ["x.x.x.x"] |
 | sn | FortiManager Serial Number | "FMVMELTM24000254" |
 | fgt_password | FortiGate password | "Fortinet2026!" |
+| autoscale_psksecret | Pre-shared Key | "fortinet" |
+| fmg_password | Pre-shared Key | "fortinet" |
+| api_key | Created in Section 3 | "15aszaem8ncqedisuwe79rbwizj1waub" |
+
+"Auto scale group" section > "fgt_on_demand_asg" configuration
+| Variable | Description | Value |
+|---|---|---|
+| fgt_version | FortiGate version | "7.6.7" |
+| license_type | FortiGate license type | "on_demand" |
+| fgt_password | FortiGate password | "Fortinet2026!" |
+| keypair_name | Name of the key pair | "student01_KEY" |
+
+FortiManager configuration (fmg_integration) section:
+| Variable | Description | Value |
+|---|---|---|
+| ip | FortiManager public IP address | ["x.x.x.x"] |
+| sn | FortiManager Serial Number | "FMVMELTM24000254" |
+| fgt_password | FortiGate password | "Fortinet2026!" |
+| autoscale_psksecret | Pre-shared Key | "fortinet" |
+| fmg_password | Pre-shared Key | "fortinet" |
+| api_key | Created in Section 3 | "15aszaem8ncqedisuwe79rbwizj1waub" |
 
 
 ## 🔎 Section 8: Validate Auto Onboarding
