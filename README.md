@@ -583,28 +583,10 @@ cd terraform-aws-cloud-modules
 
 ## Step 6: Go to the Auto Scaling Group Example Directory
 
-The Fortinet documentation uses the following example directory:
-
-```text
-examples/spk_gwlb_asg_fgt_gwlb_igw
-```
-
-Change into that example directory.
+The Fortinet documentation uses multiple example directories. Change into that example directory.
 
 ```bash
 cd examples/spk_gwlb_asg_fgt_gwlb_igw
-```
-
-Confirm that you are in the correct directory.
-
-```bash
-pwd
-```
-
-Expected path should end with:
-
-```text
-terraform-aws-cloud-modules/examples/spk_gwlb_asg_fgt_gwlb_igw
 ```
 ---
 
