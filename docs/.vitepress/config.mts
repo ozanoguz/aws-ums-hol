@@ -13,8 +13,6 @@ export default defineConfig({
   themeConfig: {
     siteTitle: 'AWS UMS HOL',
 
-    logo: undefined,
-
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Lab Guide', link: '/introduction' },
