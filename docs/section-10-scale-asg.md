@@ -28,9 +28,7 @@ Scaling out increases the number of FortiGate-VM instances in the Auto Scaling G
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/767426/scaling-out-the-auto-scaling-group
-```
+[Scale Out the Auto Scaling Group](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/767426/scaling-out-the-auto-scaling-group)
 
 ---
 
