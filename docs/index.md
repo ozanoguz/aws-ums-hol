@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: AWS UMS HOL
+  name: AWS UMS (User Managed Scaling) Hands-on-Lab
   text: Deploy and Configure FortiManager UMS on AWS
   tagline: Hands-on lab guide for FortiManager, AWS SDN Connector, FortiFlex, Terraform, and UMS auto scaling.
   actions:
