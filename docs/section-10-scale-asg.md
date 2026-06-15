@@ -40,6 +40,4 @@ In this example, the Auto Scaling Group will be scaled in from **2 FortiGate-VM 
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/389472/scaling-in-the-auto-scaling-group
-```
+[Scale In the Auto Scaling Group](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/389472/scaling-in-the-auto-scaling-group)
