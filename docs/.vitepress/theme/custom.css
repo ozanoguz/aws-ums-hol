@@ -1,0 +1,11 @@
+.xperts-banner {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem 0;
+}
+
+.xperts-banner img {
+  max-width: 600px;
+  width: 100%;
+  border-radius: 12px;
+}
