@@ -2,9 +2,7 @@
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674
-```
+[Enable the SDN Connector for UMS](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674)
 
 ## ✅ Checkpoint
 
