@@ -10,9 +10,7 @@ Complete this option using the provided FortiFlex API credentials.
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208
-```
+[Create a FortiFlex Connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208)
 
 ::: warning Important
 You can skip "FortiCloud" related steps. FortiFlex API credentials are already provided by the instructor.
@@ -20,9 +18,7 @@ You can skip "FortiCloud" related steps. FortiFlex API credentials are already p
 
 Configure the connector using the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id
-```
+[Configuring FortiFlex Connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id)
 
 ## Suggested Values
 
