@@ -10,7 +10,7 @@ layout: page
   />
 </p>
 
-# AWS UMS (User Managed Scaling) Hands-on-Lab
+# AWS UMS HOL
 
 ## Deploy and Configure FortiManager UMS on AWS
 
