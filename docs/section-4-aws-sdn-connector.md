@@ -4,9 +4,7 @@ The AWS Cloud SDN connector allows FortiManager to discover AWS resources includ
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager/7.6.5/administration-guide/390041/creating-aws-fabric-connectors
-```
+[Creating AWS SDN Connector](https://docs.fortinet.com/document/fortimanager/7.6.5/administration-guide/390041/creating-aws-fabric-connectors)
 
 ## Suggested Values
 
