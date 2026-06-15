@@ -4,9 +4,7 @@ Auto onboarding allows FortiManager to automatically onboard FortiGate instances
 
 Follow the steps in the official Fortinet documentation below:
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005
-```
+[Create an Auto Onboarding Rule](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005)
 
 ## Suggested Values
 
