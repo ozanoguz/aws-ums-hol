@@ -10,4 +10,3 @@ Confirm the following:
 
 - The AWS SDN connector is enabled for UMS.
 - FortiManager can use the connector for auto-onboarding.
-- ERDAL 
