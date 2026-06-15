@@ -36,6 +36,7 @@ export default defineConfig({
           { text: 'Section 9: Validate Auto Onboarding', link: '/section-9-validate-auto-onboarding' },
           { text: 'Section 10: Scale Auto Scaling Group', link: '/section-10-scale-asg' },
           { text: 'Section 11: Troubleshooting', link: '/section-11-troubleshooting' },
+          { text: 'Section 12: Olacak İş Değil', link: '/section-12-olacak-is-degil' },
           { text: 'References', link: '/references' }
         ]
       }
