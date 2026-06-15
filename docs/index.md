@@ -56,5 +56,4 @@ You will complete the following major tasks:
 - [Section 9: Validate Auto Onboarding](/section-9-validate-auto-onboarding.html)
 - [Section 10: Scale Auto Scaling Group](/section-10-scale-asg.html)
 - [Section 11: Troubleshooting](/section-11-troubleshooting.html)
-- [Section 12: Olacak İş Değil](/section-12-olacak-is-degil.html)
 - [References](/references.html)
