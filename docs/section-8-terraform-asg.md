@@ -239,6 +239,7 @@ nano terraform.tfvars
 | license_type | FortiGate license type | `"on_demand"` |
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | keypair_name | Name of the key pair | `"student01_KEY"` |
+| user_conf_file_path | Must be empty | `""` |
 
 ### FortiManager Configuration: `fmg_integration` Section
 
