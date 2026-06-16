@@ -250,6 +250,15 @@ nano terraform.tfvars
 | fmg_password | FortiManager login password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
+Save `"terraform.tfvars"` file using following key combination:
+
+
+```bash
+CTRL + X
+or
+Command + X
+```
+
 ---
 
 ## Step 8: Initialize Terraform
