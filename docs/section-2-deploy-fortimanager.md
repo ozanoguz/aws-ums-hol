@@ -69,13 +69,11 @@ Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex creden
 
 ---
 
-## 2.3 Open the FortiManager Repository
+## 2.3 FortiManager Deployment Template
 
 Open the Fortinet CSE INTL FortiManager repository:
 
-```text
-https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager
-```
+[GitHub Repository for deploying FortiManager](https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager)
 
 Locate:
 
