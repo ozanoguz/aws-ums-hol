@@ -2,7 +2,7 @@
 .xperts-banner {
   display: flex;
   justify-content: center;
-  margin: 24px auto 16px;
+  margin: 24px auto 40px;
   padding: 0 24px;
 }
 
@@ -13,33 +13,34 @@
   border-radius: 14px;
 }
 
-/* Make the VitePress home hero wider */
+/* Keep hero below the banner, not overlapping it */
 .VPHomeHero {
-  padding-top: 24px !important;
+  padding-top: 0 !important;
 }
 
+/* Make the VitePress home hero wider */
 .VPHomeHero .container {
   display: block;
   max-width: 1280px;
 }
 
 .VPHomeHero .main {
-  max-width: 1100px;
+  max-width: 1120px;
 }
 
 .VPHomeHero .name,
 .VPHomeHero .text {
-  max-width: 1100px;
+  max-width: 1120px;
 }
 
 .VPHomeHero .name {
-  font-size: 58px;
-  line-height: 1.08;
+  font-size: 52px;
+  line-height: 1.1;
 }
 
 .VPHomeHero .text {
-  font-size: 58px;
-  line-height: 1.08;
+  font-size: 52px;
+  line-height: 1.1;
 }
 
 .VPHomeHero .tagline {
@@ -51,7 +52,7 @@
 /* Better mobile behavior */
 @media (max-width: 768px) {
   .xperts-banner {
-    margin: 16px auto 8px;
+    margin: 16px auto 28px;
     padding: 0 16px;
   }
 
@@ -60,16 +61,12 @@
     border-radius: 10px;
   }
 
-  .VPHomeHero {
-    padding-top: 16px !important;
-  }
-
   .VPHomeHero .name,
   .VPHomeHero .text {
-    font-size: 38px;
+    font-size: 36px;
   }
 
   .VPHomeHero .tagline {
-    font-size: 20px;
+    font-size: 19px;
   }
 }
