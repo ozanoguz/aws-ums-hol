@@ -78,14 +78,16 @@ Detect the CloudShell CPU architecture.
 ```bash
 ARCH="$(uname -m)"
 
-if ["$ARCH" = "x86_64"]; then
+if [ "$ARCH" = "x86_64" ]; then
   TF_ARCH="amd64"
-elif ["$ARCH" = "aarch64"]; then
+elif [ "$ARCH" = "aarch64" ]; then
   TF_ARCH="arm64"
 else
   echo "Unsupported architecture: $ARCH"
-  exit 1
 fi
+
+echo "Detected architecture: $ARCH"
+echo "Terraform package architecture: $TF_ARCH"
 ```
 
 Download the Terraform binary package.
