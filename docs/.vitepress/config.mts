@@ -15,8 +15,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Lab Guide', link: '/introduction' },
-      { text: 'GitHub', link: 'https://github.com/ozanoguz/aws-ums-hol' }
+      { text: 'Lab Guide', link: '/introduction' }
     ],
 
     sidebar: [
