@@ -25,5 +25,5 @@ features:
 ---
 
 <p align="center">
-  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" style="max-width: 520px; width: 100%; height: auto;" />
+  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" style="max-width: 720px; width: 100%; height: auto;" />
 </p>
