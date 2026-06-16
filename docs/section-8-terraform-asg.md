@@ -252,11 +252,10 @@ nano terraform.tfvars
 
 Save `"terraform.tfvars"` file using following key combination:
 
-
 ```bash
-CTRL + X
+CTRL + X (for Windows users)
 or
-Command + X
+Command + X (for Mac users)
 ```
 
 ---
