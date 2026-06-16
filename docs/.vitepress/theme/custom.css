@@ -1,11 +1,55 @@
+/* XPERTS banner on homepage */
 .xperts-banner {
   display: flex;
   justify-content: center;
-  padding: 2rem 1rem 0;
+  margin: 32px auto 48px;
+  padding: 0 24px;
 }
 
 .xperts-banner img {
-  max-width: 600px;
   width: 100%;
-  border-radius: 12px;
+  max-width: 720px;
+  height: auto;
+  border-radius: 14px;
+}
+
+/* Make the VitePress home hero wider */
+.VPHomeHero .container {
+  display: block;
+  max-width: 1120px;
+}
+
+.VPHomeHero .main {
+  max-width: 900px;
+}
+
+.VPHomeHero .name,
+.VPHomeHero .text {
+  max-width: 900px;
+}
+
+.VPHomeHero .text {
+  font-size: 56px;
+  line-height: 1.08;
+}
+
+.VPHomeHero .tagline {
+  max-width: 760px;
+  font-size: 24px;
+  line-height: 1.45;
+}
+
+/* Better mobile behavior */
+@media (max-width: 768px) {
+  .xperts-banner {
+    margin: 24px auto 32px;
+  }
+
+  .VPHomeHero .text {
+    font-size: 40px;
+  }
+
+  .VPHomeHero .tagline {
+    font-size: 20px;
+  }
 }

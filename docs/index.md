@@ -24,6 +24,6 @@ features:
     details: Configure FortiFlex connector and Flex VM licensing workflow.
 ---
 
-<p align="center">
-  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" style="max-width: 720px; width: 100%; height: auto;" />
-</p>
+<div class="xperts-banner">
+  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" />
+</div>
