@@ -5,9 +5,6 @@ hero:
   name: AWS UMS HOL
   text: Deploy and Configure FortiManager UMS on AWS
   tagline: Hands-on lab guide for FortiManager, AWS SDN Connector, FortiFlex, Terraform, and UMS auto scaling.
-  image:
-    src: /images/xperts.png
-    alt: Fortinet EMEA XPERTS26 Madrid
   actions:
     - theme: brand
       text: Start Lab
@@ -26,3 +23,7 @@ features:
   - title: FortiFlex
     details: Configure FortiFlex connector and Flex VM licensing workflow.
 ---
+
+<p align="center">
+  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" style="max-width: 520px; width: 100%; height: auto;" />
+</p>
