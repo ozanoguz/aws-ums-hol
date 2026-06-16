@@ -228,9 +228,7 @@ nano terraform.tfvars
 |---|---|---|
 | ip | FortiManager public IP address | `["x.x.x.x"]` |
 | sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| fgt_password | FortiGate password | `"Fortinet2026!"` |
 | autoscale_psksecret | Pre-shared Key | `"fortinet"` |
-| fmg_password | Pre-shared Key | `"fortinet"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ### Auto Scale Group Section: `fgt_on_demand_asg` Configuration
@@ -248,9 +246,8 @@ nano terraform.tfvars
 |---|---|---|
 | ip | FortiManager public IP address | `["x.x.x.x"]` |
 | sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| fgt_password | FortiGate password | `"Fortinet2026!"` |
 | autoscale_psksecret | Pre-shared Key | `"fortinet"` |
-| fmg_password | Pre-shared Key | `"fortinet"` |
+| fmg_password | FortiManager login password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ---
