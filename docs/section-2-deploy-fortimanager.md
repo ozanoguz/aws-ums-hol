@@ -97,7 +97,7 @@ Suggested values:
 | Availability Zone | AZ in `eu-central-1` |
 | FortiManager version | `7.6.x` |
 | LicenseType | `FortiFlex` |
-| FortiFlexTokenID | Provided by instructor |
+| FortiFlexTokenID | Provided by instructor (Column E) |
 | Instance type | Default |
 | Management CIDR | Default |
 | Key pair | Created EC2 key pair in Section 1 |

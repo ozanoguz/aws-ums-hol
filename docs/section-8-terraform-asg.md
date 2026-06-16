@@ -195,8 +195,8 @@ nano terraform.tfvars
 
 | Variable | Description | Value |
 |---|---|---|
-| access_key | Provided by instructor | Example syntax: `"AKIAZRGV3E5YVRVCNJ6T"` |
-| secret_key | Provided by instructor | Example syntax: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
+| access_key | Provided by instructor (Column F) | Example syntax: `"AKIAZRGV3E5YVRVCNJ6T"` |
+| secret_key | Provided by instructor (Column G)| Example syntax: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
 | region | AWS region name | `eu-central-1` |
 
 ### VPC Section
@@ -228,7 +228,7 @@ nano terraform.tfvars
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | autoscale_psksecret | Pre-shared Key | `"fortinet"` |
 | fmg_password | Pre-shared Key | `"fortinet"` |
-| api_key | Created in Section 3 | `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ### Auto Scale Group Section: `fgt_on_demand_asg` Configuration
 
@@ -248,7 +248,7 @@ nano terraform.tfvars
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | autoscale_psksecret | Pre-shared Key | `"fortinet"` |
 | fmg_password | Pre-shared Key | `"fortinet"` |
-| api_key | Created in Section 3 | `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ---
 
