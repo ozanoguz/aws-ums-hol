@@ -1,4 +1,4 @@
-# 🧩 Section 8: Deploying Auto Scaling Group using Terraform
+# Section 8: Deploying Auto Scaling Group using Terraform
 
 In this section, you will use **AWS CloudShell** to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 
@@ -6,7 +6,7 @@ AWS CloudShell is used because it already includes AWS CLI access and Terraform 
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 By the end of this section, you will be able to:
 
@@ -20,7 +20,7 @@ By the end of this section, you will be able to:
 
 ---
 
-## ✅ Before You Begin
+## Before You Begin
 
 Confirm that you have the following information from your instructor:
 
@@ -78,9 +78,9 @@ Detect the CloudShell CPU architecture.
 ```bash
 ARCH="$(uname -m)"
 
-if [ "$ARCH" = "x86_64" ]; then
+if ["$ARCH" = "x86_64"]; then
   TF_ARCH="amd64"
-elif [ "$ARCH" = "aarch64" ]; then
+elif ["$ARCH" = "aarch64"]; then
   TF_ARCH="arm64"
 else
   echo "Unsupported architecture: $ARCH"

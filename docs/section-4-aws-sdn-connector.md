@@ -1,4 +1,4 @@
-# 🔌 Section 4: Create the AWS Cloud SDN Connector
+# Section 4: Create the AWS Cloud SDN Connector
 
 The AWS Cloud SDN connector allows FortiManager to discover AWS resources including Auto Scaling Groups, VPCs, EC2 instances, and other AWS resources.
 

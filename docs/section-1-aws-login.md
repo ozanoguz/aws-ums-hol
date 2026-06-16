@@ -1,4 +1,4 @@
-# ☁️ Section 1: Log in to AWS
+# Section 1: Log in to AWS
 
 ## 1.1 Open the AWS Console
 

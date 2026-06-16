@@ -1,6 +1,6 @@
-# 🛠️ Section 11: Troubleshooting
+# Section 11: Troubleshooting
 
-## 🧰 Useful FortiManager Debug Commands
+## Useful FortiManager Debug Commands
 
 Use these only if instructed:
 

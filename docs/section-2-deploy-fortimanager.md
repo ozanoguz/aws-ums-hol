@@ -1,4 +1,4 @@
-# 💻 Section 2: Deploying FortiManager in AWS
+# Section 2: Deploying FortiManager in AWS
 
 In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE INTL GitHub repository.
 
@@ -22,7 +22,7 @@ This deployment creates a new AWS VPC and deploys FortiManager-VM into that new 
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 By the end of this section, you will be able to:
 
@@ -33,7 +33,7 @@ By the end of this section, you will be able to:
 
 ---
 
-## ✅ Before You Begin
+## Before You Begin
 
 Confirm that you have the following information from your instructor:
 
@@ -49,7 +49,7 @@ Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex creden
 
 ---
 
-## 🔎 2.1 Open the FortiManager Repository
+## 2.1 Open the FortiManager Repository
 
 Open the Fortinet CSE INTL FortiManager repository:
 
@@ -65,7 +65,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-## 🚀 2.2 Launch the CloudFormation Stack
+## 2.2 Launch the CloudFormation Stack
 
 1. Under **FortiManager Standalone (New VPC)**, click:
 
@@ -87,7 +87,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-## 🧾 2.3 Configure Stack Parameters
+## 2.3 Configure Stack Parameters
 
 Use the values provided by your instructor.
 
@@ -108,7 +108,7 @@ Suggested values:
 
 ---
 
-## ✅ 2.4 Create the Stack
+## 2.4 Create the Stack
 
 1. Review the stack configuration.
 
@@ -133,7 +133,7 @@ Suggested values:
 
 ---
 
-## 🌐 2.5 Collect FortiManager Access Information
+## 2.5 Collect FortiManager Access Information
 
 After the stack is complete:
 

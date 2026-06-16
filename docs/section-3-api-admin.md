@@ -1,4 +1,4 @@
-# 👤 Section 3: Create a FortiManager API Administrator
+# Section 3: Create a FortiManager API Administrator
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 

@@ -1,4 +1,4 @@
-# 📚 References
+# References
 
 ## Fortinet FortiManager Public Cloud AWS Administration Guide
 

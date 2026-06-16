@@ -1,4 +1,4 @@
-# 📈 Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager
+# Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager
 
 In this section, you will scale the FortiGate Auto Scaling Group by using FortiManager.
 
@@ -9,7 +9,7 @@ You will perform two operations:
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 By the end of this section, you will be able to:
 

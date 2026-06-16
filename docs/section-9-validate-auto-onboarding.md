@@ -1,4 +1,4 @@
-# 🔎 Section 9: Validate Auto Onboarding
+# Section 9: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
@@ -14,7 +14,7 @@
 
 5. Confirm device communication.
 
-## ✅ Checkpoint
+## Checkpoint
 
 Confirm the following:
 

@@ -1,10 +1,10 @@
-# 📄 Section 7: Creating a FortiFlex Connector
+# Section 7: Creating a FortiFlex Connector
 
 Complete the FortiFlex connector configuration as provided by your instructor.
 
 ---
 
-## ⚡ Create a FortiFlex Connector
+## Create a FortiFlex Connector
 
 Complete this option using the provided FortiFlex API credentials.
 
@@ -32,7 +32,7 @@ Configure the connector using the official Fortinet documentation below:
 
 Save the connector.
 
-## ✅ Checkpoint
+## Checkpoint
 
 Confirm the following:
 

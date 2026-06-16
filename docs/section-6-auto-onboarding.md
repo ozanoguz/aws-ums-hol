@@ -1,4 +1,4 @@
-# 🤖 Section 6: Create an Auto Onboarding Rule
+# Section 6: Create an Auto Onboarding Rule
 
 Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.
 
