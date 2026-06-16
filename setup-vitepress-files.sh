@@ -64,8 +64,8 @@ export default defineConfig({
           { text: 'Section 3: API Administrator', link: '/section-3-api-admin' },
           { text: 'Section 4: AWS Cloud SDN Connector', link: '/section-4-aws-sdn-connector' },
           { text: 'Section 5: Enable SDN Connector for UMS', link: '/section-5-enable-ums' },
-          { text: 'Section 6: Auto Onboarding Rule', link: '/section-6-auto-onboarding' },
-          { text: 'Section 7: FortiFlex Connector', link: '/section-7-fortiflex-connector' },
+          { text: 'Section 6: FortiFlex Connector', link: '/section-7-fortiflex-connector' },
+          { text: 'Section 7: Auto Onboarding Rule', link: '/section-6-auto-onboarding' },
           { text: 'Section 8: Terraform Auto Scaling Group', link: '/section-8-terraform-asg' },
           { text: 'Section 9: Validate Auto Onboarding', link: '/section-9-validate-auto-onboarding' },
           { text: 'Section 10: Scale Auto Scaling Group', link: '/section-10-scale-asg' },
@@ -145,8 +145,8 @@ cat > docs/introduction.md <<'EOF'
 - [👤 Section 3: Create a FortiManager API Administrator](./section-3-api-admin.md)
 - [🔌 Section 4: Create the AWS Cloud SDN Connector](./section-4-aws-sdn-connector.md)
 - [🔄 Section 5: Enable the SDN Connector for UMS](./section-5-enable-ums.md)
-- [🤖 Section 6: Create an Auto Onboarding Rule](./section-6-auto-onboarding.md)
-- [📄 Section 7: Creating a FortiFlex Connector](./section-7-fortiflex-connector.md)
+- [📄 Section 6: Creating a FortiFlex Connector](./section-7-fortiflex-connector.md)
+- [🤖 Section 7: Create an Auto Onboarding Rule](./section-6-auto-onboarding.md)
 - [🧩 Section 8: Deploying Auto Scaling Group using Terraform](./section-8-terraform-asg.md)
 - [🔎 Section 9: Validate Auto Onboarding](./section-9-validate-auto-onboarding.md)
 - [📈 Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager](./section-10-scale-asg.md)
@@ -178,8 +178,8 @@ By the end of this lab, you will be able to:
 - 🚀 Deploy and access FortiManager.
 - 👤 Create a FortiManager API administrator.
 - 🔌 Configure a FortiManager AWS Cloud SDN connector.
-- 🤖 Create an auto-onboarding rule.
 - 📄 Configure a FortiFlex connector in FortiManager.
+- 🤖 Create an auto-onboarding rule.
 - 🛠️ Deploy auto-scaling in AWS using Terraform.
 - 🔎 Validate that FortiManager can discover AWS Auto Scaling resources.
 - 📈 Perform scale-out and scale-in using UMS capability.
