@@ -1,26 +1,26 @@
-# 🧪 Lab Guide: Deploy and Configure FortiManager UMS on AWS
+# Lab Guide: Deploy and Configure FortiManager UMS on AWS
 
-## 🔗 Quick Navigation
+## Quick Navigation
 
-* [📘 Overview](#-overview)
-* [🎯 Lab Objectives](#-lab-objectives)
-* [🧭 Lab Topology](#-lab-topology)
-* [✅ Prerequisites](#-prerequisites)
-* [🏷️ Naming Convention](#️-naming-convention)
-* [☁️ Section 1: Log in to AWS](#️-section-1-log-in-to-aws)
-* [💻 Section 2: Deploying FortiManager in AWS](#-section-2-deploying-fortimanager-in-aws)
-* [👤 Section 3: Create a FortiManager API Administrator](#-section-3-create-a-fortimanager-api-administrator)
-* [🔌 Section 4: Create the AWS Cloud SDN Connector](#-section-4-create-the-aws-cloud-sdn-connector)
-* [🔄 Section 5: Enable the SDN Connector for UMS](#-section-5-enable-the-sdn-connector-for-ums)
-* [🤖 Section 6: Create an Auto Onboarding Rule](#-section-6-create-an-auto-onboarding-rule)
-* [📄 Section 7: Creating a FortiFlex connector](#-section-7-creating-a-fortiflex-connector)
-* [🧩 Section 8: Deploying Auto Scaling Group using Terraform](#-section-8-deploying-auto-scaling-group-using-terraform)
-* [🔎 Section 9: Validate Auto Onboarding](#-section-9-validate-auto-onboarding)
-* [📈 Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager](#-section-10-scaling-the-fortigate-auto-scaling-group-from-fortimanager)
-* [🛠️ Section 11: Troubleshooting](#️-section-11-troubleshooting)
-* [📚 References](#-references)
+* [Overview](#overview)
+* [Lab Objectives](#lab-objectives)
+* [Lab Topology](#lab-topology)
+* [Prerequisites](#prerequisites)
+* [Naming Convention](#naming-convention)
+* [Section 1: Log in to AWS](#section-1-log-in-to-aws)
+* [Section 2: Deploying FortiManager in AWS](#section-2-deploying-fortimanager-in-aws)
+* [Section 3: Create a FortiManager API Administrator](#section-3-create-a-fortimanager-api-administrator)
+* [Section 4: Create the AWS Cloud SDN Connector](#section-4-create-the-aws-cloud-sdn-connector)
+* [Section 5: Enable the SDN Connector for UMS](#section-5-enable-the-sdn-connector-for-ums)
+* [Section 6: Create an Auto Onboarding Rule](#section-6-create-an-auto-onboarding-rule)
+* [Section 7: Creating a FortiFlex connector](#section-7-creating-a-fortiflex-connector)
+* [Section 8: Deploying Auto Scaling Group using Terraform](#section-8-deploying-auto-scaling-group-using-terraform)
+* [Section 9: Validate Auto Onboarding](#section-9-validate-auto-onboarding)
+* [Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager](#section-10-scaling-the-fortigate-auto-scaling-group-from-fortimanager)
+* [Section 11: Troubleshooting](#section-11-troubleshooting)
+* [References](#references)
 
-## 📘 Overview
+## Overview
 
 In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) integration by following the official Fortinet AWS Administration Guide.
 
@@ -32,24 +32,24 @@ https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administr
 
 ---
 
-## 🎯 Lab Objectives
+## Lab Objectives
 
 By the end of this lab, you will be able to:
 
-- 🔐 Log in to your assigned AWS account.
-- 🌍 Confirm your AWS identity and region.
-- 🚀 Deploy and access FortiManager.
-- 👤 Create a FortiManager API administrator.
-- 🔌 Configure a FortiManager AWS Cloud SDN connector.
-- 🤖 Create an auto-onboarding rule.
-- 📄 Configure a FortiFlex connector in FortiManager.
-- 🛠️ Deploy auto-scaling in AWS using Terraform.
-- 🔎 Validate that FortiManager can discover AWS Auto Scaling resources.
-- 📈 Perform scale-out and scale-in using UMS capability.
+- Log in to your assigned AWS account.
+- Confirm your AWS identity and region.
+- Deploy and access FortiManager.
+- Create a FortiManager API administrator.
+- Configure a FortiManager AWS Cloud SDN connector.
+- Create an auto-onboarding rule.
+- Configure a FortiFlex connector in FortiManager.
+- Deploy auto-scaling in AWS using Terraform.
+- Validate that FortiManager can discover AWS Auto Scaling resources.
+- Perform scale-out and scale-in using UMS capability.
 
 ---
 
-## 🧭 Lab Topology
+## Lab Topology
 
 ```text
 ... will be generated
@@ -57,7 +57,7 @@ By the end of this lab, you will be able to:
 
 ---
 
-## ✅ Prerequisites
+## Prerequisites
 
 Before starting, confirm that you have received the following from your instructor:
 
@@ -73,11 +73,11 @@ Before starting, confirm that you have received the following from your instruct
 | FortiManager URL | `https://<fortimanager-public-ip>` |
 | FortiFlex API user & password | Provided by instructor |
 
-> ⚠️ **Important:** Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
+> **Important:** Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
 
 ---
 
-## 🏷️ Naming Convention
+## Naming Convention
 
 Use the following naming convention throughout the lab:
 
@@ -99,7 +99,7 @@ Replace `<number>` with your assigned student number.
 
 ---
 
-## ☁️ Section 1: Log in to AWS
+## Section 1: Log in to AWS
 
 1.1. Open the AWS Console:
 
@@ -143,11 +143,11 @@ Replace `<number>` with your assigned student number.
 
 ---
 
-## 💻 Section 2: Deploying FortiManager in AWS
+## Section 2: Deploying FortiManager in AWS
 
 In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE INTL GitHub repository.
 
-> ⚠️ Important: Before launching the CloudFormation template, you must subscribe to the FortiManager BYOL image in AWS Marketplace. If this step is skipped, the CloudFormation deployment may fail.
+> Important: Before launching the CloudFormation template, you must subscribe to the FortiManager BYOL image in AWS Marketplace. If this step is skipped, the CloudFormation deployment may fail.
 
 Deployment selection:
 
@@ -165,7 +165,7 @@ This deployment creates a new AWS VPC and deploys FortiManager-VM into that new 
 
 ---
 
-### 🎯 Objectives
+### Objectives
 
 By the end of this section, you will be able to:
 
@@ -176,7 +176,7 @@ By the end of this section, you will be able to:
 
 ---
 
-### ✅ Before You Begin
+### Before You Begin
 
 Confirm that you have the following information from your instructor:
 
@@ -186,11 +186,11 @@ Confirm that you have the following information from your instructor:
 | Allowed management CIDR | Your public IP or instructor-provided CIDR |
 | FortiFlex token ID | Provided by instructor |
 
-> ⚠️ Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex credentials, or license information.
+> Do not share AWS credentials, FortiManager passwords, API keys, FortiFlex credentials, or license information.
 
 ---
 
-### 🔎 2.1 Open the FortiManager Repository
+### 2.1 Open the FortiManager Repository
 
 Open the Fortinet CSE INTL FortiManager repository:
 
@@ -206,7 +206,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-### 🚀 2.2 Launch the CloudFormation Stack
+### 2.2 Launch the CloudFormation Stack
 
 1. Under **FortiManager Standalone (New VPC)**, click:
 
@@ -228,7 +228,7 @@ FortiManager Standalone (New VPC)
 
 ---
 
-### 🧾 2.3 Configure Stack Parameters
+### 2.3 Configure Stack Parameters
 
 Use the values provided by your instructor.
 
@@ -249,7 +249,7 @@ Suggested values:
 
 ---
 
-### ✅ 2.4 Create the Stack
+### 2.4 Create the Stack
 
 1. Review the stack configuration.
 
@@ -274,7 +274,7 @@ Suggested values:
 
 ---
 
-### 🌐 2.5 Collect FortiManager Access Information
+### 2.5 Collect FortiManager Access Information
 
 After the stack is complete:
 
@@ -296,11 +296,11 @@ FortiManager Password: <Instance-ID>
 
 Typical values include:
 
-> 🚫 Do not share FortiManager credentials.
+> Do not share FortiManager credentials.
 
 ---
 
-## 👤 Section 3: Create a FortiManager API Administrator
+## Section 3: Create a FortiManager API Administrator
 
 The API administrator is used by FortiGate devices to request licensing and onboarding from FortiManager.
 
@@ -308,11 +308,11 @@ Follow the steps in the official Fortinet documentation below.
 
 [Creating an API admin user](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/902153/creating-an-api-admin-user)
 
-> ⚠️ Important Note: Copy the API key and save it in your private lab notes. Keep the credentials for further steps. 
+> Important Note: Copy the API key and save it in your private lab notes. Keep the credentials for further steps. 
 
 ---
 
-## 🔌 Section 4: Create the AWS Cloud SDN Connector
+## Section 4: Create the AWS Cloud SDN Connector
 
 The AWS Cloud SDN connector allows FortiManager to discover AWS resources including Auto Scaling Groups, VPCs, EC2 instances, etc.
 
@@ -339,20 +339,20 @@ Follow the steps in the official Fortinet documentation below.
 
 ---
 
-## 🔄 Section 5: Enable the SDN Connector for UMS
+## Section 5: Enable the SDN Connector for UMS
 
 Follow the steps in the official Fortinet documentation below.
 
 [Enabling the SDN connector for UMS](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674)
 
-### ✅ Checkpoint
+### Checkpoint
 
 - The AWS SDN connector is enabled for UMS.
 - FortiManager can use the connector for auto-onboarding.
 
 ---
 
-## 🤖 Section 6: Create an Auto Onboarding Rule
+## Section 6: Create an Auto Onboarding Rule
 
 Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.
 
@@ -384,13 +384,13 @@ Configure the onboarding action.
 
 ---
 
-## 📄 Section 7: Creating a FortiFlex connector
+## Section 7: Creating a FortiFlex connector
 
 Complete the FortiFlex connector configuration as provided by your instructor.
 
 ---
 
-### ⚡ Create a FortiFlex Connector
+### Create a FortiFlex Connector
 
 Complete this option using the provided FortiFlex API credentials.
 
@@ -398,7 +398,7 @@ Follow the steps in the official Fortinet documentation below.
 
 [Creating a FortiFlex connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208)
 
-> ⚠️ **Important:** You can skip "FortiCloud" related steps. FortiFlex API credentials are already provided by the instructor.
+> **Important:** You can skip "FortiCloud" related steps. FortiFlex API credentials are already provided by the instructor.
 
 [Configure the connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id)
 
@@ -414,7 +414,7 @@ Follow the steps in the official Fortinet documentation below.
    
 Save the connector.
 
-### ✅ Checkpoint
+### Checkpoint
 
 - FortiFlex connector exists.
 - Connector test succeeds.
@@ -422,7 +422,7 @@ Save the connector.
 
 ---
 
-## 🧩 Section 8: Deploying Auto Scaling Group using Terraform
+## Section 8: Deploying Auto Scaling Group using Terraform
 
 In this section, you will use **AWS CloudShell** to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 
@@ -430,7 +430,7 @@ AWS CloudShell is used because it already includes AWS CLI access and Terraform 
 
 ---
 
-### 🎯 Objectives
+### Objectives
 
 By the end of this section, you will be able to:
 
@@ -444,7 +444,7 @@ By the end of this section, you will be able to:
 
 ---
 
-### ✅ Before You Begin
+### Before You Begin
 
 Confirm that you have the following information from your instructor:
 
@@ -497,9 +497,9 @@ Detect the CloudShell CPU architecture.
 ```bash
 ARCH="$(uname -m)"
 
-if [ "$ARCH" = "x86_64" ]; then
+if ["$ARCH" = "x86_64"]; then
   TF_ARCH="amd64"
-elif [ "$ARCH" = "aarch64" ]; then
+elif ["$ARCH" = "aarch64"]; then
   TF_ARCH="arm64"
 else
   echo "Unsupported architecture: $ARCH"
@@ -550,7 +550,7 @@ Expected result:
 Terraform v1.15.6
 ```
 
-> 📝 Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
+> Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
 
 ---
 
@@ -702,7 +702,7 @@ After Terraform completes, verify the following:
 5. The FortiManager UMS group receives the expected instance information.
 
 
-## 🔎 Section 9: Validate Auto Onboarding
+## Section 9: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
@@ -718,7 +718,7 @@ After Terraform completes, verify the following:
 
 5. Confirm device communication.
 
-### ✅ Checkpoint
+### Checkpoint
 
 - FortiGate devices are visible in FortiManager.
 - Devices are placed into the expected ADOM and device group.
@@ -727,7 +727,7 @@ After Terraform completes, verify the following:
 
 ---
 
-## 📈 Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager
+## Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager
 
 In this section, you will scale the FortiGate Auto Scaling Group by using FortiManager.
 
@@ -738,7 +738,7 @@ You will perform two operations:
 
 ---
 
-### 🎯 Objectives
+### Objectives
 
 By the end of this section, you will be able to:
 
@@ -772,9 +772,9 @@ In this example, the Auto Scaling Group will be scaled in from **2 FortiGate-VM 
 ---
 
 
-## 🛠️ Section 11: Troubleshooting
+## Section 11: Troubleshooting
 
-### 🧰 Useful FortiManager Debug Commands
+### Useful FortiManager Debug Commands
 
 Use these only if instructed:
 
@@ -794,7 +794,7 @@ diag debug reset
 ```
 ---
 
-## 📚 References
+## References
 
 - Fortinet FortiManager Public Cloud 7.6.0 AWS Administration Guide  
   https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817
