@@ -1,4 +1,4 @@
-# Section 7: Creating a FortiFlex Connector
+# Section 6: Creating a FortiFlex Connector
 
 Complete the FortiFlex connector configuration as provided by your instructor.
 
