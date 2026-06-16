@@ -139,13 +139,15 @@ Suggested values:
    - `LicenseType` is set to `FortiFlex`.
    - Key pair is correct.
 
-3. Click:
+3. Click the box `I acknowledge that AWS CloudFormation might create IAM resources.`
+
+4. Click:
 
    ```text
    Create stack
    ```
 
-4. Wait until the stack status becomes:
+5. Wait until the stack status becomes:
 
    ```text
    CREATE_COMPLETE
