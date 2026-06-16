@@ -12,11 +12,7 @@ Deployment selection:
 FortiManager Standalone (New VPC)
 ```
 
-Repository:
-
-```text
-https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager
-```
+[GitHub Repository for deploying FortiManager](https://github.com/40net-cloud/fortinet-aws-solutions/tree/master/FortiManager)
 
 This deployment creates a new AWS VPC and deploys FortiManager-VM into that new VPC.
 
