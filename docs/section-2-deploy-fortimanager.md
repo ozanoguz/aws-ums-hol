@@ -114,15 +114,17 @@ Suggested values:
 | Parameter | Value |
 |---|---|
 | Stack name | `student<number>-FortiManager` |
-| VPC CIDR | Default |
-| Public subnet CIDR | Default |
-| Availability Zone | AZ in `eu-central-1` |
+| VPCCIDR | Default |
+| PublicSubnet | Default |
+| PublicSubnetRouterIP | Default |
+| AZForFMG | AZ in `eu-central-1` |
+| FMGInstanceType | Default |
 | FortiManager version | `7.6.x` |
 | LicenseType | `FortiFlex` |
 | FortiFlexTokenID | Provided by instructor (Column E) |
-| Instance type | Default |
-| Management CIDR | Default |
+| CIDRForFMGccess | Default |
 | Key pair | Created EC2 key pair in Section 1 |
+| EncryptVolumes | `false` |
 
 ---
 
