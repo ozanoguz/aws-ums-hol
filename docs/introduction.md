@@ -28,11 +28,7 @@ In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) 
 
 Each student will use an individual AWS account. AWS access keys and secret access keys have already been created by the instructor.
 
-Official Fortinet reference:
-
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817
-```
+[Official Fortinet reference](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817)
 
 ---
 
