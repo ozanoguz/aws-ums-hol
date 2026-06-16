@@ -9,9 +9,9 @@ hero:
     - theme: brand
       text: Start Lab
       link: /introduction
-    - theme: alt
-      text: View GitHub Repo
-      link: https://github.com/ozanoguz/aws-ums-hol
+#    - theme: alt
+#      text: View GitHub Repo
+#      link: https://github.com/ozanoguz/aws-ums-hol
 
 features:
   - title: FortiManager on AWS
