@@ -23,7 +23,3 @@ features:
   - title: FortiFlex
     details: Configure FortiFlex connector and Flex VM licensing workflow.
 ---
-
-<div class="xperts-banner">
-  <img src="/images/xperts.png" alt="Fortinet EMEA XPERTS26 Madrid" />
-</div>

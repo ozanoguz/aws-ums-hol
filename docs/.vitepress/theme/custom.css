@@ -1,8 +1,8 @@
-/* XPERTS banner on homepage */
+/* XPERTS banner above homepage hero */
 .xperts-banner {
   display: flex;
   justify-content: center;
-  margin: 32px auto 48px;
+  margin: 32px auto 56px;
   padding: 0 24px;
 }
 
@@ -42,7 +42,7 @@
 /* Better mobile behavior */
 @media (max-width: 768px) {
   .xperts-banner {
-    margin: 24px auto 32px;
+    margin: 24px auto 36px;
   }
 
   .VPHomeHero .text {
