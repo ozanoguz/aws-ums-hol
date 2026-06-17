@@ -142,9 +142,9 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 
 Example:
 
-fortiflex_refresh_token = "S2JmqywnQQOdLxvUTsh0BROtSNqz8g" # e.g. "NasmPa0CXpd56n6TzJjGqpqZm9Thyw"
-fortiflex_sn_list = "" # e.g. ["FGVMMLTM00000001", "FGVMMLTM00000002"]
-fortiflex_configid_list = [80066] # e.g. [2343]
+fortiflex_refresh_token = "S2JmqywnQQOdLxvUTsh0BROtSNqz8g"
+fortiflex_sn_list = ""
+fortiflex_configid_list = [80066]
 :::
 
 ### FortiManager Configuration: `fmg_integration` Section
@@ -155,10 +155,33 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 
 | Variable | Description | Value |
 |---|---|---|
-| ip | FortiManager public IP address | `["x.x.x.x"]` |
-| sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| autoscale_psksecret | Pre-shared Key | `"fortinet"` |
-| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| ip | (# should be removed) FortiManager public IP address | `["x.x.x.x"]` |
+| sn | (# should be removed) FortiManager Serial Number | `"FMVMELTM24000254"` |
+| autoscale_psksecret | (# should be removed) Pre-shared Key | `"fortinet"` |
+| fmg_password | (# should be removed) FortiManager password | `"Fortinet2026!"` |
+| api_key | (# should be removed) Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+
+::: warning The section above should look like this (without any comments in front of each line)
+
+Example:
+
+      ## For UMS feature:
+      fmg_integration = {
+        ip = "35.157.138.234"
+        sn = "FMVMELTM24000253"
+        fgt_lic_mgmt = "fmg"
+        ums = {
+          autoscale_psksecret = "fortinet"
+          hb_interval = 10
+          fmg_password = "Fortinet2026!" # Use only for PAYG type of FOS
+          api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
+        }
+      }
+      # metadata_options = {
+      #   http_endpoint               = "enabled"
+      #   instance_metadata_tags      = "enabled"
+      # }
+:::
 
 ### Auto Scale Group Section: `fgt_on_demand_asg` Configuration
 
@@ -170,15 +193,44 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 | keypair_name | Name of the key pair | `"student01_KEY"` |
 | user_conf_file_path | Must be empty | `""` |
 
+::: warning Important
+The section below is commented out as default. To proceed with FortiFlex licensing, remove all # from each line. 
+:::
+
 ### FortiManager Configuration: `fmg_integration` Section
 
 | Variable | Description | Value |
 |---|---|---|
-| ip | FortiManager public IP address | `["x.x.x.x"]` |
-| sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| autoscale_psksecret | Pre-shared Key | `"fortinet"` |
-| fmg_password | FortiManager login password | `"Fortinet2026!"` |
-| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| ip | (# should be removed) FortiManager public IP address | `["x.x.x.x"]` |
+| sn | (# should be removed) FortiManager Serial Number | `"FMVMELTM24000254"` |
+| autoscale_psksecret | (# should be removed) Pre-shared Key | `"fortinet"` |
+| fmg_password | (# should be removed) FortiManager login password | `"Fortinet2026!"` |
+| api_key | (# should be removed) Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+
+::: warning The section above should look like this (without any comments in front of each line)
+
+Example:
+
+      ## For UMS feature:
+      fmg_integration = {
+        ip = "35.157.138.234"
+        sn = "FMVMELTM24000253"
+        fgt_lic_mgmt = "fmg"
+        ums = {
+          autoscale_psksecret = "fortinet"
+          hb_interval = 10
+          fmg_password = "Fortinet2026!" # Use only for PAYG type of FOS
+          api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
+        }
+      }
+      # metadata_options = {
+      #   http_endpoint               = "enabled"
+      #   instance_metadata_tags      = "enabled"
+      # }
+        }
+}
+:::
+
 
 Save `"terraform.tfvars"` file using following key combination:
 
