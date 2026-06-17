@@ -1,8 +1,8 @@
 # Section 9: Deploying Auto Scaling Group using Terraform
 
-In this section, you will use **AWS CloudShell** to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
+In this section, you will use the Cloud9 Terraform workstation deployed in Section 8 to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 
-AWS CloudShell is used because it already includes AWS CLI access and Terraform is available in the lab environment.
+Cloud9 is used as the Terraform workstation for this lab. Do not use AWS CloudShell for this section.
 
 ---
 
@@ -10,57 +10,79 @@ AWS CloudShell is used because it already includes AWS CLI access and Terraform 
 
 By the end of this section, you will be able to:
 
-- Open AWS CloudShell.
+- Open the Cloud9 Terraform workstation.
 - Confirm AWS account and region access.
-- Install Terraform in AWS CloudShell.
 - Download the Fortinet AWS Terraform module package.
 - Edit the `terraform.tfvars` file for an Auto Scaling Group deployment.
 - Add FortiManager integration variables.
-- Run Terraform initialization and deployment commands.
+- Run Terraform initialization and deployment commands from Cloud9.
+- Verify that the Auto Scaling Group deployment is created successfully.
 
 ---
 
 ## Before You Begin
 
-Confirm that you have the following information from your instructor:
+Confirm that you have completed the previous sections and have the following information from your instructor:
 
 | Item | Description | Example |
 |---|---|---|
+| Cloud9 environment | Cloud9 Terraform workstation deployed in Section 8 | `student01-Cloud9-New-VPC` |
 | AWS Console access | Access to the AWS account used for the lab | Instructor-provided |
 | AWS region | Region where the deployment will run | `eu-central-1` |
 | FortiManager IP address | Public or private IP address of FortiManager | `x.x.x.x` |
 | FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
 | FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
 | FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
+| FortiFlex refresh token | Refresh token provided by the instructor | Instructor-provided |
+| FortiFlex serial number list | FortiFlex VM serial numbers provided by the instructor | Instructor-provided |
+| FortiFlex config ID list | FortiFlex config ID provided by the instructor | Instructor-provided |
 
----
+::: warning Important
+Use the same AWS region throughout the lab.
 
-## Step 1: Open AWS CloudShell
-
-1. Log in to the AWS Management Console.
-2. Confirm that you are in the correct AWS region:
-
-   ```text
-   eu-central-1
-   ```
-
-3. Click the **CloudShell** icon in the top-right corner of the AWS Console.
-
-The CloudShell icon looks like a terminal prompt.
+For this lab, the AWS region is:
 
 ```text
->_
+eu-central-1
 ```
-
-Wait for CloudShell to start.
+:::
 
 ---
 
-## Step 3: Install Terraform in AWS CloudShell
+## Step 1: Open the Cloud9 Environment
 
-Terraform may not be installed by default in AWS CloudShell. Install Terraform into your CloudShell home directory.
+1. Log in to the AWS Management Console.
 
-Run the following commands in CloudShell:
+2. Confirm that you are in the correct AWS region:
+
+```text
+eu-central-1
+```
+
+3. Open the AWS Console search bar.
+
+4. Search for and open:
+
+```text
+Cloud9
+```
+
+5. Find the Cloud9 environment created in Section 8.
+
+6. Click:
+
+```text
+Open
+```
+
+7. Wait for the Cloud9 IDE to load.
+
+
+---
+
+## Step 2: Install Terraform in AWS Cloud9
+
+Run the following commands in Cloud9 IDE:
 
 ```bash
 mkdir -p ~/bin ~/terraform-install
@@ -132,14 +154,9 @@ Expected result:
 ```text
 Terraform v1.15.6
 ```
-
-::: tip Note
-Terraform is installed under your CloudShell home directory. If you switch AWS regions or use a different CloudShell environment, you may need to repeat this installation step.
-:::
-
 ---
 
-## Step 4: Return to the CloudShell Home Directory
+## Step 3: Return to the Cloud9 IDE Home Directory
 
 Before cloning the Fortinet repository, return to your CloudShell home directory.
 
@@ -147,11 +164,10 @@ Before cloning the Fortinet repository, return to your CloudShell home directory
 cd ~
 ```
 
----
 
-## Step 5: Clone the Fortinet AWS Terraform Modules Repository
+## Step 4: Clone the Fortinet AWS Terraform Modules Repository
 
-In CloudShell, clone the Fortinet AWS Terraform modules repository.
+Clone the Fortinet AWS Terraform modules repository.
 
 ```bash
 git clone https://github.com/fortinet/terraform-aws-cloud-modules.git
@@ -165,7 +181,7 @@ cd terraform-aws-cloud-modules
 
 ---
 
-## Step 6: Go to the Auto Scaling Group Example Directory
+## Step 5: Go to the Auto Scaling Group Example Directory
 
 The Fortinet documentation uses multiple example directories. Change into that example directory.
 
@@ -175,7 +191,7 @@ cd examples/spk_gwlb_asg_fgt_gwlb_igw
 
 ---
 
-## Step 7: Configure the Terraform Variables
+## Step 6: Configure the Terraform Variables
 
 Rename the file before editing it.
 
@@ -261,7 +277,7 @@ Command + X (for Mac users)
 
 ---
 
-## Step 8: Initialize Terraform
+## Step 7: Initialize Terraform
 
 Run Terraform initialization from the example directory.
 
@@ -273,7 +289,7 @@ Confirm that Terraform downloads the required providers and modules successfully
 
 ---
 
-## Step 9: Review the Terraform Plan
+## Step 8: Review the Terraform Plan
 
 Generate and review the Terraform execution plan.
 
@@ -285,7 +301,7 @@ Review the resources that Terraform will create or modify.
 
 ---
 
-## Step 10: Apply the Terraform Configuration
+## Step 9: Apply the Terraform Configuration
 
 Deploy the infrastructure.
 
@@ -297,7 +313,7 @@ Terraform will create or update the AWS resources.
 
 ---
 
-## Step 11: Verify the Deployment
+## Step 10: Verify the Deployment
 
 After Terraform completes, verify the following:
 
