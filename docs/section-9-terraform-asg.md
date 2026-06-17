@@ -63,15 +63,8 @@ cd ~
 Clone the Fortinet AWS Terraform modules repository.
 
 ```bash
-git clone https://github.com/fortinet/terraform-aws-cloud-modules.git
+git clone https://github.com/ozanoguz/aws-ums-hol.git
 ```
-
-Change into the repository directory.
-
-```bash
-cd terraform-aws-cloud-modules
-```
-
 ---
 
 ## Step 3: Go to the Auto Scaling Group Example Directory
@@ -79,20 +72,14 @@ cd terraform-aws-cloud-modules
 The Fortinet documentation uses multiple example directories. Change into that example directory.
 
 ```bash
-cd examples/spk_gwlb_asg_fgt_gwlb_igw
+cd aws-ums-hol/terraform/examples/spk_gwlb_asg_fgt_gwlb_igw
 ```
 
 ---
 
 ## Step 4: Configure the Terraform Variables
 
-Rename the file before editing it.
-
-```bash
-mv terraform.tfvars.txt terraform.tfvars
-```
-
-Then, edit the `terraform.tfvars` file using `nano`.
+Edit the `terraform.tfvars` file using `nano`.
 
 ```bash
 nano terraform.tfvars
