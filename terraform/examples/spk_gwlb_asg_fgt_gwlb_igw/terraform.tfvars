@@ -63,21 +63,21 @@ asgs = {
       create_dynamodb_table = true
       dynamodb_table_name = "fgt_asg_track_table"
       ## For UMS feature:
-      # fmg_integration = {
-      #   ip = "<FMG-IP>"
-      #   sn = "<FMG-SN>"
-      #   fgt_lic_mgmt = "fmg"
-      #   ums = {
-      #     autoscale_psksecret = "<YOUR-OWN-VALUE>"
-      #     hb_interval = 10
-      #     fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
-      #     api_key = "<FMG-API-KEY>"
-      #   }
-      # }
-      # metadata_options = {
-      #   http_endpoint               = "enabled"
-      #   instance_metadata_tags      = "enabled"
-      # }
+      fmg_integration = {
+        ip = "<FMG-IP>"
+        sn = "<FMG-SN>"
+        fgt_lic_mgmt = "fmg"
+        ums = {
+          autoscale_psksecret = "<YOUR-OWN-VALUE>"
+          hb_interval = 10
+          fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
+          api_key = "<FMG-API-KEY>"
+        }
+      }
+      metadata_options = {
+        http_endpoint               = "enabled"
+        instance_metadata_tags      = "enabled"
+      }
   },
   fgt_on_demand_asg = {
       template_name = "fgt_asg_template_on_demand"
@@ -126,21 +126,21 @@ asgs = {
         }
       }
       ## For UMS feature:
-      # fmg_integration = {
-      #   ip = "<FMG-IP>"
-      #   sn = "<FMG-SN>"
-      #   fgt_lic_mgmt = "fmg"
-      #   ums = {
-      #     autoscale_psksecret = "<YOUR-OWN-VALUE>"
-      #     hb_interval = 10
-      #     fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
-      #     api_key = "<FMG-API-KEY>"
-      #   }
-      # }
-      # metadata_options = {
-      #   http_endpoint               = "enabled"
-      #   instance_metadata_tags      = "enabled"
-      # }
+      fmg_integration = {
+        ip = "<FMG-IP>"
+        sn = "<FMG-SN>"
+        fgt_lic_mgmt = "fmg"
+        ums = {
+          autoscale_psksecret = "<YOUR-OWN-VALUE>"
+          hb_interval = 10
+          fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
+          api_key = "<FMG-API-KEY>"
+        }
+      }
+      metadata_options = {
+        http_endpoint               = "enabled"
+        instance_metadata_tags      = "enabled"
+      }
   }
 }
 
