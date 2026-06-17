@@ -2,7 +2,7 @@
 
 In this section, you will use the Cloud9 Terraform workstation deployed in Section 8 to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 
-Cloud9 is used as the Terraform workstation for this lab. Do not use AWS CloudShell for this section.
+Cloud9 is used as the Terraform workstation for this lab. Do not use AWS Cloud9 for this section.
 
 ---
 
@@ -51,7 +51,7 @@ eu-central-1
 
 ## Step 1: Return to the Cloud9 IDE Home Directory
 
-Before cloning the Fortinet repository, return to your CloudShell home directory.
+Before cloning the Fortinet repository, return to your Cloud9 home directory.
 
 ```bash
 cd ~
