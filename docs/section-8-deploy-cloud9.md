@@ -116,7 +116,7 @@ Wait for the Cloud9 IDE to load.
 
 ---
 
-### 8.5 Install Terraform Manually if Needed
+### 8.5 Install Terraform
 
 Run the following commands in Cloud9 IDE:
 
@@ -131,7 +131,7 @@ Set the Terraform version.
 TERRAFORM_VERSION="1.15.6"
 ```
 
-Detect the CloudShell CPU architecture.
+Detect the Cloud9 CPU architecture.
 
 ```bash
 ARCH="$(uname -m)"
@@ -160,7 +160,7 @@ Unzip Terraform.
 unzip -o "terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
 ```
 
-Move Terraform to your CloudShell user binary directory.
+Move Terraform to your Cloud9 user binary directory.
 
 ```bash
 mv terraform ~/bin/
@@ -173,7 +173,7 @@ Add `~/bin` to your `PATH`.
 export PATH="$HOME/bin:$PATH"
 ```
 
-Make the `PATH` update persistent for future CloudShell sessions.
+Make the `PATH` update persistent for future Cloud9 sessions.
 
 ```bash
 grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
