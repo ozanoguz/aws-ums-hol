@@ -6,11 +6,13 @@ In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE I
 Before launching the CloudFormation template, you must subscribe to the FortiManager BYOL image in AWS Marketplace. If this step is skipped, the CloudFormation deployment may fail.
 :::
 
-## 2.1 Subscribe FortiManager BYOL AMI
+## 2.1 Subscribe FortiGate & FortiManager BYOL AMI
 
-You will subscribe FortiManager BYOL AMI before deployment. Click the link below.
+You will subscribe FortiGate and FortiManager BYOL AMI before deployment. The following procedure should be completed for both products. Click the links below.
 
 [AWS Marketplace : FortiManager BYOL AMI Listing](https://aws.amazon.com/marketplace/pp/prodview-l6rxheua5mbls?applicationId=AWSMPContessa&ref_=beagle&sr=0-1)
+
+[AWS Marketplace : FortiGate BYOL AMI Listing](https://aws.amazon.com/marketplace/pp/prodview-wory773oau6wq)
 
 Follow the steps below:
 
