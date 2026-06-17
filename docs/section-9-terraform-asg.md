@@ -133,12 +133,25 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 
 | Variable | Description | Value |
 |---|---|---|
-| fortiflex_refresh_token | !!! Remove the comment (#) !!! Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
-| fortiflex_sn_list | !!! Remove the comment (#) !!! Provided by instructor | `["FGVMELTM26013814", "FGVMELTM26013814"]` |
-| fortiflex_configid_list | !!! Remove the comment (#) !!! Provided by instructor | `[80066]` |
+| fortiflex_refresh_token | (# should be removed) Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
+| fortiflex_sn_list | (# should be removed) Provided by instructor | `["FGVMELTM26013814", "FGVMELTM26013814"]` |
+| fortiflex_configid_list | (# should be removed) Provided by instructor | `[80066]` |
 | user_conf_file_path | Must be empty | `""` |
 
+::: warning The section above should look like this (without any comments in front of each line)
+
+Example:
+
+fortiflex_refresh_token = "S2JmqywnQQOdLxvUTsh0BROtSNqz8g" # e.g. "NasmPa0CXpd56n6TzJjGqpqZm9Thyw"
+fortiflex_sn_list = "" # e.g. ["FGVMMLTM00000001", "FGVMMLTM00000002"]
+fortiflex_configid_list = [80066] # e.g. [2343]
+:::
+
 ### FortiManager Configuration: `fmg_integration` Section
+
+::: warning Important
+The section below is commented out as default. To proceed with FortiFlex licensing, remove all # from each line. 
+:::
 
 | Variable | Description | Value |
 |---|---|---|
