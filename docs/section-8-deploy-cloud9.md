@@ -27,7 +27,7 @@ Confirm that you have completed the previous sections and have the following inf
 
 AWS region will be used:
 
-    `eu-central-1`
+`eu-central-1`
 
 ---
 
@@ -39,7 +39,7 @@ Click the Launch Stack button below:
 
 Confirm that the CloudFormation page opens in:
 
-    eu-central-1
+`eu-central-1`
 
 ---
 
@@ -49,11 +49,11 @@ On the CloudFormation Quick create stack page, review the stack details.
 
 Use the following naming convention:
 
-    `student<number>-Cloud9-New-VPC`
+`student<number>-Cloud9-New-VPC`
 
 Example:
 
-    `student01-Cloud9-New-VPC`
+`student01-Cloud9-New-VPC`
 
 Unless your instructor provides different values, keep the default values from the template.
 
@@ -78,11 +78,15 @@ Unless your instructor provides different values, keep the default values from t
 
   5. Click:
 
-        Create stack
+   ```text
+   Create stack
+   ```
 
   6. Wait until the stack status becomes:
 
-        CREATE_COMPLETE
+```text
+   CREATE_COMPLETE
+   ```
 
 This may take several minutes.
 
@@ -96,13 +100,17 @@ After the stack reaches `CREATE_COMPLETE`:
 
   2. Search for and open:
 
-        Cloud9
+```text
+Cloud9
+```
 
   3. Find the Cloud9 environment created by the stack.
 
   4. Click:
-
-        Open
+  
+```text
+Open
+```
 
 Wait for the Cloud9 IDE to load.
 
