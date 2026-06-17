@@ -126,9 +126,14 @@ nano terraform.tfvars
 | license_type | FortiGate license type | `"byol"` |
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | keypair_name | Name of the key pair | `"student01_KEY"` |
-| fortiflex_refresh_token | Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
-| fortiflex_sn_list | Provided by instructor | `["FGVMELTM26013814", "FGVMELTM26013814"]` |
-| fortiflex_configid_list | Provided by instructor | `[80066]` |
+
+::: Important Warning
+The section below is commented out as default. To proceed with FortiFlex licensing, remove all # each line. 
+:::
+
+| fortiflex_refresh_token | !!! Remove the comment (#) !!! Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
+| fortiflex_sn_list | !!! Remove the comment (#) !!! Provided by instructor | `["FGVMELTM26013814", "FGVMELTM26013814"]` |
+| fortiflex_configid_list | !!! Remove the comment (#) !!! Provided by instructor | `[80066]` |
 | user_conf_file_path | Must be empty | `""` |
 
 ### FortiManager Configuration: `fmg_integration` Section
