@@ -134,7 +134,7 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 | Variable | Description | Value |
 |---|---|---|
 | fortiflex_refresh_token | (# should be removed) Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
-| fortiflex_sn_list | (# should be removed) Provided by instructor | `["FGVMELTM26013814", "FGVMELTM26013814"]` |
+| fortiflex_sn_list | (# should be removed) Must be empty | `[""]` |
 | fortiflex_configid_list | (# should be removed) Provided by instructor | `[80066]` |
 | user_conf_file_path | Must be empty | `""` |
 
@@ -143,7 +143,7 @@ The section below is commented out as default. To proceed with FortiFlex licensi
 Example:
 
 fortiflex_refresh_token = "S2JmqywnQQOdLxvUTsh0BROtSNqz8g"
-fortiflex_sn_list = ""
+fortiflex_sn_list = [""]
 fortiflex_configid_list = [80066]
 :::
 
