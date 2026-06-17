@@ -49,114 +49,7 @@ eu-central-1
 
 ---
 
-## Step 1: Open the Cloud9 Environment
-
-1. Log in to the AWS Management Console.
-
-2. Confirm that you are in the correct AWS region:
-
-```text
-eu-central-1
-```
-
-3. Open the AWS Console search bar.
-
-4. Search for and open:
-
-```text
-Cloud9
-```
-
-5. Find the Cloud9 environment created in Section 8.
-
-6. Click:
-
-```text
-Open
-```
-
-7. Wait for the Cloud9 IDE to load.
-
-
----
-
-## Step 2: Install Terraform in AWS Cloud9
-
-Run the following commands in Cloud9 IDE:
-
-```bash
-mkdir -p ~/bin ~/terraform-install
-cd ~/terraform-install
-```
-
-Set the Terraform version.
-
-```bash
-TERRAFORM_VERSION="1.15.6"
-```
-
-Detect the CloudShell CPU architecture.
-
-```bash
-ARCH="$(uname -m)"
-
-if [ "$ARCH" = "x86_64" ]; then
-  TF_ARCH="amd64"
-elif [ "$ARCH" = "aarch64" ]; then
-  TF_ARCH="arm64"
-else
-  echo "Unsupported architecture: $ARCH"
-fi
-
-echo "Detected architecture: $ARCH"
-echo "Terraform package architecture: $TF_ARCH"
-```
-
-Download the Terraform binary package.
-
-```bash
-curl -fsSLO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
-```
-
-Unzip Terraform.
-
-```bash
-unzip -o "terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
-```
-
-Move Terraform to your CloudShell user binary directory.
-
-```bash
-mv terraform ~/bin/
-chmod +x ~/bin/terraform
-```
-
-Add `~/bin` to your `PATH`.
-
-```bash
-export PATH="$HOME/bin:$PATH"
-```
-
-Make the `PATH` update persistent for future CloudShell sessions.
-
-```bash
-grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
-```
-
-Verify Terraform installation.
-
-```bash
-terraform version
-```
-
-Expected result:
-
-```text
-Terraform v1.15.6
-```
----
-
-## Step 3: Return to the Cloud9 IDE Home Directory
+## Step 1: Return to the Cloud9 IDE Home Directory
 
 Before cloning the Fortinet repository, return to your CloudShell home directory.
 
@@ -165,7 +58,7 @@ cd ~
 ```
 
 
-## Step 4: Clone the Fortinet AWS Terraform Modules Repository
+## Step 2: Clone the Fortinet AWS Terraform Modules Repository
 
 Clone the Fortinet AWS Terraform modules repository.
 
@@ -181,7 +74,7 @@ cd terraform-aws-cloud-modules
 
 ---
 
-## Step 5: Go to the Auto Scaling Group Example Directory
+## Step 3: Go to the Auto Scaling Group Example Directory
 
 The Fortinet documentation uses multiple example directories. Change into that example directory.
 
@@ -191,7 +84,7 @@ cd examples/spk_gwlb_asg_fgt_gwlb_igw
 
 ---
 
-## Step 6: Configure the Terraform Variables
+## Step 4: Configure the Terraform Variables
 
 Rename the file before editing it.
 

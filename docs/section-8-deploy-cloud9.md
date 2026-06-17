@@ -118,33 +118,84 @@ Wait for the Cloud9 IDE to load.
 
 ### 8.5 Install Terraform Manually if Needed
 
-If Terraform is not installed, run the following commands inside the Cloud9 terminal:
+Run the following commands in Cloud9 IDE:
 
-    sudo dnf update -y
-    sudo dnf install -y dnf-plugins-core unzip git jq
-    sudo dnf config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
-    sudo dnf install -y terraform
+```bash
+mkdir -p ~/bin ~/terraform-install
+cd ~/terraform-install
+```
 
-Verify Terraform installation:
+Set the Terraform version.
 
-    terraform version
+```bash
+TERRAFORM_VERSION="1.15.6"
+```
+
+Detect the CloudShell CPU architecture.
+
+```bash
+ARCH="$(uname -m)"
+
+if [ "$ARCH" = "x86_64" ]; then
+  TF_ARCH="amd64"
+elif [ "$ARCH" = "aarch64" ]; then
+  TF_ARCH="arm64"
+else
+  echo "Unsupported architecture: $ARCH"
+fi
+
+echo "Detected architecture: $ARCH"
+echo "Terraform package architecture: $TF_ARCH"
+```
+
+Download the Terraform binary package.
+
+```bash
+curl -fsSLO "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
+```
+
+Unzip Terraform.
+
+```bash
+unzip -o "terraform_${TERRAFORM_VERSION}_linux_${TF_ARCH}.zip"
+```
+
+Move Terraform to your CloudShell user binary directory.
+
+```bash
+mv terraform ~/bin/
+chmod +x ~/bin/terraform
+```
+
+Add `~/bin` to your `PATH`.
+
+```bash
+export PATH="$HOME/bin:$PATH"
+```
+
+Make the `PATH` update persistent for future CloudShell sessions.
+
+```bash
+grep -qxF 'export PATH="$HOME/bin:$PATH"' ~/.bashrc || echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc
+```
+
+Verify Terraform installation.
+
+```bash
+terraform version
+```
 
 Expected result:
 
-    Terraform version is displayed.
-
-Confirm AWS CLI access again:
-
-    aws sts get-caller-identity
-
-* * *
+```text
+Terraform v1.15.6
+```
 
 ### Checkpoint
 
 Before continuing, confirm that:
 
   * The Cloud9 environment is open.
-  * AWS CLI authentication works.
   * AWS region is `eu-central-1`.
   * Terraform is installed.
   * You are ready to run Terraform commands from Cloud9.
