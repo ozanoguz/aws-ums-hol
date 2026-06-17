@@ -128,7 +128,7 @@ nano terraform.tfvars
 | keypair_name | Name of the key pair | `"student01_KEY"` |
 
 ::: warning Important
-The section below is commented out as default. To proceed with FortiFlex licensing, remove all # each line. 
+The section below is commented out as default. To proceed with FortiFlex licensing, remove all # from each line. 
 :::
 
 | Variable | Description | Value |
