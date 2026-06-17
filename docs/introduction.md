@@ -14,10 +14,11 @@
 - [Section 5: Enable the SDN Connector for UMS](./section-5-enable-ums.md)
 - [Section 6: Creating a FortiFlex Connector](./section-6-fortiflex-connector.md)
 - [Section 7: Create an Auto Onboarding Rule](./section-7-auto-onboarding.md)
-- [Section 8: Deploying Auto Scaling Group using Terraform](./section-8-terraform-asg.md)
-- [Section 9: Validate Auto Onboarding](./section-9-validate-auto-onboarding.md)
-- [Section 10: Scaling the FortiGate Auto Scaling Group from FortiManager](./section-10-scale-asg.md)
-- [Section 11: Troubleshooting](./section-11-troubleshooting.md)
+- [Section 8: Deploying Cloud9 instance](./section-8-deploy-cloud9.md)
+- [Section 9: Deploying Auto Scaling Group using Terraform](./section-9-terraform-asg.md)
+- [Section 10: Validate Auto Onboarding](./section-10-validate-auto-onboarding.md)
+- [Section 11: Scaling the FortiGate Auto Scaling Group from FortiManager](./section-11-scale-asg.md)
+- [Section 12: Troubleshooting](./section-12-troubleshooting.md)
 - [References](./references.md)
 
 ---

@@ -31,10 +31,11 @@ export default defineConfig({
           { text: 'Section 5: Enable SDN Connector for UMS', link: '/section-5-enable-ums' },
           { text: 'Section 6: FortiFlex Connector', link: '/section-6-fortiflex-connector' },
           { text: 'Section 7: Auto Onboarding Rule', link: '/section-7-auto-onboarding' },
-          { text: 'Section 8: Terraform Auto Scaling Group', link: '/section-8-terraform-asg' },
-          { text: 'Section 9: Validate Auto Onboarding', link: '/section-9-validate-auto-onboarding' },
-          { text: 'Section 10: Scale Auto Scaling Group', link: '/section-10-scale-asg' },
-          { text: 'Section 11: Troubleshooting', link: '/section-11-troubleshooting' },
+          { text: 'Section 8: Deploying Cloud9 Instance', link: '/section-8-deploy-cloud9' },
+          { text: 'Section 9: Terraform Auto Scaling Group', link: '/section-9-terraform-asg' },
+          { text: 'Section 10: Validate Auto Onboarding', link: '/section-10-validate-auto-onboarding' },
+          { text: 'Section 11: Scale Auto Scaling Group', link: '/section-11-scale-asg' },
+          { text: 'Section 12: Troubleshooting', link: '/section-12-troubleshooting' },
           { text: 'References', link: '/references' }
         ]
       }

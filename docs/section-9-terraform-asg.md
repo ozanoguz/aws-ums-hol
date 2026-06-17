@@ -1,4 +1,4 @@
-# Section 8: Deploying Auto Scaling Group using Terraform
+# Section 9: Deploying Auto Scaling Group using Terraform
 
 In this section, you will use **AWS CloudShell** to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 

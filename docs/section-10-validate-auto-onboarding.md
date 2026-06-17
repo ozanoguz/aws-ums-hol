@@ -1,4 +1,4 @@
-# Section 9: Validate Auto Onboarding
+# Section 10: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
