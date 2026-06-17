@@ -116,25 +116,7 @@ Wait for the Cloud9 IDE to load.
 
 ---
 
-### 8.5 Verify Terraform
-
-Inside the Cloud9 terminal, verify whether Terraform is already installed.
-
-Run:
-
-    terraform version
-
-If Terraform version is displayed, continue to the checkpoint.
-
-Example:
-
-    Terraform v1.x.x
-
-If Terraform is not found, install it manually in the next step.
-
----
-
-### 8.7 Install Terraform Manually if Needed
+### 8.5 Install Terraform Manually if Needed
 
 If Terraform is not installed, run the following commands inside the Cloud9 terminal:
 
