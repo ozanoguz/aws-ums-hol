@@ -27,7 +27,7 @@ Confirm that you have completed the previous sections and have the following inf
 
 AWS region will be used:
 
-    eu-central-1
+    `eu-central-1`
 
 ---
 
