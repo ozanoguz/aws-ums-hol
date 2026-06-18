@@ -116,7 +116,7 @@ nano terraform.tfvars
 | keypair_name | Name of the key pair | `"student01_KEY"` |
 | fortiflex_refresh_token | Provided by instructor (Column K) | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
 | fortiflex_sn_list | Must be empty | `[""]` |
-| fortiflex_configid_list | Provided by instructor | `[80066]` |
+| fortiflex_configid_list | Provided by instructor (Column J) | `[80066]` |
 | user_conf_file_path | Must be empty | `""` |
 
 ::: warning The section above should look like this
@@ -134,7 +134,7 @@ fortiflex_configid_list = [80066]
 |---|---|---|
 | ip | FortiManager public IP address | `["x.x.x.x"]` |
 | sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| autoscale_psksecret | Pre-shared Key | `"fortinet"` |
+| autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
@@ -176,7 +176,7 @@ Example:
 |---|---|---|
 | ip | FortiManager public IP address | `["x.x.x.x"]` |
 | sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
-| autoscale_psksecret | Pre-shared Key | `"fortinet"` |
+| autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager login password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
