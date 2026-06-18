@@ -63,6 +63,7 @@ cd ~
 Clone the Fortinet AWS Terraform modules repository.
 
 ```bash
+cd environment
 git clone https://github.com/ozanoguz/aws-ums-hol.git
 ```
 ---
@@ -113,9 +114,6 @@ nano terraform.tfvars
 | license_type | FortiGate license type | `"byol"` |
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | keypair_name | Name of the key pair | `"student01_KEY"` |
-
-| Variable | Description | Value |
-|---|---|---|
 | fortiflex_refresh_token | Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
 | fortiflex_sn_list | Must be empty | `[""]` |
 | fortiflex_configid_list | Provided by instructor | `[80066]` |

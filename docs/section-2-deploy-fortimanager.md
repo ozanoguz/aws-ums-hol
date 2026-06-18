@@ -182,3 +182,19 @@ FortiManager Password: <Instance-ID>
 ::: danger Do Not Share
 Do not share FortiManager credentials.
 :::
+
+## 2.8 Enable FortiManager Management of VM Devices
+
+Before continuing with the UMS and Auto Scaling configuration, FortiManager must be configured to allow management of VM devices.
+
+This is required so FortiManager can manage the FortiGate-VM instances that will be deployed later by the Auto Scaling Group.
+
+Log in to the FortiManager CLI via GUI or SSHv2 session, and run the following commands:
+
+```shell
+config sys global
+    set fgfm-allow-vm enable
+end
+```
+
+After this command is applied, FortiManager is ready to manage FortiGate-VM devices created during the UMS Auto Scaling deployment.
