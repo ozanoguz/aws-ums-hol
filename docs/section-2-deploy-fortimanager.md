@@ -115,7 +115,7 @@ Suggested values:
 
 | Parameter | Value |
 |---|---|
-| Stack name | `student<number>-FortiManager` |
+| Stack name | `student<number>` |
 | VPCCIDR | Default |
 | PublicSubnet | Default |
 | PublicSubnetRouterIP | Default |

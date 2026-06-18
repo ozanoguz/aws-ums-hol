@@ -33,7 +33,7 @@ Confirm that you have completed the previous sections and have the following inf
 | FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
 | FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
 | FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
-| FortiFlex refresh token | Refresh token provided by the instructor | Instructor-provided |
+| FortiFlex refresh token | Refresh token provided by the instructor (Column K) | Instructor-provided |
 | FortiFlex serial number list | FortiFlex VM serial numbers provided by the instructor | Instructor-provided |
 | FortiFlex config ID list | FortiFlex config ID provided by the instructor | Instructor-provided |
 
@@ -114,7 +114,7 @@ nano terraform.tfvars
 | license_type | FortiGate license type | `"byol"` |
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
 | keypair_name | Name of the key pair | `"student01_KEY"` |
-| fortiflex_refresh_token | Provided by instructor | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
+| fortiflex_refresh_token | Provided by instructor (Column K) | Example: `"EZEuF7at0AujrqiyqyQ9expxw7ZIem"` |
 | fortiflex_sn_list | Must be empty | `[""]` |
 | fortiflex_configid_list | Provided by instructor | `[80066]` |
 | user_conf_file_path | Must be empty | `""` |
