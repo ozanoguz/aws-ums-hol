@@ -12,7 +12,7 @@ You will subscribe FortiGate and FortiManager BYOL AMI before deployment. The fo
 
 [AWS Marketplace : FortiManager BYOL AMI Listing](https://aws.amazon.com/marketplace/pp/prodview-l6rxheua5mbls?applicationId=AWSMPContessa&ref_=beagle&sr=0-1)
 
-[AWS Marketplace : FortiGate BYOL AMI Listing](https://aws.amazon.com/marketplace/pp/prodview-wory773oau6wq)
+[AWS Marketplace : FortiGate BYOL AMI Listing](https://aws.amazon.com/marketplace/pp?sku=dlaioq277sglm5mw1y1dmeuqa)
 
 Follow the steps below:
 
