@@ -1,5 +1,22 @@
 # Section 1: Log in to AWS
 
+## 1.0 Retrieve Lab Credentials
+
+If your instructor provides a credential portal URL, open it before logging in to AWS.
+
+Enter:
+
+| Field | Value |
+|---|---|
+| Lab access key | Provided by instructor |
+| Student ID | Your assigned ID, for example `student01` |
+
+After logging in to the portal, keep the credential page available for the rest of the lab. You will use the AWS account, IAM user, console password, access key, secret key, FortiCloud API, and FortiFlex values in later sections.
+
+::: warning Important
+Only use the credential row assigned to your Student ID. Do not share or photograph the credential page.
+:::
+
 ## 1.1 Open the AWS Console
 
 Open the AWS Console:

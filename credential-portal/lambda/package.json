@@ -1,0 +1,9 @@
+{
+  "name": "aws-ums-hol-credential-portal-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0"
+  }
+}

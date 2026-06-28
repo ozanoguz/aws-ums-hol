@@ -64,6 +64,9 @@ Before starting, confirm that you have received the following from your instruct
 
 | Item | Example / Notes |
 |---|---|
+| Credential portal URL | Provided by instructor |
+| Student ID | Example: `student01` |
+| Lab access key | Provided by instructor |
 | AWS Console URL | `https://console.aws.amazon.com/` |
 | AWS account ID | Provided by instructor |
 | AWS IAM username | Provided by instructor |
@@ -72,7 +75,14 @@ Before starting, confirm that you have received the following from your instruct
 | AWS secret access key | Provided by instructor |
 | AWS region | `eu-central-1` |
 | FortiManager URL | `https://<fortimanager-public-ip>` |
-| FortiFlex API user & password | Provided by instructor |
+| FortiFlex token ID | Provided by instructor |
+| FortiCloud API user & password | Provided by instructor |
+| FortiFlex program SN | Provided by instructor |
+| FortiFlex refresh token | Provided by instructor |
+
+::: tip Credential portal
+If your instructor provides a credential portal URL, open it and enter the shared lab access key and your assigned Student ID. The portal returns the AWS, FortiCloud, and FortiFlex values used throughout this lab.
+:::
 
 ::: warning Important
 Do not share your AWS access key, secret access key, FortiManager password, API key, or license files with other students.
