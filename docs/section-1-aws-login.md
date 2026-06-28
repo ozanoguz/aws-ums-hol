@@ -2,19 +2,53 @@
 
 ## 1.0 Retrieve Lab Credentials
 
-If your instructor provides a credential portal URL, open it before logging in to AWS.
+Before logging in to AWS, retrieve your assigned lab credentials from the credential portal.
 
-Enter:
+::: tip Credential Portal
+[Open the credential portal](https://72vuxjh2olzend7kyyfomnyl540srjxk.lambda-url.eu-central-1.on.aws/)
+:::
 
-| Field | Value |
+Your instructor will provide:
+
+| Item | Value |
 |---|---|
+| Credential portal URL | Provided by instructor |
 | Lab access key | Provided by instructor |
 | Student ID | Your assigned ID, for example `student01` |
+
+Open the credential portal URL in your browser.
+
+On the login page, enter:
+
+| Portal field | What to enter |
+|---|---|
+| Lab access key | The shared lab access key from your instructor |
+| Student ID | Your assigned Student ID, for example `student01` |
+
+Choose **Show my credentials**.
+
+After successful login, the portal displays your assigned credentials.
+
+You will use these portal fields during the lab:
+
+| Portal field | Used for |
+|---|---|
+| Student ID | Naming convention throughout the lab |
+| Account ID | AWS console account ID |
+| IAM Username | AWS console username |
+| Console password | AWS console password |
+| FortiFlexTokenID | FortiManager deployment license token |
+| Access Key ID | AWS SDN connector and Terraform |
+| Secret | AWS SDN connector and Terraform |
+| FortiCloud API User | FortiFlex connector |
+| FortiCloud API Password | FortiFlex connector |
+| Program SN | FortiFlex connector |
+| FortiFlex Refresh Token | Terraform Auto Scaling Group deployment |
 
 After logging in to the portal, keep the credential page available for the rest of the lab. You will use the AWS account, IAM user, console password, access key, secret key, FortiCloud API, and FortiFlex values in later sections.
 
 ::: warning Important
-Only use the credential row assigned to your Student ID. Do not share or photograph the credential page.
+Only use the credential row assigned to your Student ID. Do not share, photograph, or reuse the credential page outside this lab.
 :::
 
 ## 1.1 Open the AWS Console
