@@ -50,14 +50,6 @@ By the end of this lab, you will be able to:
 
 ---
 
-## Lab Topology
-
-```text
-... will be generated
-```
-
----
-
 ## Prerequisites
 
 Before starting, confirm that you have received the following from your instructor:
