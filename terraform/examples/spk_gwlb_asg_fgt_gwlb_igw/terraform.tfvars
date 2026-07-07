@@ -64,9 +64,9 @@ asgs = {
         sn = "<FMG-SN>"
         fgt_lic_mgmt = "fmg"
         ums = {
-          autoscale_psksecret = "<YOUR-OWN-VALUE>"
+          autoscale_psksecret = "Fortinet2026!" # e.g. "Fortinet2026!"
           hb_interval = 10
-          fmg_password = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!" Use only for PAYG type of FOS
+          fmg_password = "Fortinet2026!" # e.g. "Fortinet2026!" Use only for PAYG type of FOS
           api_key = "<FMG-API-KEY>"
         }
       }
@@ -86,7 +86,7 @@ asgs = {
         login_port = "secgrp1"
         internal_port = "secgrp1"
       }
-      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
+      user_conf_file_path = "" # e.g. "./fgt_config.conf"
       asg_max_size = 2
       asg_min_size = 0
       # asg_desired_capacity = 0
@@ -125,7 +125,7 @@ asgs = {
         ums = {
           autoscale_psksecret = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
           hb_interval = 10
-          fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
+          fmg_password = "<YOUR-OWN-VALUE>" # e.g.  "Fortinet2026!" Use only for PAYG type of FOS
           api_key = "<FMG-API-KEY>"
         }
       }
