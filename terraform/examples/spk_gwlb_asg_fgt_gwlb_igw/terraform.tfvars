@@ -4,7 +4,7 @@
 ## Root config
 access_key = "<YOUR-OWN-VALUE>"
 secret_key = "<YOUR-OWN-VALUE>"
-region     = "<YOUR-OWN-VALUE>" # e.g. "us-east-2"
+region     = "<YOUR-OWN-VALUE>" # e.g. "eu-central-1"
 
 ## VPC
 security_groups = {
@@ -31,7 +31,7 @@ security_groups = {
 
 vpc_cidr_block     = "<YOUR-OWN-VALUE>" # e.g. "10.0.0.0/16"
 spoke_cidr_list    = "<YOUR-OWN-VALUE>" # e.g. ["10.1.0.0/16"]
-availability_zones = "<YOUR-OWN-VALUE>" # e.g. ["us-east-2a", "us-east-2b"]
+availability_zones = "<YOUR-OWN-VALUE>" # e.g. ["eu-central-1a", "eu-central-1b"]
 
 ## Auto scale group
 # This example is a hybird license ASG
@@ -52,79 +52,12 @@ asgs = {
         login_port = "secgrp1"
         internal_port = "secgrp1"
       }
-      user_conf_file_path = "<YOUR--OWN-VALUE>" # e.g. "./fgt_config.conf"
-        # There are 3 options for providing user_conf data: 
-        # user_conf_content : FortiGate Configuration
-        # user_conf_file_path : The file path of configuration file
-        # user_conf_s3 : Map of AWS S3 
+      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
       asg_max_size = 1
       asg_min_size = 1
       # asg_desired_capacity = 1
       create_dynamodb_table = true
       dynamodb_table_name = "fgt_asg_track_table"
-      ## For UMS feature:
-      fmg_integration = {
-        ip = "<FMG-IP>"
-        sn = "<FMG-SN>"
-        fgt_lic_mgmt = "fmg"
-        ums = {
-          autoscale_psksecret = "<YOUR-OWN-VALUE>"
-          hb_interval = 10
-          fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
-          api_key = "<FMG-API-KEY>"
-        }
-      }
-      metadata_options = {
-        http_endpoint               = "enabled"
-        instance_metadata_tags      = "enabled"
-      }
-  },
-  fgt_on_demand_asg = {
-      template_name = "fgt_asg_template_on_demand"
-      fgt_version = "7.2"
-      license_type = "on_demand"
-      fgt_password = "<YOUR-OWN-VALUE>" # e.g."Fortinet@123"
-      keypair_name = "<YOUR-OWN-VALUE>" # e.g. Keypair should be created manually
-      enable_fgt_system_autoscale = true
-      intf_security_group = {
-        login_port = "secgrp1"
-        internal_port = "secgrp1"
-      }
-      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
-        # There are 3 options for providing user_conf data: 
-        # user_conf_content : FortiGate Configuration
-        # user_conf_file_path : The file path of configuration file
-        # user_conf_s3 : Map of AWS S3 
-      asg_max_size = 2
-      asg_min_size = 0
-      # asg_desired_capacity = 0
-      dynamodb_table_name = "fgt_asg_track_table"
-      scale_policies = {
-        byol_cpu_above_80 = {
-            policy_type               = "SimpleScaling"
-            adjustment_type           = "ChangeInCapacity"
-            cooldown                  = 60
-            scaling_adjustment        = 1
-        },
-        byol_cpu_below_30 = {
-            policy_type               = "SimpleScaling"
-            adjustment_type           = "ChangeInCapacity"
-            cooldown                  = 60
-            scaling_adjustment        = -1
-        },
-        ondemand_cpu_above_80 = {
-            policy_type               = "SimpleScaling"
-            adjustment_type           = "ChangeInCapacity"
-            cooldown                  = 60
-            scaling_adjustment        = 1
-        },
-        ondemand_cpu_below_30 = {
-            policy_type               = "SimpleScaling"
-            adjustment_type           = "ChangeInCapacity"
-            cooldown                  = 60
-            scaling_adjustment        = -1
-        }
-      }
       ## For UMS feature:
       fmg_integration = {
         ip = "<FMG-IP>"
@@ -224,65 +157,6 @@ cloudwatch_alarms = {
 
 ## Gateway Load Balancer
 enable_cross_zone_load_balancing = true
-
-## Spoke VPC
-# "<YOUR-OWN-VALUE>" # e.g. 
-# spk_vpc = {
-#   # This is optional. The module will create Transit Gateway Attachment under each subnet in argument 'subnet_ids', and also create route table to let all traffic (0.0.0.0/0) forward to the TGW attachment with the subnets associated.
-#   "spk_vpc1" = {
-#     vpc_id = "vpc-123456789",
-#     subnet_ids = [
-#       "subnet-123456789",
-#       "subnet-123456789"
-#     ]
-#   },
-#   route_tables = {
-#     igw_inbound = {
-#       routes = {
-#         az1 = {
-#           destination_cidr_block = "10.1.1.0/24"
-#           gwlbe_subnet_id        = "subnet-123456789"
-#         },
-#         az2 = {
-#           destination_cidr_block = "10.1.11.0/24"
-#           gwlbe_subnet_id        = "subnet-123456789"
-#         },
-#       },
-#       rt_association_gateways = ["igw-123456789"]
-#     },
-#     gwlbe_outbound = {
-#       routes = {
-#         az1 = {
-#           destination_cidr_block = "0.0.0.0/0"
-#           gateway_id        = "igw-123456789"
-#         }
-#       },
-#       rt_association_subnets = ["subnet-123456789", "subnet-123456789"]
-#     },
-#     pc_outbound_az1 = {
-#       routes = {
-#         az1 = {
-#           destination_cidr_block = "0.0.0.0/0"
-#           gwlbe_subnet_id        = "subnet-123456789"
-#         }
-#       },
-#       existing_rt = {
-#         id = "rtb-123456789"
-#       }
-#     },
-#     pc_outbound_az2 = {
-#       routes = {
-#         az1 = {
-#           destination_cidr_block = "0.0.0.0/0"
-#           gwlbe_subnet_id        = "subnet-123456789"
-#         }
-#       },
-#       existing_rt = {
-#         id = "rtb-123456789"
-#       }
-#     },
-#   }
-# }
 
 ## Tag
 general_tags = {
