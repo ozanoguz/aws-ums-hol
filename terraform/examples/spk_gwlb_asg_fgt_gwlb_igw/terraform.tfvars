@@ -39,9 +39,9 @@ fgt_intf_mode = "2-arm"
 asgs = {
   fgt_byol_asg = {
       template_name = "fgt_asg_template"
-      fgt_version = "7.2"
+      fgt_version = "7.6.7"
       license_type = "byol"
-      fgt_password = "<YOUR-OWN-VALUE>" # e.g. "Fortinet@123"
+      fgt_password = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
       keypair_name = "<YOUR-OWN-VALUE>" # Keypair should be created manually
       lic_folder_path = "./license"
       fortiflex_refresh_token = "<YOUR-OWN-VALUE>" # e.g. "NasmPa0CXpd56n6TzJjGqpqZm9Thyw"
@@ -52,7 +52,7 @@ asgs = {
         login_port = "secgrp1"
         internal_port = "secgrp1"
       }
-      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
+      user_conf_file_path = "" # e.g. "./fgt_config.conf"
       asg_max_size = 1
       asg_min_size = 1
       # asg_desired_capacity = 1
@@ -65,6 +65,65 @@ asgs = {
         fgt_lic_mgmt = "fmg"
         ums = {
           autoscale_psksecret = "<YOUR-OWN-VALUE>"
+          hb_interval = 10
+          fmg_password = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!" Use only for PAYG type of FOS
+          api_key = "<FMG-API-KEY>"
+        }
+      }
+      metadata_options = {
+        http_endpoint               = "enabled"
+        instance_metadata_tags      = "enabled"
+      }
+  },
+  fgt_on_demand_asg = {
+      template_name = "fgt_asg_template_on_demand"
+      fgt_version = "7.6.7"
+      license_type = "on_demand"
+      fgt_password = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
+      keypair_name = "<YOUR-OWN-VALUE>" # e.g. Keypair should be created manually
+      enable_fgt_system_autoscale = true
+      intf_security_group = {
+        login_port = "secgrp1"
+        internal_port = "secgrp1"
+      }
+      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
+      asg_max_size = 2
+      asg_min_size = 0
+      # asg_desired_capacity = 0
+      dynamodb_table_name = "fgt_asg_track_table"
+      scale_policies = {
+        byol_cpu_above_80 = {
+            policy_type               = "SimpleScaling"
+            adjustment_type           = "ChangeInCapacity"
+            cooldown                  = 60
+            scaling_adjustment        = 1
+        },
+        byol_cpu_below_30 = {
+            policy_type               = "SimpleScaling"
+            adjustment_type           = "ChangeInCapacity"
+            cooldown                  = 60
+            scaling_adjustment        = -1
+        },
+        ondemand_cpu_above_80 = {
+            policy_type               = "SimpleScaling"
+            adjustment_type           = "ChangeInCapacity"
+            cooldown                  = 60
+            scaling_adjustment        = 1
+        },
+        ondemand_cpu_below_30 = {
+            policy_type               = "SimpleScaling"
+            adjustment_type           = "ChangeInCapacity"
+            cooldown                  = 60
+            scaling_adjustment        = -1
+        }
+      }
+      ## For UMS feature:
+      fmg_integration = {
+        ip = "<FMG-IP>"
+        sn = "<FMG-SN>"
+        fgt_lic_mgmt = "fmg"
+        ums = {
+          autoscale_psksecret = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
           hb_interval = 10
           fmg_password = "<YOUR-OWN-VALUE>" # Use only for PAYG type of FOS
           api_key = "<FMG-API-KEY>"
