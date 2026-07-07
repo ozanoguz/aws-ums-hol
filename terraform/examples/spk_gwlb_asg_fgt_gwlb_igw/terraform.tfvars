@@ -52,7 +52,7 @@ asgs = {
         login_port = "secgrp1"
         internal_port = "secgrp1"
       }
-      user_conf_file_path = "<YOUR-OWN-VALUE>" # e.g. "./fgt_config.conf"
+      user_conf_file_path = "<YOUR--OWN-VALUE>" # e.g. "./fgt_config.conf"
         # There are 3 options for providing user_conf data: 
         # user_conf_content : FortiGate Configuration
         # user_conf_file_path : The file path of configuration file
