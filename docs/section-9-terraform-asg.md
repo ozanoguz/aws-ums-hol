@@ -110,7 +110,7 @@ nano terraform.tfvars
 | fgt_version | FortiGate version | Already configured for you `"7.6.7"` |
 | license_type | FortiGate license type | `"byol"` |
 | fgt_password | FortiGate password | Example syntax: `"Fortinet2026!"` |
-| keypair_name | Name of the key pair | Example syntax: `"student01_KEY"` |
+| keypair_name | Name of the key pair | Example syntax, use your key pair name: `"student01_KEY"` |
 | user_conf_file_path | Must be empty | Already configured for you `""` |
 
 ### FortiManager Configuration: `fmg_integration` Section
@@ -121,7 +121,7 @@ nano terraform.tfvars
 | sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager password | `"Fortinet2026!"` |
-| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| api_key | Created in Section 3 | Example syntax, use your API key: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ::: warning The section above should look like this
 
@@ -139,10 +139,6 @@ Example:
           api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
         }
       }
-      # metadata_options = {
-      #   http_endpoint               = "enabled"
-      #   instance_metadata_tags      = "enabled"
-      # }
 :::
 
 ### Auto Scale Group Section: `fgt_on_demand_asg` Configuration
@@ -152,7 +148,7 @@ Example:
 | fgt_version | FortiGate version | `"7.6.7"` |
 | license_type | FortiGate license type | `"on_demand"` |
 | fgt_password | FortiGate password | `"Fortinet2026!"` |
-| keypair_name | Name of the key pair | `"student01_KEY"` |
+| keypair_name | Name of the key pair | Example syntax, use your own key pair name: `"student01_KEY"` |
 | user_conf_file_path | Must be empty | `""` |
 
 ### FortiManager Configuration: `fmg_integration` Section
@@ -163,7 +159,7 @@ Example:
 | sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager login password | `"Fortinet2026!"` |
-| api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| api_key | Created in Section 3 | Example syntax, use your API key: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
 
 ::: warning The section above should look like this
 
@@ -181,12 +177,6 @@ Example:
           api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
         }
       }
-      # metadata_options = {
-      #   http_endpoint               = "enabled"
-      #   instance_metadata_tags      = "enabled"
-      # }
-        }
-}
 :::
 
 Save `"terraform.tfvars"` file using following key combination:
