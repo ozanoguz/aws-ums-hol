@@ -43,7 +43,6 @@ You will use these portal fields during the lab:
 | FortiCloud API User | FortiFlex connector |
 | FortiCloud API Password | FortiFlex connector |
 | Program SN | FortiFlex connector |
-| FortiFlex Refresh Token | Terraform Auto Scaling Group deployment |
 
 After logging in to the portal, keep the credential page available for the rest of the lab. You will use the AWS account, IAM user, console password, access key, secret key, FortiCloud API, and FortiFlex values in later sections.
 

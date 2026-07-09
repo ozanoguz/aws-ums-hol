@@ -69,8 +69,6 @@ Before starting, confirm that you have received the following from your instruct
 | FortiManager URL | `https://<fortimanager-public-ip>` |
 | FortiFlex token ID | Provided by instructor |
 | FortiCloud API user & password | Provided by instructor |
-| FortiFlex program SN | Provided by instructor |
-| FortiFlex refresh token | Provided by instructor |
 
 ::: tip Credential portal
 If your instructor provides a credential portal URL, open it and enter the shared lab access key and your assigned Student ID. The portal returns the AWS, FortiCloud, and FortiFlex values used throughout this lab.
