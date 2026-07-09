@@ -91,8 +91,8 @@ nano terraform.tfvars
 
 | Variable | Description | Value |
 |---|---|---|
-| access_key | Provided by instructor (Column F) | Example syntax, use your own value: `"AKIAZRGV3E5YVRVCNJ6T"` |
-| secret_key | Provided by instructor (Column G)| Example syntax, use your own value: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
+| access_key | Provided by instructor | Example syntax, use your own value: `"AKIAZRGV3E5YVRVCNJ6T"` |
+| secret_key | Provided by instructor | Example syntax, use your own value: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
 | region | AWS region name | `"eu-central-1"` |
 
 ### VPC Section (Suggested Values)
