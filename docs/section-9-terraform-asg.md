@@ -141,44 +141,6 @@ Example:
       }
 :::
 
-/### Auto Scale Group Section: `fgt_on_demand_asg` Configuration
-/
-/| Variable | Description | Value |
-/|---|---|---|
-/| fgt_version | FortiGate version | `"7.6.7"` |
-/| license_type | FortiGate license type | `"on_demand"` |
-/| fgt_password | FortiGate password | `"Fortinet2026!"` |
-/| keypair_name | Name of the key pair | Example syntax, use your own key pair name: `"student01_KEY"` |
-/| user_conf_file_path | Must be empty | `""` |
-/
-/### FortiManager Configuration: `fmg_integration` Section
-/
-/| Variable | Description | Value |
-/|---|---|---|
-/| ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
-/| sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
-/| autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
-/| fmg_password | FortiManager login password | `"Fortinet2026!"` |
-/| api_key | Created in Section 3 | Example syntax, use your API key: /`"15aszaem8ncqedisuwe79rbwizj1waub"` |
-/
-/::: warning The section above should look like this
-/
-/Example:
-/
-/      ## For UMS feature:
-/      fmg_integration = {
-/        ip = "35.157.138.234"
-/        sn = "FMVMELTM24000253"
-/        fgt_lic_mgmt = "fmg"
-/        ums = {
-/          autoscale_psksecret = "fortinet"
-/          hb_interval = 10
-/          fmg_password = "Fortinet2026!" # Use only for PAYG type of FOS
-/          api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
-/        }
-/      }
-/:::
-/
 Save `"terraform.tfvars"` file using following key combination:
 
 ```bash
