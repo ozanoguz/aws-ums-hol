@@ -117,8 +117,8 @@ nano terraform.tfvars
 
 | Variable | Description | Value |
 |---|---|---|
-| ip | FortiManager public IP address | `["x.x.x.x"]` |
-| sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
+| ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
+| sn | FortiManager Serial Number | `"FORTIMANAGER SERIAL NUMBER"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
@@ -159,8 +159,8 @@ Example:
 
 | Variable | Description | Value |
 |---|---|---|
-| ip | FortiManager public IP address | `["x.x.x.x"]` |
-| sn | FortiManager Serial Number | `"FMVMELTM24000254"` |
+| ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
+| sn | FortiManager Serial Number | `"FORTIMANAGER SERIAL NUMBER"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager login password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
