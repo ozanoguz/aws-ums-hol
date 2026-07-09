@@ -85,17 +85,17 @@ nano terraform.tfvars
 
 ---
 
-## Values to Configure Before Proceeding
+## Suggested Values to Configure Before Proceeding
 
-### Root Config Section
+### Root Config Section (Suggested Values)
 
 | Variable | Description | Value |
 |---|---|---|
 | access_key | Provided by instructor (Column F) | Example syntax: `"AKIAZRGV3E5YVRVCNJ6T"` |
 | secret_key | Provided by instructor (Column G)| Example syntax: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
-| region | AWS region name | `eu-central-1` |
+| region | AWS region name | `"eu-central-1"` |
 
-### VPC Section
+### VPC Section (Suggested Values)
 
 | Variable | Description | Value |
 |---|---|---|
@@ -107,18 +107,18 @@ nano terraform.tfvars
 
 | Variable | Description | Value |
 |---|---|---|
-| fgt_version | FortiGate version | `"7.6.7"` |
+| fgt_version | FortiGate version | Already configured for you `"7.6.7"` |
 | license_type | FortiGate license type | `"byol"` |
-| fgt_password | FortiGate password | `"Fortinet2026!"` |
-| keypair_name | Name of the key pair | `"student01_KEY"` |
-| user_conf_file_path | Must be empty | `""` |
+| fgt_password | FortiGate password | Example syntax: `"Fortinet2026!"` |
+| keypair_name | Name of the key pair | Example syntax: `"student01_KEY"` |
+| user_conf_file_path | Must be empty | Already configured for you `""` |
 
 ### FortiManager Configuration: `fmg_integration` Section
 
 | Variable | Description | Value |
 |---|---|---|
 | ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
-| sn | FortiManager Serial Number | `"FORTIMANAGER SERIAL NUMBER"` |
+| sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
@@ -160,7 +160,7 @@ Example:
 | Variable | Description | Value |
 |---|---|---|
 | ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
-| sn | FortiManager Serial Number | `"FORTIMANAGER SERIAL NUMBER"` |
+| sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager login password | `"Fortinet2026!"` |
 | api_key | Created in Section 3 | Example: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
