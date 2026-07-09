@@ -50,6 +50,12 @@ By the end of this lab, you will be able to:
 
 ---
 
+## Lab Topology
+
+![AWS UMS lab topology](/images/labtopology.png)
+
+---
+
 ## Prerequisites
 
 Before starting, confirm that you have received the following from your instructor:
