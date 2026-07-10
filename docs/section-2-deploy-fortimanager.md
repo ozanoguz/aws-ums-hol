@@ -123,7 +123,7 @@ Suggested values:
 | FMGInstanceType | Default |
 | FortiManager version | `7.6.x` |
 | LicenseType | `FortiFlex` |
-| FortiFlexTokenID | Provided by instructor (Column E) |
+| FortiFlexTokenID | Provided by instructor |
 | CIDRForFMGccess | Default |
 | Key pair | Created EC2 key pair in Section 1 |
 | EncryptVolumes | `false` |
