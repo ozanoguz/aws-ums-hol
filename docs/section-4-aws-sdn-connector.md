@@ -13,8 +13,8 @@ Follow the steps in the official Fortinet documentation below:
 | Name | `student<number>-AWS-SDN-Connector` |
 | Cloud Provider | AWS |
 | Authentication Type | Access Key |
-| Access Key ID | Provided by instructor (Column F)|
-| Secret Access Key | Provided by instructor (Column G) |
+| Access Key ID | Provided by instructor |
+| Secret Access Key | Provided by instructor |
 | Region | `eu-central-1` |
 
 ## Save and Test the Connector
