@@ -10,7 +10,7 @@ variables {
   name                    = "lab-demo"
   region                  = "eu-central-1"
   availability_zone       = "eu-central-1a"
-  allowed_client_cidrs    = ["203.0.113.10/32"]
+  allowed_client_cidrs    = ["0.0.0.0/0"]
   security_vpc_id         = "vpc-0123456789abcdef0"
   management_route_tables = { az1 = "rtb-0123456789abcdef0", az2 = "rtb-0123456789abcdef1" }
   management_cidrs        = ["10.0.0.0/24", "10.0.2.0/24"]
@@ -49,5 +49,17 @@ run "private_telemetry_and_inspected_http" {
   assert {
     condition     = length(aws_instance.web.user_data_base64) <= 21844
     error_message = "EC2 user data exceeds its limit."
+  }
+}
+
+run "public_http_private_syslog" {
+  command = plan
+  assert {
+    condition = alltrue([for rule in aws_security_group.web.ingress :
+      rule.protocol == "tcp" && rule.from_port == 80 && rule.to_port == 80
+      ? contains(rule.cidr_blocks, "0.0.0.0/0")
+      : rule.protocol == "udp" && rule.from_port == 5514 && rule.to_port == 5514 && toset(rule.cidr_blocks) == toset(var.management_cidrs)
+    ]) && length(aws_security_group.web.ingress) == 2
+    error_message = "HTTP must be public while syslog remains limited to management CIDRs."
   }
 }

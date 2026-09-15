@@ -1,7 +1,7 @@
 import { ssrRenderAttrs } from "vue/server-renderer";
 import { useSSRContext } from "vue";
 import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
-const __pageData = JSON.parse('{"title":"Section 13: Troubleshooting","description":"","frontmatter":{},"headers":[],"relativePath":"section-12-troubleshooting.md","filePath":"section-12-troubleshooting.md","lastUpdated":1781677882000}');
+const __pageData = JSON.parse('{"title":"Section 13: Troubleshooting","description":"","frontmatter":{},"headers":[],"relativePath":"section-12-troubleshooting.md","filePath":"section-12-troubleshooting.md","lastUpdated":1789496344000}');
 const _sfc_main = { name: "section-12-troubleshooting.md" };
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
   _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="section-13-troubleshooting" tabindex="-1">Section 13: Troubleshooting <a class="header-anchor" href="#section-13-troubleshooting" aria-label="Permalink to &quot;Section 13: Troubleshooting&quot;">​</a></h1><h2 id="useful-fortimanager-debug-commands" tabindex="-1">Useful FortiManager Debug Commands <a class="header-anchor" href="#useful-fortimanager-debug-commands" aria-label="Permalink to &quot;Useful FortiManager Debug Commands&quot;">​</a></h2><p>Use these only if instructed:</p><div class="language-text vp-adaptive-theme"><button title="Copy Code" class="copy"></button><span class="lang">text</span><pre class="shiki shiki-themes github-light github-dark vp-code" tabindex="0"><code><span class="line"><span>diag debug reset</span></span>

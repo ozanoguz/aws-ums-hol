@@ -2,7 +2,7 @@
 variable "web_demo" {
   description = "Set to an object to create the live HTTP/syslog demo. Null leaves the lab unchanged. Two-arm/root VDOM only."
   type = object({
-    allowed_client_cidrs    = list(string)
+    allowed_client_cidrs    = optional(list(string), ["0.0.0.0/0"])
     vpc_cidr                = optional(string, "10.50.0.0/16")
     management_route_tables = optional(map(string), {})
   })

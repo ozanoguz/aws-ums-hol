@@ -31,12 +31,11 @@ Find the GWLB node addresses in the AWS Console:
 |---|---|
 | `<GWLB_NODE_AZ1_PRIVATE_IP>` | Your GWLB node's private IP in AZ1 |
 | `<GWLB_NODE_AZ2_PRIVATE_IP>` | Your GWLB node's private IP in AZ2 |
-| `<YOUR_BROWSER_PUBLIC_IP>` | Your browser's public IPv4 address, matching the `/32` in `web_demo.allowed_client_cidrs` |
 | `10.50.0.10` | Keep for the default demo VPC; otherwise use the HTTP server's actual primary private IP |
 | `10.50.0.11` | Keep for the default demo VPC; otherwise use `collector_private_ip` from Terraform |
 
 ::: warning Replace values before running
-The angle-bracket values below are placeholders, not FortiManager variables. Replace every occurrence before saving the scripts. Check your browser's IP from your own computer, not from Cloud9, which has a different Internet source address. For multiple allowed client CIDRs, create additional address objects with the appropriate masks and add them to `Demo-Clients`.
+The angle-bracket values below are placeholders, not FortiManager variables. Replace every occurrence before saving the scripts. HTTP/80 is public (`0.0.0.0/0`) so browsers and the future cross-account monitoring service can reach each student deployment. The policy uses source `all`; no client-IP substitution is needed. Syslog remains private.
 :::
 
 ## Step 2: Create the GENEVE, Routes and Syslog CLI Template
@@ -141,7 +140,7 @@ Then go to **Device Manager → Scripts → Create New → Script**:
 | Type | **CLI Script** |
 | Run Script on | **Policy Package or ADOM Database** |
 
-Paste the following script after substituting the client IP and any changed demo addresses.
+Paste the following script after substituting any changed demo addresses.
 
 ::: warning Script target matters
 This is a FortiManager policy-package script, not a device provisioning template. Do not select **Device Database** or **Remote FortiGate Directly**. `config dynamic interface` belongs to the FortiManager ADOM database; a device-database execution fails with `object unrecognized` on line 1.
@@ -170,17 +169,6 @@ config firewall address
         set subnet 10.50.0.11 255.255.255.255
         set comment "Private collector; FortiGate local-out UDP 5514 through port2"
     next
-    edit "Demo-Client-1"
-        set type ipmask
-        set subnet <YOUR_BROWSER_PUBLIC_IP> 255.255.255.255
-        set comment "Must match web_demo.allowed_client_cidrs"
-    next
-end
-
-config firewall addrgrp
-    edit "Demo-Clients"
-        set member "Demo-Client-1"
-    next
 end
 
 config firewall policy
@@ -189,7 +177,7 @@ config firewall policy
         set status enable
         set srcintf "Demo-GENEVE-AZ1"
         set dstintf "Demo-GENEVE-AZ1"
-        set srcaddr "Demo-Clients"
+        set srcaddr "all"
         set dstaddr "Demo-Web"
         set action accept
         set schedule "always"
@@ -217,7 +205,7 @@ config firewall policy
         set status enable
         set srcintf "Demo-GENEVE-AZ2"
         set dstintf "Demo-GENEVE-AZ2"
-        set srcaddr "Demo-Clients"
+        set srcaddr "all"
         set dstaddr "Demo-Web"
         set action accept
         set schedule "always"
@@ -249,9 +237,9 @@ Refresh **Policy & Objects → Policy Packages → GWLB-Web-Demo** and verify:
 
 | ID | Policy | Purpose |
 |---|---|---|
-| 1010 | Demo-HTTP-AZ1 | Allowed client → web server, HTTP, AZ1 tunnel |
+| 1010 | Demo-HTTP-AZ1 | Any IPv4 client → web server, HTTP, AZ1 tunnel |
 | 1011 | Demo-Egress-AZ1 | Web server → Internet, HTTP/HTTPS, AZ1 tunnel |
-| 1020 | Demo-HTTP-AZ2 | Allowed client → web server, HTTP, AZ2 tunnel |
+| 1020 | Demo-HTTP-AZ2 | Any IPv4 client → web server, HTTP, AZ2 tunnel |
 | 1021 | Demo-Egress-AZ2 | Web server → Internet, HTTP/HTTPS, AZ2 tunnel |
 
 All four rules disable NAT and enable all-session and session-start logging. Default normalized-interface mappings resolve to `geneve-az1` and `geneve-az2` for future devices without per-device mapping work. Stateful replies do not need separate reverse rules. These are connectivity and logging policies; security profiles are not included.
@@ -291,9 +279,13 @@ show log syslogd2 setting
 
 Check the route to your FortiManager IP resolves through `port2`. If an installation fails, read its task error before proceeding to scale-out.
 
+### Updating an Existing Restricted Deployment
+
+Set `web_demo.allowed_client_cidrs = ["0.0.0.0/0"]` in Terraform, then review `terraform plan` and apply it. Re-run the updated policy-package script against `GWLB-Web-Demo` and install the package on existing FortiGates. Policies 1010 and 1020 now use source `all`; previously created `Demo-Clients` objects can remain unused. Keep the updated package assigned to the onboarding rule. Both the AWS security group and FortiGate policy must allow public HTTP.
+
 ## Step 6: Test the Web Page and Activity Lights
 
-Open the `url` from `terraform output -json web_demo` using **HTTP** from your allowed external browser IP. Click **Start traffic**. The destination is the web server's Elastic IP, not FortiManager's IP or a FortiGate management IP.
+Open the `url` from `terraform output -json web_demo` using **HTTP** from an external browser or monitoring service. Click **Start traffic**. The destination is the web server's Elastic IP, not FortiManager's IP or a FortiGate management IP.
 
 ```text
 Browser → web EIP / spoke IGW → GWLBE → GWLB → selected FortiGate
@@ -313,7 +305,7 @@ If outbound connectivity was unavailable before the policy installation, allow a
 | `config dynamic interface` / `object unrecognized` | Change the script target from Device Database to Policy Package or ADOM Database |
 | Policies in FortiManager but absent from FortiGate | Run Install Policy Package & Device Settings and inspect the task result |
 | Interface mapping/install error | Check default mappings and the Pre-VDOM Copy template's tunnel creation |
-| Page unreachable | Client CIDR in both Terraform and policy, GWLB health, GENEVE routes, policy installation and server bootstrap |
+| Page unreachable | Public HTTP/80 security-group rule, GWLB health, GENEVE routes, policy installation and server bootstrap |
 | Page loads but no blinking | Start traffic, check session-start logging and private syslog delivery |
 
 To confirm FortiGate sends telemetry:
@@ -328,6 +320,18 @@ Stop with Ctrl+C. Packets leaving `port2` prove transmission, not reception. On 
 sudo systemctl status gwlb-demo.service
 sudo journalctl -u gwlb-demo.service -n 100 --no-pager
 ```
+
+## Preparing for the Central Monitor
+
+The instructor's future monitoring service can poll each student's Terraform `url` from its backend. Keep a registry of student/account identifiers and URLs; public HTTP reachability does not automatically discover deployments in other accounts.
+
+| Endpoint | What it provides |
+|---|---|
+| `/healthz` | HTTP service responds; this alone does not prove every FortiGate is operational |
+| `/probe` | Creates a test connection and returns a probe ID |
+| `/api/state` | Discovery freshness/errors, ASG members, GWLB target health and recent probes with matched FortiGate IDs |
+
+For inspection evidence, request `/probe`, then poll `/api/state` for that probe ID to acquire a non-null `node`. Logs can arrive asynchronously. Use current target health and fresh discovery data alongside matched probes; do not mark all FortiGates operational from one HTTP 200 response. Poll from the monitoring backend, which avoids browser cross-origin restrictions. The central dashboard and account/URL registry will be implemented in the next phase.
 
 ## Checkpoint
 

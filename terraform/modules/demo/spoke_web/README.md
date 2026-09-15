@@ -8,7 +8,7 @@ Replace the existing lab tfvars placeholders, then add:
 
 ```hcl
 web_demo = {
-  allowed_client_cidrs = ["203.0.113.10/32"] # REPLACE with your browser's real public IP/CIDR
+  allowed_client_cidrs = ["0.0.0.0/0"] # Public HTTP for browsers and the cross-account monitor
   vpc_cidr            = "10.50.0.0/16"      # Must not overlap connected VPCs
 }
 ```
@@ -19,7 +19,7 @@ For existing management route tables, supply their IDs explicitly:
 
 ```hcl
 web_demo = {
-  allowed_client_cidrs = ["203.0.113.10/32"]
+  allowed_client_cidrs = ["0.0.0.0/0"]
   management_route_tables = { az1 = "rtb-REPLACE", az2 = "rtb-REPLACE" }
 }
 ```
@@ -35,11 +35,11 @@ terraform apply demo.plan
 terraform output -json web_demo
 ```
 
-Review the full plan. This is a restricted-access HTTP lab, without an application login; the page displays instance/serial information. Only specified browser CIDRs can connect. No SSH port is opened; use Systems Manager Session Manager after outbound connectivity works.
+Review the full plan. HTTP/80 is public for browser access and cross-account monitoring; the page and its read-only API display instance/serial information without an application login. Syslog remains private. No SSH port is opened; use Systems Manager Session Manager after outbound connectivity works.
 
 ## FortiManager setup
 
-1. Complete GENEVE provisioning and the inspection policy package. Permit the demo workload's required bootstrap/SSM/AWS outbound HTTPS traffic, and HTTP from your test clients. The default workload subnet is `10.50.0.0/24`.
+1. Complete GENEVE provisioning and the inspection policy package. Permit the demo workload's required bootstrap/SSM/AWS outbound HTTPS traffic, and HTTP from any IPv4 source. The default workload subnet is `10.50.0.0/24`.
 2. On the policy inspecting demo HTTP, enable all-session logging and **Log at Session Start** for fast events. Equivalent policy settings:
 
    ```text
@@ -56,7 +56,7 @@ Review the full plan. This is a restricted-access HTTP lab, without an applicati
 
 4. Create a regular CLI provisioning template using that output. Reserve **syslogd2** and static route **190**, or select unused alternatives. Add it to your UMS Template Group and auto-onboarding rule; assign/install it to existing FortiGates as well. It leaves syslogd, credentials, central-management and UMS settings untouched.
 5. Preserve management DHCP/default routing on `port2` and DHCP distance 6 on `port1`. The generated log destination is the **secondary collector IP**, normally `10.50.0.11`, not the HTTP server IP `10.50.0.10`. Management security groups/NACLs must permit outbound UDP 5514.
-6. Open the public `url` from an allowed browser **outside the spoke VPC** and click **Start traffic**. Internal access can bypass inspection. Scale out in FortiManager and wait for discovery, healthy GWLB status, and actual observed connections.
+6. Open the public `url` from an external browser **outside the spoke VPC** and click **Start traffic**. Internal access can bypass inspection. Scale out in FortiManager and wait for discovery, healthy GWLB status, and actual observed connections.
 
 ## What the lights mean
 
@@ -80,7 +80,7 @@ sudo systemctl status gwlb-demo-install.timer gwlb-demo.service
 ip -4 address
 ```
 
-- **Page unreachable:** check client CIDR, endpoint acceptance, GWLB health, policies, routes and bootstrap logs.
+- **Page unreachable:** check HTTP/80 ingress, endpoint acceptance, GWLB health, policies, routes and bootstrap logs.
 - **AWS inventory unavailable:** check instance role, DNS/HTTPS egress and server logs. Old inventory is marked stale.
 - **Cards but no lights:** check policy logging, syslogd2, peering routes, clocks and UDP 5514. Idle is not the same as unhealthy.
 - **Only one node lights:** check fresh connections, 5-tuple stickiness and cross-zone eligibility. Hashing does not guarantee even distribution.

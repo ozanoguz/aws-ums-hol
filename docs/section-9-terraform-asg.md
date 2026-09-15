@@ -157,12 +157,12 @@ Before applying, configure the existing `web_demo` block in `terraform.tfvars` (
 
 ```hcl
 web_demo = {
-  allowed_client_cidrs = ["<YOUR_BROWSER_PUBLIC_IP>/32"]
+  allowed_client_cidrs = ["0.0.0.0/0"]
   vpc_cidr             = "10.50.0.0/16"
 }
 ```
 
-Replace the placeholder with the public IPv4 address of the computer running your browser. Do not use Cloud9's IP. Keep the same client address for the FortiManager policy in Section 10. This creates an additional demo spoke VPC, web server/EIP and private syslog collector. Keep this CIDR non-overlapping with the other lab VPCs.
+HTTP/80 is public so a central monitoring service can check deployments across student accounts. The FortiManager inbound HTTP policies in Section 10 also allow source `all`. Syslog stays private. This creates an additional demo spoke VPC, web server/EIP and private syslog collector. Keep this CIDR non-overlapping with the other lab VPCs.
 
 For this UMS lab, keep `fgt_intf_mode = "2-arm"` and set the legacy `enable_fgt_system_autoscale = false` inside the ASG configuration object; retain the `fmg_integration.ums` block. FortiManager handles UMS scaling.
 

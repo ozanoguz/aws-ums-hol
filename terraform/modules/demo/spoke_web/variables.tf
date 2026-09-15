@@ -16,10 +16,12 @@ variable "vpc_cidr" {
   }
 }
 variable "allowed_client_cidrs" {
-  type = list(string)
+  description = "IPv4 sources allowed to reach HTTP/80; public access supports the cross-account lab monitor."
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
   validation {
-    condition     = length(var.allowed_client_cidrs) > 0 && alltrue([for c in var.allowed_client_cidrs : can(cidrnetmask(c)) && c != "0.0.0.0/0"])
-    error_message = "Provide specific IPv4 client CIDRs, such as your public IP /32; do not expose this lab to the whole Internet."
+    condition     = length(var.allowed_client_cidrs) > 0 && alltrue([for c in var.allowed_client_cidrs : can(cidrnetmask(c))])
+    error_message = "Provide at least one valid IPv4 CIDR; use 0.0.0.0/0 for public HTTP access."
   }
 }
 variable "security_vpc_id" {
