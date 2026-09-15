@@ -1,5 +1,7 @@
 # Lab Guide: Deploy and Configure FortiManager UMS on AWS
 
+The maintained, step-by-step guide is in [docs/introduction.md](docs/introduction.md). After Terraform deployment, follow [Section 10: FortiManager Configuration](docs/section-10-fortimanager-configuration.md) for the GENEVE template, policy-package script and onboarding assignments.
+
 ## Quick Navigation
 
 * [Overview](#overview)

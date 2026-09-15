@@ -89,3 +89,7 @@ Security VPC with FortiGate ASG act as a shadow service. ALL internal and extern
 | <a name="output_secvpc-output"></a> [secvpc-output](#output\_secvpc-output) | n/a |
 | <a name="output_spkvpc_rt"></a> [spkvpc\_rt](#output\_spkvpc\_rt) | n/a |
 | <a name="output_subnets"></a> [subnets](#output\_subnets) | n/a |
+
+## Optional live web traffic demo
+
+Set `web_demo` to deploy an additional spoke web server with ASG discovery and activity lights driven by actual FortiGate syslog correlation. See [the demo setup guide](../../modules/demo/spoke_web/README.md) for tfvars, FortiManager logging setup, and network requirements. Disabled by default; no existing ASG capacity settings are changed.

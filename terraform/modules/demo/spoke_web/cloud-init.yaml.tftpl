@@ -1,0 +1,75 @@
+#cloud-config
+write_files:
+  - path: /opt/gwlb-demo/server.py
+    permissions: '0644'
+    encoding: b64
+    content: ${server}
+  - path: /opt/gwlb-demo/index.html
+    permissions: '0644'
+    encoding: b64
+    content: ${page}
+  - path: /etc/gwlb-demo.json
+    permissions: '0644'
+    encoding: b64
+    content: ${config}
+  - path: /usr/local/sbin/install-gwlb-demo
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      dnf install -y python3 python3-pip
+      test -d /opt/gwlb-demo/venv || python3 -m venv /opt/gwlb-demo/venv
+      /opt/gwlb-demo/venv/bin/pip install 'boto3==1.40.0'
+      touch /opt/gwlb-demo/.installed
+      systemctl start gwlb-demo.service
+  - path: /etc/systemd/system/gwlb-demo-install.service
+    content: |
+      [Unit]
+      Description=Install demo dependencies after inspection egress becomes available
+      Wants=network-online.target
+      After=network-online.target
+      ConditionPathExists=!/opt/gwlb-demo/.installed
+      [Service]
+      Type=oneshot
+      ExecStart=/usr/local/sbin/install-gwlb-demo
+      TimeoutStartSec=180
+  - path: /etc/systemd/system/gwlb-demo-install.timer
+    content: |
+      [Unit]
+      Description=Retry demo bootstrap while FortiGates are being provisioned
+      [Timer]
+      OnBootSec=15
+      OnUnitInactiveSec=60
+      [Install]
+      WantedBy=timers.target
+  - path: /usr/local/sbin/configure-demo-ip
+    permissions: '0755'
+    content: |
+      #!/bin/bash
+      set -euo pipefail
+      device=$(ip -o route show default | head -1 | cut -d ' ' -f5)
+      ip address replace ${collector}/${prefix} dev "$device"
+  - path: /etc/systemd/system/gwlb-demo.service
+    content: |
+      [Unit]
+      Description=FortiGate traffic lab
+      After=network-online.target
+      ConditionPathExists=/opt/gwlb-demo/.installed
+      [Service]
+      DynamicUser=yes
+      ExecStartPre=+/usr/local/sbin/configure-demo-ip
+      ExecStart=/opt/gwlb-demo/venv/bin/python /opt/gwlb-demo/server.py
+      Restart=always
+      RestartSec=5
+      AmbientCapabilities=CAP_NET_BIND_SERVICE
+      CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+      NoNewPrivileges=true
+      ProtectSystem=strict
+      ProtectHome=true
+      PrivateTmp=true
+      [Install]
+      WantedBy=multi-user.target
+runcmd:
+  - systemctl daemon-reload
+  - systemctl enable gwlb-demo.service
+  - systemctl enable --now gwlb-demo-install.timer

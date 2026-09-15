@@ -1,4 +1,4 @@
-# Section 12: Troubleshooting
+# Section 13: Troubleshooting
 
 ## Useful FortiManager Debug Commands
 

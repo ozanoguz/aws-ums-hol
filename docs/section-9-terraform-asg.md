@@ -151,7 +151,24 @@ Command + X (for Mac users)
 
 ---
 
-## Step 7: Initialize Terraform
+## Step 5: Enable the Web Traffic Demo
+
+Before applying, configure the existing `web_demo` block in `terraform.tfvars` (add it only if absent):
+
+```hcl
+web_demo = {
+  allowed_client_cidrs = ["<YOUR_BROWSER_PUBLIC_IP>/32"]
+  vpc_cidr             = "10.50.0.0/16"
+}
+```
+
+Replace the placeholder with the public IPv4 address of the computer running your browser. Do not use Cloud9's IP. Keep the same client address for the FortiManager policy in Section 10. This creates an additional demo spoke VPC, web server/EIP and private syslog collector. Keep this CIDR non-overlapping with the other lab VPCs.
+
+For this UMS lab, keep `fgt_intf_mode = "2-arm"` and set the legacy `enable_fgt_system_autoscale = false` inside the ASG configuration object; retain the `fmg_integration.ums` block. FortiManager handles UMS scaling.
+
+---
+
+## Step 6: Initialize Terraform
 
 Run Terraform initialization from the example directory.
 
@@ -163,7 +180,7 @@ Confirm that Terraform downloads the required providers and modules successfully
 
 ---
 
-## Step 8: Review the Terraform Plan
+## Step 7: Review the Terraform Plan
 
 Generate and review the Terraform execution plan.
 
@@ -175,7 +192,7 @@ Review the resources that Terraform will create or modify.
 
 ---
 
-## Step 9: Apply the Terraform Configuration
+## Step 8: Apply the Terraform Configuration
 
 Deploy the infrastructure.
 
@@ -187,7 +204,7 @@ Terraform will create or update the AWS resources.
 
 ---
 
-## Step 10: Verify the Deployment
+## Step 9: Verify the Deployment
 
 After Terraform completes, verify the following:
 
@@ -196,3 +213,8 @@ After Terraform completes, verify the following:
 3. FortiGate-VM instance can reach FortiManager.
 4. FortiGate-VM instance registered with FortiManager.
 5. The FortiManager UMS group receives the expected instance information.
+
+
+## Next: Configure Inspection and the Web Demo
+
+Registration alone does not configure GENEVE inspection or the demo firewall policies. Continue to [Section 10: Configure FortiManager Templates and the Policy Package](./section-10-fortimanager-configuration.md). That section provides both scripts and installs them on existing devices before enabling them for future onboarding.

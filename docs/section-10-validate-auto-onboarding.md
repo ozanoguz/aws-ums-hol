@@ -1,4 +1,4 @@
-# Section 10: Validate Auto Onboarding
+# Section 11: Validate Auto Onboarding
 
 1. In FortiManager, go to:
 
@@ -22,3 +22,7 @@ Confirm the following:
 - Devices are placed into the expected ADOM and device group.
 - Licensing is assigned successfully.
 - FortiManager communication with FortiGate is working.
+
+- The device has the `GWLB-Web-Provisioning` template and `GWLB-Web-Demo` package from [Section 10](./section-10-fortimanager-configuration.md).
+- Configuration installation succeeded, including the four demo policies.
+- A newly scaled-out, healthy and eligible member appears in the dashboard and produces activity after matched test traffic.

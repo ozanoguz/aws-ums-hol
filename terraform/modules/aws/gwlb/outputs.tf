@@ -19,3 +19,7 @@ output "gwlb_endps" {
     ep_name => ep_value.id
   }
 }
+output "endpoint_service_name" {
+  description = "GWLB endpoint service name for additional spoke workloads."
+  value       = local.gwlb_ep_service == null ? null : local.gwlb_ep_service.service_name
+}

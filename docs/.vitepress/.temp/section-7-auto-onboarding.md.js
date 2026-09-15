@@ -1,0 +1,19 @@
+import { ssrRenderAttrs } from "vue/server-renderer";
+import { useSSRContext } from "vue";
+import { _ as _export_sfc } from "./plugin-vue_export-helper.1tPrXgE0.js";
+const __pageData = JSON.parse('{"title":"Section 7: Create an Auto Onboarding Rule","description":"","frontmatter":{},"headers":[],"relativePath":"section-7-auto-onboarding.md","filePath":"section-7-auto-onboarding.md","lastUpdated":1781646810000}');
+const _sfc_main = { name: "section-7-auto-onboarding.md" };
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs, $props, $setup, $data, $options) {
+  _push(`<div${ssrRenderAttrs(_attrs)}><h1 id="section-7-create-an-auto-onboarding-rule" tabindex="-1">Section 7: Create an Auto Onboarding Rule <a class="header-anchor" href="#section-7-create-an-auto-onboarding-rule" aria-label="Permalink to &quot;Section 7: Create an Auto Onboarding Rule&quot;">​</a></h1><p>Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.</p><p>Follow the steps in the official Fortinet documentation below:</p><p><a href="https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005" target="_blank" rel="noreferrer">Create an Auto Onboarding Rule</a></p><h2 id="suggested-values" tabindex="-1">Suggested Values <a class="header-anchor" href="#suggested-values" aria-label="Permalink to &quot;Suggested Values&quot;">​</a></h2><table tabindex="0"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Type</td><td>Administrator</td></tr><tr><td>Administrator</td><td>API administrator created earlier</td></tr><tr><td>Platform</td><td>All platforms</td></tr><tr><td>Device Name Prefix</td><td><code>student&lt;number&gt;-fgt</code></td></tr></tbody></table><h2 id="configure-the-onboarding-action" tabindex="-1">Configure the Onboarding Action <a class="header-anchor" href="#configure-the-onboarding-action" aria-label="Permalink to &quot;Configure the Onboarding Action&quot;">​</a></h2><p>Suggested values:</p><table tabindex="0"><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>ADOM</td><td><code>root</code></td></tr><tr><td>Device Group</td><td><code>Managed FortiGate</code></td></tr><tr><td>Install License</td><td>Flex VM</td></tr><tr><td>Install Configuration</td><td>Manual Configuration</td></tr><tr><td>Policy Package</td><td>default</td></tr><tr><td>Maximum Device Number</td><td>4</td></tr></tbody></table></div>`);
+}
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("section-7-auto-onboarding.md");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+const section7AutoOnboarding = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
+export {
+  __pageData,
+  section7AutoOnboarding as default
+};

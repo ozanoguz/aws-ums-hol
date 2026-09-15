@@ -33,9 +33,10 @@ export default defineConfig({
           { text: 'Section 7: Auto Onboarding Rule', link: '/section-7-auto-onboarding' },
           { text: 'Section 8: Deploying Cloud9 Instance', link: '/section-8-deploy-cloud9' },
           { text: 'Section 9: Terraform Auto Scaling Group', link: '/section-9-terraform-asg' },
-          { text: 'Section 10: Validate Auto Onboarding', link: '/section-10-validate-auto-onboarding' },
-          { text: 'Section 11: Scale Auto Scaling Group', link: '/section-11-scale-asg' },
-          { text: 'Section 12: Troubleshooting', link: '/section-12-troubleshooting' },
+          { text: 'Section 10: FortiManager Configuration', link: '/section-10-fortimanager-configuration' },
+          { text: 'Section 11: Validate Auto Onboarding', link: '/section-10-validate-auto-onboarding' },
+          { text: 'Section 12: Scale Auto Scaling Group', link: '/section-11-scale-asg' },
+          { text: 'Section 13: Troubleshooting', link: '/section-12-troubleshooting' },
           { text: 'References', link: '/references' }
         ]
       }
