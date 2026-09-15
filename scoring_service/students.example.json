@@ -1,0 +1,5 @@
+{"students": [
+  {"id": "student00", "name": "Student 00", "account_id": "594379811663", "url": "http://3.121.192.41"},
+  {"id": "student01", "name": "Student 01", "account_id": "111111111111", "url": "http://203.0.113.10"},
+  {"id": "student02", "name": "Student 02", "account_id": "222222222222", "url": "http://203.0.113.20"}
+]}

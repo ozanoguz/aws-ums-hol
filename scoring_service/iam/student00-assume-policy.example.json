@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "sts:AssumeRole",
+      "Resource": [
+        "arn:aws:iam::365808682226:role/UMSScoringReadOnly",
+        "arn:aws:iam::790869470612:role/UMSScoringReadOnly",
+        "arn:aws:iam::233147340238:role/UMSScoringReadOnly",
+        "arn:aws:iam::156387786381:role/UMSScoringReadOnly",
+        "arn:aws:iam::515386851991:role/UMSScoringReadOnly",
+        "arn:aws:iam::131811870954:role/UMSScoringReadOnly",
+        "arn:aws:iam::349901144557:role/UMSScoringReadOnly",
+        "arn:aws:iam::971726136093:role/UMSScoringReadOnly",
+        "arn:aws:iam::496344732845:role/UMSScoringReadOnly",
+        "arn:aws:iam::573097031087:role/UMSScoringReadOnly",
+        "arn:aws:iam::537777148249:role/UMSScoringReadOnly",
+        "arn:aws:iam::297755458926:role/UMSScoringReadOnly",
+        "arn:aws:iam::369314739297:role/UMSScoringReadOnly",
+        "arn:aws:iam::036245824663:role/UMSScoringReadOnly",
+        "arn:aws:iam::655430985585:role/UMSScoringReadOnly",
+        "arn:aws:iam::205121849406:role/UMSScoringReadOnly",
+        "arn:aws:iam::319290658121:role/UMSScoringReadOnly",
+        "arn:aws:iam::756491554733:role/UMSScoringReadOnly",
+        "arn:aws:iam::262072276602:role/UMSScoringReadOnly",
+        "arn:aws:iam::828767190954:role/UMSScoringReadOnly",
+        "arn:aws:iam::079333926868:role/UMSScoringReadOnly",
+        "arn:aws:iam::493559506997:role/UMSScoringReadOnly",
+        "arn:aws:iam::115562376050:role/UMSScoringReadOnly",
+        "arn:aws:iam::699937976535:role/UMSScoringReadOnly",
+        "arn:aws:iam::861514617772:role/UMSScoringReadOnly",
+        "arn:aws:iam::036590742296:role/UMSScoringReadOnly",
+        "arn:aws:iam::632210073566:role/UMSScoringReadOnly",
+        "arn:aws:iam::241016350765:role/UMSScoringReadOnly",
+        "arn:aws:iam::225358528534:role/UMSScoringReadOnly",
+        "arn:aws:iam::575169580492:role/UMSScoringReadOnly",
+        "arn:aws:iam::070061941134:role/UMSScoringReadOnly",
+        "arn:aws:iam::349081048365:role/UMSScoringReadOnly",
+        "arn:aws:iam::689691061144:role/UMSScoringReadOnly",
+        "arn:aws:iam::328903029180:role/UMSScoringReadOnly"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[Unit]
+Description=FortiManager UMS instructor scoring dashboard
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=scoring
+WorkingDirectory=/opt/aws-ums-hol/scoring_service
+ExecStart=/opt/aws-ums-hol/scoring_service/.venv/bin/python server.py --aws-config /opt/aws-ums-hol/scoring_service/accounts.json
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

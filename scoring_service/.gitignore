@@ -1,0 +1,5 @@
+students.json
+__pycache__/
+tests/__pycache__/
+accounts.json
+.venv/
