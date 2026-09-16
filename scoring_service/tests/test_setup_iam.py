@@ -18,8 +18,8 @@ class SetupTests(unittest.TestCase):
             script.write_text(source.read_text())
             result=subprocess.run([sys.executable,'-I',str(script)],cwd=folder,capture_output=True,text=True,check=True)
         desired=json.loads(result.stdout.split('\nPREVIEW ONLY:')[0])
-        self.assertEqual(len(desired['students']),34)
-        self.assertEqual(desired['students'][13]['account_id'],'036245824663')
+        self.assertEqual(len(desired['students']),35)
+        self.assertEqual(desired['students'][14]['account_id'],'036245824663')
         self.assertEqual(desired['host_account'],'594379811663')
 
     def test_minimal_policies(self):
@@ -27,8 +27,9 @@ class SetupTests(unittest.TestCase):
         self.assertEqual(p['host_permissions']['Statement'][0]['Resource'],['arn:aws:iam::036245824663:role/UMSScoringReadOnly'])
         self.assertEqual(p['student_permissions']['Statement'][0]['Action'],'ec2:DescribeAddresses')
         self.assertEqual(p['student_trust']['Statement'][0]['Principal'],{'AWS':f'arn:aws:iam::{HOST_ACCOUNT}:role/{HOST_ROLE}'})
-    def test_host_not_student(self):
-        with self.assertRaises(ValueError):plan([{'account_id':HOST_ACCOUNT}])
+    def test_host_uses_direct_read_only_access(self):
+        p=plan([{'account_id':HOST_ACCOUNT}])
+        self.assertEqual(p['host_permissions']['Statement'],[{'Effect':'Allow','Action':'ec2:DescribeAddresses','Resource':'*'}])
     def test_refuses_unowned_role(self):
         iam=MagicMock();iam.get_role.return_value={'Role':{'Tags':[]}}
         with self.assertRaises(RuntimeError):ensure_role(iam,'role',{}, {})

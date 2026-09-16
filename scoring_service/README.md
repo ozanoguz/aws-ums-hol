@@ -52,7 +52,7 @@ python3 -m venv .venv
 cp accounts.example.json accounts.json
 ```
 
-Edit `accounts.json`: keep `role_name` as `UMSScoringReadOnly` after running the setup below, keep region `eu-central-1`, and enter the student account IDs and display names. Exclude student00 unless it also contains a student demo. Optional top-level `external_id` is supported if required by the role trust policy. Do not put AWS keys in this file.
+Edit `accounts.json`: keep `role_name` as `UMSScoringReadOnly` after running the setup below, keep region `eu-central-1`, and enter the student account IDs and display names. student00 is included as the instructor demonstration account. Optional top-level `external_id` is supported if required by the role trust policy. Do not put AWS keys in this file.
 
 ```bash
 .venv/bin/python server.py --aws-config accounts.json
@@ -60,7 +60,7 @@ Edit `accounts.json`: keep `role_name` as `UMSScoringReadOnly` after running the
 
 The standard AWS credential chain supplies student00's credentials (EC2 instance profile in deployment, or `AWS_PROFILE` for local testing). The service calls STS AssumeRole and `ec2:DescribeAddresses` in each listed account every 60 seconds, matching EIPs tagged `Name = *gwlb-demo-web`. Only associated EIPs are eligible. HTTP checks continue every polling round once a URL is known. Temporary STS credentials are obtained for each discovery and never saved to disk or exposed in the dashboard.
 
-Each account appears before deployment. Missing EIPs show **Awaiting URL**, access failures show the AWS error code, and new EIPs are discovered automatically without restarting. Multiple matching EIPs are treated as ambiguous, not arbitrarily selected. In that case add `"eip_name": "<exact Name tag>"` to the account entry. When a deployment's URL changes, its current evidence and session milestones reset. Temporary discovery failures preserve history but suspend current success indications until discovery recovers. Removing/replacing URLs prevents continued polling of a known-stale EIP after a discovery result says it is gone.
+Student00 uses the scoring instance role directly for EC2 address discovery; other accounts use the read-only cross-account role. Each account appears before deployment. Missing EIPs show **Awaiting URL**, access failures show the AWS error code, and new EIPs are discovered automatically without restarting. Multiple matching EIPs are treated as ambiguous, not arbitrarily selected. In that case add `"eip_name": "<exact Name tag>"` to the account entry. When a deployment's URL changes, its current evidence and session milestones reset. Temporary discovery failures preserve history but suspend current success indications until discovery recovers. Removing/replacing URLs prevents continued polling of a known-stale EIP after a discovery result says it is gone.
 
 ### IAM requirements
 
@@ -170,3 +170,16 @@ To update the account list after installation, edit `/opt/ums-scoring/accounts.j
 The old `.service.example` is retained for manual installations. Use the installer above for new installations rather than enabling both units. Service installation does not create EC2 resources or modify student IAM roles.
 
 Additional frontend check: `node tests/test_dashboard.cjs` (Node is needed for development testing only).
+
+
+## Classroom grid and student00 demonstration
+
+The control room now uses a compact five-column grid on desktop displays. All 35 accounts fit in a typical 1280×720 or 1920×1080 browser viewport at normal zoom. Narrow/mobile windows wrap into fewer columns and may still scroll. Use browser full-screen mode for projection. The account dropdown still supports a saved subset; click **All** after upgrading if student00 is hidden by an older saved selection.
+
+student00 is included and its tile is highlighted. Deploy the same student demo stack there to provide its own FortiGate/web-service demonstration; adding the account does not create that demo. Its demo EIP is discovered from the same `*gwlb-demo-web` Name tag, not from the scoring EC2 EIP.
+
+Upgrade steps:
+
+1. In training-admin CloudShell, run the updated standalone `ums_iam.py` preview, then `python3 ums_iam.py --execute`. This adds `ec2:DescribeAddresses` to the existing student00 scoring instance role and retains cross-account access. No extra read-only role in student00 is required.
+2. Copy the updated scoring folder, including the 35-account `accounts.json`, to the scoring EC2 host and rerun the installer with the same listen-host/port options as before.
+3. Reload the page and choose **All**. Student00 remains awaiting URL until its demo EIP is deployed; IAM changes may take time to propagate.

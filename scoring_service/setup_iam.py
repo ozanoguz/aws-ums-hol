@@ -12,7 +12,7 @@ HOST_ROLE = 'UMSScoringInstanceRole'
 READ_ROLE = 'UMSScoringReadOnly'
 OWNER = {'Key': 'ManagedBy', 'Value': 'UMSScoringSetup'}
 
-DEFAULT_ACCOUNTS = [{'account_id': '365808682226', 'name': 'student01'}, {'account_id': '790869470612', 'name': 'student02'}, {'account_id': '233147340238', 'name': 'student03'}, {'account_id': '156387786381', 'name': 'student04'}, {'account_id': '515386851991', 'name': 'student05'}, {'account_id': '131811870954', 'name': 'student06'}, {'account_id': '349901144557', 'name': 'student07'}, {'account_id': '971726136093', 'name': 'student08'}, {'account_id': '496344732845', 'name': 'student09'}, {'account_id': '573097031087', 'name': 'student10'}, {'account_id': '537777148249', 'name': 'student11'}, {'account_id': '297755458926', 'name': 'student12'}, {'account_id': '369314739297', 'name': 'student13'}, {'account_id': '036245824663', 'name': 'student14'}, {'account_id': '655430985585', 'name': 'student15'}, {'account_id': '205121849406', 'name': 'student16'}, {'account_id': '319290658121', 'name': 'student17'}, {'account_id': '756491554733', 'name': 'student18'}, {'account_id': '262072276602', 'name': 'student19'}, {'account_id': '828767190954', 'name': 'student20'}, {'account_id': '079333926868', 'name': 'student21'}, {'account_id': '493559506997', 'name': 'student22'}, {'account_id': '115562376050', 'name': 'student23'}, {'account_id': '699937976535', 'name': 'student24'}, {'account_id': '861514617772', 'name': 'student25'}, {'account_id': '036590742296', 'name': 'student26'}, {'account_id': '632210073566', 'name': 'student27'}, {'account_id': '241016350765', 'name': 'student28'}, {'account_id': '225358528534', 'name': 'student29'}, {'account_id': '575169580492', 'name': 'student30'}, {'account_id': '070061941134', 'name': 'student31'}, {'account_id': '349081048365', 'name': 'student32'}, {'account_id': '689691061144', 'name': 'student33'}, {'account_id': '328903029180', 'name': 'student34'}]
+DEFAULT_ACCOUNTS = [{'account_id': '594379811663', 'name': 'student00'}, {'account_id': '365808682226', 'name': 'student01'}, {'account_id': '790869470612', 'name': 'student02'}, {'account_id': '233147340238', 'name': 'student03'}, {'account_id': '156387786381', 'name': 'student04'}, {'account_id': '515386851991', 'name': 'student05'}, {'account_id': '131811870954', 'name': 'student06'}, {'account_id': '349901144557', 'name': 'student07'}, {'account_id': '971726136093', 'name': 'student08'}, {'account_id': '496344732845', 'name': 'student09'}, {'account_id': '573097031087', 'name': 'student10'}, {'account_id': '537777148249', 'name': 'student11'}, {'account_id': '297755458926', 'name': 'student12'}, {'account_id': '369314739297', 'name': 'student13'}, {'account_id': '036245824663', 'name': 'student14'}, {'account_id': '655430985585', 'name': 'student15'}, {'account_id': '205121849406', 'name': 'student16'}, {'account_id': '319290658121', 'name': 'student17'}, {'account_id': '756491554733', 'name': 'student18'}, {'account_id': '262072276602', 'name': 'student19'}, {'account_id': '828767190954', 'name': 'student20'}, {'account_id': '079333926868', 'name': 'student21'}, {'account_id': '493559506997', 'name': 'student22'}, {'account_id': '115562376050', 'name': 'student23'}, {'account_id': '699937976535', 'name': 'student24'}, {'account_id': '861514617772', 'name': 'student25'}, {'account_id': '036590742296', 'name': 'student26'}, {'account_id': '632210073566', 'name': 'student27'}, {'account_id': '241016350765', 'name': 'student28'}, {'account_id': '225358528534', 'name': 'student29'}, {'account_id': '575169580492', 'name': 'student30'}, {'account_id': '070061941134', 'name': 'student31'}, {'account_id': '349081048365', 'name': 'student32'}, {'account_id': '689691061144', 'name': 'student33'}, {'account_id': '328903029180', 'name': 'student34'}]
 
 
 def load_setup_config(path=None):
@@ -33,8 +33,6 @@ def load_setup_config(path=None):
         aid = account.get('account_id')
         if not isinstance(aid, str) or not re.fullmatch(r'\d{12}', aid) or aid in seen:
             raise ValueError('Account IDs must be unique 12-digit strings')
-        if aid == HOST_ACCOUNT:
-            raise ValueError('Exclude student00 from the student target list')
         seen.add(aid)
         account['name'] = str(account.get('name', aid))
     data.setdefault('role_name', READ_ROLE)
@@ -53,16 +51,17 @@ def trust(principal):
 
 
 def plan(accounts):
-    ids = [a['account_id'] for a in accounts]
-    if HOST_ACCOUNT in ids:
-        raise ValueError('student00 is the scoring host; remove it from the student account list')
+    ids = [a['account_id'] for a in accounts if a['account_id'] != HOST_ACCOUNT]
+    host_policy = policy('ec2:DescribeAddresses', '*')
+    if ids:
+        host_policy['Statement'].insert(0, policy('sts:AssumeRole', [f'arn:aws:iam::{a}:role/{READ_ROLE}' for a in ids])['Statement'][0])
     return {
         'bootstrap_role': BOOTSTRAP_ROLE,
         'host_account': HOST_ACCOUNT,
         'host_role': HOST_ROLE,
         'instance_profile': HOST_ROLE,
         'host_trust': trust({'Service': 'ec2.amazonaws.com'}),
-        'host_permissions': policy('sts:AssumeRole', [f'arn:aws:iam::{a}:role/{READ_ROLE}' for a in ids]),
+        'host_permissions': host_policy,
         'student_role': READ_ROLE,
         'student_trust': trust({'AWS': f'arn:aws:iam::{HOST_ACCOUNT}:role/{HOST_ROLE}'}),
         'student_permissions': policy('ec2:DescribeAddresses', '*'),
@@ -141,6 +140,8 @@ def apply(configuration, session):
     failures = []
     for account in accounts:
         aid = account['account_id']
+        if aid == HOST_ACCOUNT:
+            continue
         try:
             iam = assume_iam(session, aid, region)
             ensure_role(iam, READ_ROLE, desired['student_trust'], desired['student_permissions'])
@@ -153,7 +154,7 @@ def apply(configuration, session):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--accounts', help='Optional JSON account list; defaults to embedded student01-student34 list')
+    parser.add_argument('--accounts', help='Optional JSON account list; defaults to embedded student00-student34 list')
     parser.add_argument('--profile', help='Local AWS profile used for training-admin; omit for the current credential chain')
     parser.add_argument('--execute', action='store_true', help='Apply the displayed IAM setup; otherwise print a local-only plan')
     args = parser.parse_args()
@@ -176,7 +177,7 @@ def main():
     if failures:
         print('Incomplete setup. Failed accounts: ' + ', '.join(failures))
         raise SystemExit(1)
-    print(f'Done: {len(config["accounts"])} student roles. Attach instance profile {HOST_ROLE} to the scoring EC2 instance in student00.')
+    print(f'Done: {sum(a["account_id"] != HOST_ACCOUNT for a in config["accounts"])} cross-account student roles. Attach instance profile {HOST_ROLE} to the scoring EC2 instance in student00.')
     print('Allow IAM propagation before starting the scorer. No EC2 instances or access keys were created.')
 
 if __name__ == '__main__':

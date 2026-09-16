@@ -56,6 +56,22 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(factory.call_args.kwargs['region_name'],'eu-central-1')
         self.assertEqual(target.client.return_value.describe_addresses.call_args.kwargs['Filters'],[{'Name':'tag:Name','Values':['*gwlb-demo-web']}])
 
+    def test_student00_uses_local_instance_role(self):
+        base=MagicMock()
+        sts,ec2=MagicMock(),MagicMock()
+        base.client.side_effect=lambda service,**kw: sts if service=='sts' else ec2
+        sts.get_caller_identity.return_value={'Account':'594379811663'}
+        ec2.describe_addresses.return_value={'Addresses':[dict(PublicIp='203.0.113.9',AssociationId='a',NetworkInterfaceId='eni')]}
+        factory=MagicMock(return_value=base)
+        module=types.ModuleType('botocore.config');module.Config=MagicMock()
+        d=AWSDiscovery(dict(role_name='UMSScoringReadOnly',region='eu-central-1'),session_factory=factory)
+        with patch.dict(sys.modules,{'botocore.config':module}):
+            self.assertEqual(d.resolve(dict(account_id='594379811663'))[0],'http://203.0.113.9')
+            sts.get_caller_identity.return_value={'Account':'111111111111'}
+            with self.assertRaises(ValueError): d.resolve(dict(account_id='594379811663'))
+        sts.assume_role.assert_not_called()
+        self.assertEqual(ec2.describe_addresses.call_count,1)
+
     def test_no_http_until_discovered(self):
         dashboard=Dashboard([dict(id='s',name='s',url='')])
         with patch.object(dashboard.students[0],'poll') as poll:

@@ -32,7 +32,7 @@ if(typeof document!=='undefined') {
     if(!latest)return;const list=$('students');list.replaceChildren();
     for(const s of selectedStudents(latest.students,selection)) {
       const row=document.createElement('div'),label=document.createElement('span'),lights=document.createElement('div');
-      row.className='row';label.className='student';label.textContent=studentLabel(s);lights.className='lights';
+      row.className='row'+(s.account_id==='594379811663'?' instructor':'');label.className='student';label.textContent=studentLabel(s);lights.className='lights';
       const nodes=[...s.nodes].sort((a,b)=>a.id.localeCompare(b.id));
       for(let i=0;i<Math.max(3,nodes.length);i++) {
         const light=document.createElement('span'),n=nodes[i];light.className=n?nodeClass(s,n):'light missing';

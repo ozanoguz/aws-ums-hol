@@ -40,6 +40,11 @@
         "arn:aws:iam::689691061144:role/UMSScoringReadOnly",
         "arn:aws:iam::328903029180:role/UMSScoringReadOnly"
       ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeAddresses",
+      "Resource": "*"
     }
   ]
 }

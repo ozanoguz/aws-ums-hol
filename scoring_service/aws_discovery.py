@@ -58,13 +58,18 @@ class AWSDiscovery:
         region = self.config['region']
         base = self.session_factory(region_name=region)
         sts = base.client('sts', config=options)
-        request = dict(RoleArn=f"arn:aws:iam::{account['account_id']}:role/{self.config['role_name']}",
-                       RoleSessionName='ums-scoring-discovery', DurationSeconds=900)
-        if self.config.get('external_id'):
-            request['ExternalId'] = self.config['external_id']
-        c = sts.assume_role(**request)['Credentials']
-        target = self.session_factory(region_name=region, aws_access_key_id=c['AccessKeyId'],
-                                      aws_secret_access_key=c['SecretAccessKey'], aws_session_token=c['SessionToken'])
+        if account['account_id'] == '594379811663':
+            if sts.get_caller_identity()['Account'] != account['account_id']:
+                raise ValueError('Student00 direct discovery must run with student00 credentials')
+            target = base
+        else:
+            request = dict(RoleArn=f"arn:aws:iam::{account['account_id']}:role/{self.config['role_name']}",
+                           RoleSessionName='ums-scoring-discovery', DurationSeconds=900)
+            if self.config.get('external_id'):
+                request['ExternalId'] = self.config['external_id']
+            c = sts.assume_role(**request)['Credentials']
+            target = self.session_factory(region_name=region, aws_access_key_id=c['AccessKeyId'],
+                                          aws_secret_access_key=c['SecretAccessKey'], aws_session_token=c['SessionToken'])
         ec2 = target.client('ec2', config=options)
         # Existing demo module uses Name = <prefix>gwlb-demo-web on its EIP.
         name = account.get('eip_name') or '*gwlb-demo-web'
