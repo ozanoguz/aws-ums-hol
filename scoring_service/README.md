@@ -183,3 +183,8 @@ Upgrade steps:
 1. In training-admin CloudShell, run the updated standalone `ums_iam.py` preview, then `python3 ums_iam.py --execute`. This adds `ec2:DescribeAddresses` to the existing student00 scoring instance role and retains cross-account access. No extra read-only role in student00 is required.
 2. Copy the updated scoring folder, including the 35-account `accounts.json`, to the scoring EC2 host and rerun the installer with the same listen-host/port options as before.
 3. Reload the page and choose **All**. Student00 remains awaiting URL until its demo EIP is deployed; IAM changes may take time to propagate.
+
+
+### Expanded classroom cards
+
+Cards now include web reachability, current healthy/verified counts, a short deployment phase and three progress segments (2 healthy, 3 healthy, 3 inspecting). Layout adapts to viewport size and selection count: smaller groups receive larger cards; all-account views use compact cards. On dense screens the phase text is omitted while counts and progress remain. The selected accounts and evidence-based flashing behavior are unchanged. No IAM update is needed for this visual update; deploy the updated files and restart via the installer using your existing bind/port options.
