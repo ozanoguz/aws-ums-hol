@@ -131,3 +131,42 @@ python3 ums_iam.py --execute
 ```
 
 Verify the identity is your intended training-admin session before applying. Do not pass `--profile training-admin` in CloudShell unless you explicitly configured that profile; the console session supplies credentials. Boto3 is needed only for `--execute` (install with `python3 -m pip install --user boto3` if missing). The preview makes no AWS calls and prints the exact targets and policies.
+
+## Compact control room and student selection
+
+The control room displays one row per student ID with FortiGate squares. Use the **Student accounts** dropdown to select any combination of students; **All** and **None** provide shortcuts. Selection is saved in this browser. Filtering changes the display only; the service continues polling every configured account.
+
+Blue squares are healthy FortiGates, green squares have recent matched probe evidence, and a flash marks a newly matched instructor probe. Gray indicates unavailable/stale data; an outlined square is a placeholder awaiting discovery. The third square fills when the third FortiGate is discovered. Detailed metrics remain available on each student's own page.
+
+## Install as an automatic Linux EC2 service (recommended)
+
+Run this on the **student00 EC2 host**, not CloudShell. Copy the updated `scoring_service` folder, including `accounts.json`, to that host. Attach its existing `UMSScoringInstanceRole` instance profile. The host needs Python 3.10+, `venv`/pip, systemd, and outbound access to package repositories, AWS APIs and the student EIPs. On Ubuntu install `python3-venv` if it is missing. The service uses the instance profile, not your shell's AWS credentials.
+
+From the copied folder:
+
+```bash
+sudo bash install_service.sh
+```
+
+This copies the application to `/opt/ums-scoring`, installs Python dependencies, creates an unprivileged `scoring` user, installs **ums-scoring.service**, starts it now and enables it at boot. Both URL discovery/polling and the web server run in that service. It restarts after process failures. Rerun the installer with the updated source folder to deploy updates; the previous installed account configuration is backed up as `accounts.json.previous`.
+
+By default it listens on localhost port 8090; keep using SSH forwarding. To access the dashboard directly through your EC2 address instead:
+
+```bash
+sudo bash install_service.sh --listen-host 0.0.0.0 --port 8090
+```
+
+Permit inbound TCP 8090 from the instructor's network in the EC2 security group, then open `http://<SCORING_EC2_PUBLIC_IP>:8090`. This dashboard has no login; keep that ingress instructor-only. The installer does not change AWS security groups. An existing manual Python process on the same port must be stopped first. The previously documented `scoring-service.service` is disabled when its configuration matches the old scoring application.
+
+```bash
+sudo systemctl status ums-scoring --no-pager
+sudo systemctl is-enabled ums-scoring
+sudo journalctl -u ums-scoring -n 100 --no-pager
+sudo systemctl restart ums-scoring
+```
+
+To update the account list after installation, edit `/opt/ums-scoring/accounts.json` and restart the service. To change binding/port, edit `/etc/default/ums-scoring` and restart. The EC2 public IPv4 address can change after stop/start unless you associate an Elastic IP; that does not affect automatic service startup.
+
+The old `.service.example` is retained for manual installations. Use the installer above for new installations rather than enabling both units. Service installation does not create EC2 resources or modify student IAM roles.
+
+Additional frontend check: `node tests/test_dashboard.cjs` (Node is needed for development testing only).

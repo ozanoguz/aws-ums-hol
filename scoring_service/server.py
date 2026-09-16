@@ -201,11 +201,14 @@ class Dashboard:
 
 def handler(dashboard):
     page = (ROOT / 'index.html').read_bytes()
+    dashboard_js = (ROOT / 'dashboard.js').read_bytes()
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self):
             path = urlsplit(self.path).path
             if path == '/':
                 body, kind = page, 'text/html; charset=utf-8'
+            elif path == '/dashboard.js':
+                body, kind = dashboard_js, 'text/javascript; charset=utf-8'
             elif path == '/api/state':
                 body, kind = json.dumps(dashboard.snapshot()).encode(), 'application/json'
             elif path == '/healthz':
