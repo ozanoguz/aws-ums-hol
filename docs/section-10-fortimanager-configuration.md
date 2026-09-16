@@ -19,7 +19,7 @@ From the Terraform example directory, run:
 terraform output -json web_demo
 ```
 
-Record `url` and `collector_private_ip`. A `null` output means the demo was not enabled; return to Section 9 and deploy it before continuing. The HTTP server uses `10.50.0.10` and the private collector uses `10.50.0.11` when `web_demo.vpc_cidr` is `10.50.0.0/16`.
+Record `url` and `collector_private_ip`. A `null` output means the demo was disabled in your local variables. Restore the supplied `web_demo` configuration and apply it from the same Terraform workspace before continuing. The HTTP server uses `10.50.0.10` and the private collector uses `10.50.0.11` when `web_demo.vpc_cidr` is `10.50.0.0/16`.
 
 Find the GWLB node addresses in the AWS Console:
 
@@ -35,7 +35,7 @@ Find the GWLB node addresses in the AWS Console:
 | `10.50.0.11` | Keep for the default demo VPC; otherwise use `collector_private_ip` from Terraform |
 
 ::: warning Replace values before running
-The angle-bracket values below are placeholders, not FortiManager variables. Replace every occurrence before saving the scripts. HTTP/80 is public (`0.0.0.0/0`) so browsers and the future cross-account monitoring service can reach each student deployment. The policy uses source `all`; no client-IP substitution is needed. Syslog remains private.
+The angle-bracket values below are placeholders, not FortiManager variables. Replace every occurrence before saving the scripts. HTTP/80 is public (`0.0.0.0/0`) so browsers and the instructor monitoring service can reach each student deployment. The policy uses source `all`; no client-IP substitution is needed. Syslog remains private.
 :::
 
 ## Step 2: Create the GENEVE, Routes and Syslog CLI Template
@@ -320,18 +320,6 @@ Stop with Ctrl+C. Packets leaving `port2` prove transmission, not reception. On 
 sudo systemctl status gwlb-demo.service
 sudo journalctl -u gwlb-demo.service -n 100 --no-pager
 ```
-
-## Preparing for the Central Monitor
-
-The instructor's future monitoring service can poll each student's Terraform `url` from its backend. Keep a registry of student/account identifiers and URLs; public HTTP reachability does not automatically discover deployments in other accounts.
-
-| Endpoint | What it provides |
-|---|---|
-| `/healthz` | HTTP service responds; this alone does not prove every FortiGate is operational |
-| `/probe` | Creates a test connection and returns a probe ID |
-| `/api/state` | Discovery freshness/errors, ASG members, GWLB target health and recent probes with matched FortiGate IDs |
-
-For inspection evidence, request `/probe`, then poll `/api/state` for that probe ID to acquire a non-null `node`. Logs can arrive asynchronously. Use current target health and fresh discovery data alongside matched probes; do not mark all FortiGates operational from one HTTP 200 response. Poll from the monitoring backend, which avoids browser cross-origin restrictions. The central dashboard and account/URL registry will be implemented in the next phase.
 
 ## Checkpoint
 

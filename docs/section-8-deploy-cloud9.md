@@ -19,6 +19,10 @@ By the end of this section, you will be able to:
 
 ---
 
+## Cloud9 Availability
+
+AWS Cloud9 is no longer available to new customers; existing eligible customers can continue using it. Confirm the lab account can create a Cloud9 environment before launching the stack. If unavailable, use the instructor-provided Linux Terraform workstation and run the same terminal commands there; do not repeatedly recreate a failing Cloud9 stack. [AWS Cloud9 availability](https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html)
+
 ## Before You Begin
 
 Confirm that you have completed the previous sections and have the following information from your instructor:
@@ -35,7 +39,7 @@ AWS region will be used:
 
 Click the Launch Stack button below:
 
-[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home#/stacks/create/review?templateURL=https://ftnt-cfts.s3.amazonaws.com/training/Cloud9_CFT.yaml&stackName=Cloud9-New-VPC)
+[![Launch Stack](https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png)](https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/create/review?templateURL=https://ftnt-cfts.s3.amazonaws.com/training/Cloud9_CFT.yaml&stackName=Cloud9-New-VPC)
 
 Confirm that the CloudFormation page opens in:
 
@@ -142,6 +146,7 @@ elif [ "$ARCH" = "aarch64" ]; then
   TF_ARCH="arm64"
 else
   echo "Unsupported architecture: $ARCH"
+  exit 1
 fi
 
 echo "Detected architecture: $ARCH"
@@ -190,6 +195,15 @@ Expected result:
 ```text
 Terraform v1.15.6
 ```
+
+### Verify AWS Identity
+
+```bash
+aws sts get-caller-identity
+aws configure get region
+```
+
+Confirm the account ID matches your assigned student account. Use `eu-central-1` in Terraform and the AWS connector even if the CLI has no default region set. If Cloud9 has no usable AWS credentials, use the instructor-provided credentials through the lab's normal configuration method before continuing.
 
 ### Checkpoint
 

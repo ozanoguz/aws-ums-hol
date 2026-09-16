@@ -47,7 +47,9 @@ By the end of this lab, you will be able to:
 - Configure a FortiFlex connector in FortiManager.
 - Deploy auto-scaling in AWS using Terraform.
 - Validate that FortiManager can discover AWS Auto Scaling resources.
-- Perform scale-out and scale-in using UMS capability.
+- Install GENEVE, routing, syslog and the demo policy package through FortiManager.
+- Test the public HTTP web demo and identify actual inspection traffic.
+- Scale from two to three FortiGates through UMS, then return to two.
 
 ---
 

@@ -1,22 +1,24 @@
 function studentLabel(s) { return s.name || s.id; }
 function nodeClass(s,n) {
-  if (!s.fresh || !s.reachable) return 'light';
+  if (s.transport_lost || !s.fresh || !s.reachable) return 'light';
   if (n.verified) return 'light verified';
   return n.health==='healthy' && n.lifecycle==='InService' ? 'light healthy' : 'light';
 }
 function selectedStudents(students,selection) { return students.filter(s=>selection===null || selection.has(s.id)); }
 function fmgStatus(s, now=Date.now()/1000) {
+  if(s.transport_lost) return {text:'FMG last known',good:false};
   const f=s.fortimanager;
   if(!f || f.deployed===null || f.error) return {text:'FMG unknown', good:false};
   if(now-f.checked_at>120) return {text:'FMG stale', good:false};
   if(!f.deployed) return {text:'FMG not found', good:false};
-  const states=[...new Set(f.instances.map(i=>i.state))];
+  const states=[...new Set((f.instances || []).map(i=>i.state))];
   return {text:states.length===1 && states[0]==='running'?'FMG deployed':`FMG ${states.length===1?states[0]:'deployed'}`, good:true};
 }
 function cardStatus(s) {
+  if(s.transport_lost) return {web:'Web last known',phase:'Updates paused',count:'Last known data',steps:[false,false,false]};
   const fresh=s.fresh && s.reachable;
   return {
-    web: !s.url ? 'Not deployed' : s.reachable ? 'Web online' : 'Web offline',
+    web: !s.url ? (s.discovery_status?.includes('failed')?'Web unknown':'Not deployed') : s.reachable ? 'Web online' : 'Web offline',
     phase: !s.url ? 'Awaiting lab' : !s.reachable ? 'Unreachable' : !s.fresh ? 'Inventory stale' : s.healthy>=3 ? 'Scaled to 3+' : s.healthy>=2 ? 'Baseline ready' : 'Provisioning',
     count: fresh ? `${s.healthy} healthy · ${s.verified} verified` : '— healthy · — verified',
     steps: [fresh && s.healthy>=2, fresh && s.healthy>=3, fresh && s.verified>=3]
@@ -26,8 +28,9 @@ function gridLayout(count,width,height) {
   let cols=Math.max(1,Math.min(6,Math.floor(width/290),count||1));
   const available=Math.max(100,height);
   while(cols<Math.min(8,count) && width/(cols+1)>=165 && (available-(Math.ceil(count/cols)-1)*12)/Math.ceil(count/cols)<125) cols++;
+  while(cols>1 && Math.ceil(count/(cols-1))===Math.ceil(count/cols) && width/(cols-1)<430) cols--;
   const rows=Math.max(1,Math.ceil(count/cols));
-  return {cols,height:Math.max(94,Math.min(240,Math.floor((available-(rows-1)*12)/rows)))};
+  return {cols,height:Math.max(94,Math.min(220,Math.floor((available-(rows-1)*12)/rows)))};
 }
 if(typeof module!=='undefined') module.exports={studentLabel,nodeClass,selectedStudents,cardStatus,gridLayout,fmgStatus};
 if(typeof document!=='undefined') {
@@ -55,6 +58,8 @@ if(typeof document!=='undefined') {
   function render(flashes=new Set()) {
     if(!latest)return;const list=$('students');list.replaceChildren();
     const visible=selectedStudents(latest.students,selection);
+    const known=visible.filter(s=>!s.transport_lost);
+    $('overview').textContent=`${visible.length} selected  ·  ${known.filter(s=>fmgStatus(s).good).length} FMG deployed  ·  ${known.filter(s=>s.reachable).length} web online  ·  ${known.filter(s=>s.fresh&&s.reachable&&s.healthy>=3).length} scaled out`;
     for(const s of visible) {
       const row=document.createElement('div'),label=document.createElement('span'),lights=document.createElement('div');
       row.className='row'+(s.account_id==='594379811663'?' instructor':'');label.className='student';label.textContent=studentLabel(s);lights.className='lights';
@@ -63,20 +68,22 @@ if(typeof document!=='undefined') {
         const box=document.createElement('div'),caption=document.createElement('span');box.className='node';caption.className='node-caption';caption.textContent=`FGT ${i+1}`;
         const light=document.createElement('span'),n=nodes[i];light.className=n?nodeClass(s,n):'light missing';
         if(n&&flashes.has(s.id+'|'+n.id))light.classList.add('flash');
-        const status=!n?'Awaiting discovery':!s.fresh||!s.reachable?'Unavailable or stale':n.verified?'Traffic verified':n.health;
-        light.title=`FortiGate ${i+1}: ${status}`;light.setAttribute('role','img');light.setAttribute('aria-label',light.title);box.append(light,caption);lights.append(box);
+        const status=s.transport_lost?'Last known':!n?'Waiting':!s.fresh||!s.reachable?'Stale':n.verified?'Inspecting':n.health==='healthy'?'Healthy':n.health;
+        const note=document.createElement('span');note.className='node-state';note.textContent=status;
+        if(n&&s.fresh&&s.reachable&&!s.transport_lost)box.classList.add(n.verified?'observed':'discovered');
+        light.title=`FortiGate ${i+1}: ${status}`;light.setAttribute('role','img');light.setAttribute('aria-label',light.title);box.append(caption,light,note);lights.append(box);
       }
       const head=document.createElement('div'),identity=document.createElement('div'),web=document.createElement('span'),metrics=document.createElement('div'),count=document.createElement('span'),phase=document.createElement('span'),progress=document.createElement('div');
       const status=cardStatus(s);head.className='card-head';identity.append(label);
       if(s.account_id==='594379811663'){const badge=document.createElement('div');badge.className='badge';badge.textContent='Instructor demo';identity.append(badge);}
-      web.className='web-status '+(s.reachable?'up':'down');web.textContent=(s.reachable?'● ':'○ ')+status.web;
+      web.className='web-status '+(s.reachable&&!s.transport_lost?'up':'down');web.textContent=(s.reachable&&!s.transport_lost?'● ':'○ ')+status.web;
       const services=document.createElement('div'),fmg=document.createElement('span'),fm=fmgStatus(s);
       services.className='service-status';fmg.className='fmg-status'+(fm.good?' deployed':'');fmg.textContent=(fm.good?'✓ ':'○ ')+fm.text;
       fmg.title=s.fortimanager?.error ? 'FortiManager discovery: '+s.fortimanager.error : 'AWS EC2 deployment only; not a management connectivity check';
-      services.append(fmg,web);head.append(identity,services);metrics.className='card-metrics';count.textContent=status.count;phase.className='phase'+(status.steps[2]?' complete':'');phase.textContent=status.phase;metrics.append(count,phase);
+      services.append(fmg,web);head.append(identity);metrics.className='card-metrics';count.textContent=status.count;phase.className='phase'+(status.steps[2]?' complete':'');phase.textContent=status.phase;metrics.append(count,phase);
       progress.className='progress';progress.setAttribute('aria-label','Progress: two healthy, three healthy, three inspecting');
-      status.steps.forEach((done,i)=>{const bar=document.createElement('span');bar.className=done?'done':'';bar.title=['2 healthy FortiGates','3 healthy FortiGates','3 verified inspecting'][i];progress.append(bar);});
-      const bottom=document.createElement('div');bottom.append(metrics,progress);row.append(head,lights,bottom);list.append(row);
+      status.steps.forEach((done,i)=>{const bar=document.createElement('span');bar.className=done?'done':'';bar.title=['2 healthy FortiGates','3 healthy FortiGates','3 verified inspecting'][i];bar.textContent=['2-node baseline','3-node scale-out','Inspection'][i];progress.append(bar);});
+      const bottom=document.createElement('div');bottom.append(metrics,progress);head.append(phase);row.append(head,services,lights,bottom);list.append(row);
     }
     const layout=gridLayout(visible.length,list.clientWidth,window.innerHeight-list.getBoundingClientRect().top-52);
     list.style.setProperty('--cols',layout.cols);list.style.setProperty('--card-height',layout.height+'px');
@@ -93,8 +100,8 @@ if(typeof document!=='undefined') {
     const data=await r.json(),flashes=new Set(),keys=new Set();
     for(const s of data.students)for(const n of s.nodes){const k=s.id+'|'+n.id,old=events.get(k);keys.add(k);if(s.fresh&&s.reachable&&old!==undefined&&n.event>old)flashes.add(k);events.set(k,n.event);}
     for(const k of events.keys())if(!keys.has(k))events.delete(k);
-    latest=data;choices();render(flashes);$('connection').textContent='● Live';
-  }catch(_){$('connection').textContent='● Disconnected';if(latest){for(const s of latest.students){s.fresh=false;s.reachable=false;if(s.fortimanager)s.fortimanager.checked_at=0;}render();}}
+    latest=data;choices();render(flashes);$('connection').textContent='● Live';$('connection').classList.remove('disconnected');
+  }catch(error){console.error('Dashboard update failed',error);$('connection').textContent='● Reconnecting';$('connection').classList.add('disconnected');if(latest){for(const s of latest.students)s.transport_lost=true;render();}}
   finally{setTimeout(refresh,1500);}}
   refresh();
 }

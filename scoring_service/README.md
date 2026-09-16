@@ -197,3 +197,18 @@ Each account card includes a steady (non-blinking) FortiManager label. The AWS c
 Identification uses the EC2 **Name** tag: case-insensitive `FortiManager` anywhere in the name, or `FMG` as a word separated by spaces/hyphens/underscores. For custom names, set `"fmg_name": "student01-manager"` (case-sensitive wildcard matching supported) on that account in `accounts.json`; alternatively set `"fmg_instance_id": "i-..."` for an exact instance. Inspect these settings if a known deployment shows not found. Terminated and shutting-down instances are excluded. The region remains eu-central-1.
 
 Before installing this update, run the updated standalone `ums_iam.py --execute` in training-admin CloudShell (preview without `--execute`). It adds **ec2:DescribeInstances** to the dedicated student read roles and student00 scoring instance role. Then install the service update on the scoring EC2 host using your existing binding options. Keep any per-account selector overrides when replacing `accounts.json`. No student-facing guide or student deployment changes are needed.
+
+
+### Refined classroom overview
+
+The header summarizes only the selected accounts. Cards show FortiManager/web badges, labelled FortiGate indicators, and labelled baseline/scale-out/inspection stages when screen space permits. The layout balances partial rows (15 accounts use five columns on a large display). Dense all-account mode reduces secondary labels to keep the overview compact.
+
+If the instructor browser loses its connection, the status changes to amber **Reconnecting** and cards show **last known** / **Updates paused**. This is distinct from AWS-discovered stale data or a student web-service failure; transport loss never claims every student service went offline. No IAM changes are needed for this visual update.
+
+To retain your deployed account configuration while installing updated application files:
+
+```bash
+sudo bash install_service.sh --config /opt/ums-scoring/accounts.json --listen-host 0.0.0.0 --port 8090
+```
+
+Development render/interaction checks: `node tests/test_render.cjs`.

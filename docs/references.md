@@ -2,54 +2,49 @@
 
 ## Fortinet FortiManager Public Cloud AWS Administration Guide
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817)
 
 ## Creating an API Admin User
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/902153/creating-an-api-admin-user
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/902153/creating-an-api-admin-user)
 
 ## Creating AWS Fabric Connectors
 
-```text
-https://docs.fortinet.com/document/fortimanager/7.6.5/administration-guide/390041/creating-aws-fabric-connectors
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager/7.6.5/administration-guide/390041/creating-aws-fabric-connectors)
 
 ## Enabling the SDN Connector for UMS
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/115674)
 
 ## Creating an Auto-Onboarding Rule
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/670005)
 
 ## Creating a FortiFlex Connector
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208)
 
 ## FortiFlex Connector with a Specific Configuration ID
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/379795/fortiflex-connector-with-a-specific-configuration-id)
 
 ## Scaling Out the Auto Scaling Group
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/767426/scaling-out-the-auto-scaling-group
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/767426/scaling-out-the-auto-scaling-group)
 
 ## Scaling In the Auto Scaling Group
 
-```text
-https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/389472/scaling-in-the-auto-scaling-group
-```
+[Open documentation](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/389472/scaling-in-the-auto-scaling-group)
+
+
+## CLI Provisioning Templates and Policy Installation
+
+- [CLI template positions](https://docs.fortinet.com/document/fortimanager/7.6.6/administration-guide/456678/adding-cli-templates)
+- [Policy-package script targets](https://docs.fortinet.com/document/fortimanager/7.6.2/administration-guide/219334/add-a-script)
+- [Install policy packages and device settings](https://docs.fortinet.com/document/fortimanager/7.6.6/administration-guide/153046/installing-policy-packages-and-device-settings)
+
+## AWS Workstation and Traffic Path
+
+- [Cloud9 availability](https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html)
+- [AWS Internet Gateway address translation](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html)
+- [Gateway Load Balancer traffic flow](https://docs.aws.amazon.com/elasticloadbalancing/latest/gateway/introduction.html)

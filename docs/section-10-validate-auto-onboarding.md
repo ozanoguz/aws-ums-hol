@@ -6,7 +6,7 @@
    Device Manager > Device & Groups
    ```
 
-2. Confirm that the relevant AWS Auto Scaling Group or FortiGate instances are visible.
+2. Confirm the lab ASG and both initial FortiGate instances are visible.
 
 3. Confirm that newly discovered FortiGate devices appear in the correct device group.
 
@@ -22,7 +22,7 @@ Confirm the following:
 - Devices are placed into the expected ADOM and device group.
 - Licensing is assigned successfully.
 - FortiManager communication with FortiGate is working.
-
 - The device has the `GWLB-Web-Provisioning` template and `GWLB-Web-Demo` package from [Section 10](./section-10-fortimanager-configuration.md).
 - Configuration installation succeeded, including the four demo policies.
-- A newly scaled-out, healthy and eligible member appears in the dashboard and produces activity after matched test traffic.
+- Both initial nodes are healthy GWLB targets. Open the demo URL and select **Start traffic** to observe inspection; flow distribution may be uneven.
+- Continue to [Section 12](./section-11-scale-asg.md) to add and validate the third member.

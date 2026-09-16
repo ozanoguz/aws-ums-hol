@@ -2,7 +2,7 @@
 
 In this section, you will use the Cloud9 Terraform workstation deployed in Section 8 to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
 
-Cloud9 is used as the Terraform workstation for this lab. Do not use AWS Cloud9 for this section.
+Use the Cloud9 workstation prepared in Section 8 for the commands below. Keep the Terraform configuration and state in that same workspace throughout the lab.
 
 ---
 
@@ -60,14 +60,15 @@ cd ~
 Clone the Fortinet AWS Terraform modules repository.
 
 ```bash
-cd environment
+mkdir -p ~/environment
+cd ~/environment
 git clone https://github.com/ozanoguz/aws-ums-hol.git
 ```
 ---
 
 ## Step 3: Go to the Auto Scaling Group Example Directory
 
-The Fortinet documentation uses multiple example directories. Change into that example directory.
+Use this lab repository and the following example; the upstream examples do not include all of this lab's web-demo additions.
 
 ```bash
 cd aws-ums-hol/terraform/examples/spk_gwlb_asg_fgt_gwlb_igw
@@ -91,8 +92,8 @@ nano terraform.tfvars
 
 | Variable | Description | Value |
 |---|---|---|
-| access_key | Provided by instructor | Example syntax, use your own value: `"AKIAZRGV3E5YVRVCNJ6T"` |
-| secret_key | Provided by instructor | Example syntax, use your own value: `"+Ubf86qMR/cw46hBBt5k3zZVtFAEzPjmuiLkm3Oq"` |
+| access_key | Provided by instructor | Example syntax, use your own value: `"<YOUR_AWS_ACCESS_KEY_ID>"` |
+| secret_key | Provided by instructor | Example syntax, use your own value: `"<YOUR_AWS_SECRET_ACCESS_KEY>"` |
 | region | AWS region name | `"eu-central-1"` |
 
 ### VPC Section (Suggested Values)
@@ -100,7 +101,7 @@ nano terraform.tfvars
 | Variable | Description | Value |
 |---|---|---|
 | vpc_cidr_block | VPC CIDR block for auto scale group | `"10.0.0.0/16"` |
-| spoke_cidr_list | Password used for FortiGate registration | `["10.1.0.0/16"]` |
+| spoke_cidr_list | CIDRs of the existing spoke VPCs | `["10.1.0.0/16"]` |
 | availability_zones | AWS Availability Zones | `["eu-central-1a", "eu-central-1b"]` |
 
 ### Auto Scale Group Section: `fgt_byol_asg` Configuration
@@ -110,8 +111,12 @@ nano terraform.tfvars
 | fgt_version | FortiGate version | Already configured for you `"7.6.7"` |
 | license_type | FortiGate license type | `"byol"` |
 | fgt_password | FortiGate password | Example syntax: `"Fortinet2026!"` |
-| keypair_name | Name of the key pair | Example syntax, use your key pair name: `"student01_KEY"` |
+| keypair_name | Name of the key pair | Example syntax, use your key pair name: `"student01-key"` |
 | user_conf_file_path | Must be empty | Already configured for you `""` |
+| enable_fgt_system_autoscale | Disable legacy autoscale handling because FortiManager manages UMS | `false` |
+| asg_min_size | Minimum capacity for the two-node baseline | `2` |
+| asg_desired_capacity | Initial FortiGate instance count; uncomment/add this field | `2` |
+| asg_max_size | Allow the later three-node scale-out exercise | `3` |
 
 ### FortiManager Configuration: `fmg_integration` Section
 
@@ -121,54 +126,33 @@ nano terraform.tfvars
 | sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
 | fmg_password | FortiManager password | `"Fortinet2026!"` |
-| api_key | Created in Section 3 | Example syntax, use your API key: `"15aszaem8ncqedisuwe79rbwizj1waub"` |
+| api_key | Created in Section 3 | `"<YOUR_FORTIMANAGER_API_KEY>"` |
 
-::: warning The section above should look like this
-
-Example:
-
-      ## For UMS feature:
-      fmg_integration = {
-        ip = "35.157.138.234"
-        sn = "FMVMELTM24000253"
-        fgt_lic_mgmt = "fmg"
-        ums = {
-          autoscale_psksecret = "fortinet"
-          hb_interval = 10
-          fmg_password = "Fortinet2026!" # Use only for PAYG type of FOS
-          api_key = "njqpnwb7s9ufk78rx8di4ug944tr3rqs"
-        }
-      }
-:::
-
-Save `"terraform.tfvars"` file using following key combination:
-
-```bash
-CTRL + X (for Windows users)
-or
-Command + X (for Mac users)
-```
-
----
-
-## Step 5: Enable the Web Traffic Demo
-
-Before applying, configure the existing `web_demo` block in `terraform.tfvars` (add it only if absent):
+Replace the example values below with your own FortiManager details. This block is nested inside `asgs.fgt_byol_asg`:
 
 ```hcl
-web_demo = {
-  allowed_client_cidrs = ["0.0.0.0/0"]
-  vpc_cidr             = "10.50.0.0/16"
+fmg_integration = {
+  ip           = "<YOUR_FORTIMANAGER_IP>"
+  sn           = "<YOUR_FORTIMANAGER_SERIAL>"
+  fgt_lic_mgmt = "fmg"
+  ums = {
+    autoscale_psksecret = "<YOUR_AUTOSCALE_PSK>"
+    hb_interval         = 10
+    fmg_password        = "<YOUR_FORTIMANAGER_PASSWORD>" # Used for PAYG; keep schema for this BYOL lab
+    api_key             = "<YOUR_FORTIMANAGER_API_KEY>"
+  }
 }
 ```
 
-HTTP/80 is public so a central monitoring service can check deployments across student accounts. The FortiManager inbound HTTP policies in Section 10 also allow source `all`. Syslog stays private. This creates an additional demo spoke VPC, web server/EIP and private syslog collector. Keep this CIDR non-overlapping with the other lab VPCs.
+Keep `fgt_intf_mode = "2-arm"` and `enable_cross_zone_load_balancing = true`. The supplied `web_demo` block already enables public HTTP/80 on a separate `10.50.0.0/16` demo spoke; no browser-IP restriction needs to be added. Syslog uses private peering.
 
-For this UMS lab, keep `fgt_intf_mode = "2-arm"` and set the legacy `enable_fgt_system_autoscale = false` inside the ASG configuration object; retain the `fmg_integration.ums` block. FortiManager handles UMS scaling.
+Check the capacity fields above even if the file contains values from an earlier run: a maximum of `1` prevents the scale-out exercise. Confirm your FortiFlex configuration has enough capacity/entitlements for three FortiGates.
+
+Save in nano with **Ctrl+O**, press **Enter**, then **Ctrl+X**. Use **Control**, not Command, on a Mac.
 
 ---
 
-## Step 6: Initialize Terraform
+## Step 5: Initialize Terraform
 
 Run Terraform initialization from the example directory.
 
@@ -180,40 +164,48 @@ Confirm that Terraform downloads the required providers and modules successfully
 
 ---
 
-## Step 7: Review the Terraform Plan
+## Step 6: Review the Terraform Plan
 
 Generate and review the Terraform execution plan.
 
 ```bash
-terraform plan
+terraform plan -out=lab.plan
 ```
 
-Review the resources that Terraform will create or modify.
+Review the resources that Terraform will create or modify. Confirm the plan contains the two-instance baseline, maximum capacity three, and the web-demo resources. If you edit the configuration afterward, regenerate the saved plan.
 
 ---
 
-## Step 8: Apply the Terraform Configuration
+## Step 7: Apply the Terraform Configuration
 
 Deploy the infrastructure.
 
 ```bash
-terraform apply --auto-approve
+terraform apply lab.plan
 ```
 
 Terraform will create or update the AWS resources.
 
 ---
 
-## Step 9: Verify the Deployment
+## Step 8: Verify the Deployment
 
 After Terraform completes, verify the following:
 
 1. The Auto Scaling Group is created in AWS.
-2. FortiGate-VM instance is launched.
-3. FortiGate-VM instance can reach FortiManager.
-4. FortiGate-VM instance registered with FortiManager.
+2. Two FortiGate-VM instances are launched.
+3. Both FortiGate-VM instances can reach FortiManager.
+4. Both FortiGate-VM instances register with FortiManager.
 5. The FortiManager UMS group receives the expected instance information.
 
+
+Record the demo output for the next section:
+
+```bash
+terraform output -json web_demo
+```
+
+The web URL may remain unavailable until Section 10 installs the inspection and outbound policies. Keep your Terraform state files; subsequent changes must use this same deployment state.
 
 ## Next: Configure Inspection and the Web Demo
 

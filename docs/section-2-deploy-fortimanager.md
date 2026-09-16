@@ -28,7 +28,7 @@ View purchase options
 Subscribe
 ```
 
-Wait couple of minutes for subsccription to be completed.
+Wait for both Marketplace subscriptions to become active.
 
 ## 2.2 FortiManager deployment in AWS
 
@@ -124,7 +124,7 @@ Suggested values:
 | FortiManager version | `7.6.x` |
 | LicenseType | `FortiFlex` |
 | FortiFlexTokenID | Provided by instructor |
-| CIDRForFMGccess | Default |
+| CIDRForFMGccess | Instructor-approved management source CIDR; use the actual parameter label in the selected template |
 | Key pair | Created EC2 key pair in Section 1 |
 | EncryptVolumes | `false` |
 
@@ -161,7 +161,7 @@ Suggested values:
 
 After the stack is complete:
 
-1. Open the EC2 stack, click **Instances**.
+1. Open the completed CloudFormation stack and review **Outputs** and **Resources**. Follow its EC2 instance resource to the EC2 console.
 
 2. Find the public IP assigned to FortiManager.
 
@@ -197,4 +197,6 @@ config sys global
 end
 ```
 
-After this command is applied, FortiManager is ready to manage FortiGate-VM devices created during the UMS Auto Scaling deployment.
+This enables VM-device management. The API administrator, AWS connector, UMS, FortiFlex and onboarding settings in Sections 3–7 are still required.
+
+Keep the FortiManager EC2 Name tag identifiable, for example `student01-FortiManager`. Confirm the AWS network/security-group rules allow the FortiGate management path to FortiManager, in addition to your browser access.

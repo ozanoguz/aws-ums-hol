@@ -13,7 +13,7 @@ Follow the steps in the official Fortinet documentation below:
 [Create a FortiFlex Connector](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/729208)
 
 ::: warning Important
-You can skip "FortiCloud" related steps. FortiFlex API credentials are already provided by the instructor.
+The instructor has already supplied the FortiCloud API credentials; skip creating a new FortiCloud API user. Complete the FortiFlex connector authentication and configuration-ID selection steps.
 :::
 
 Configure the connector using the official Fortinet documentation below:
@@ -38,4 +38,5 @@ Confirm the following:
 
 - FortiFlex connector exists.
 - Connector test succeeds.
-- Auto onboarding rule is configured to use Flex VM licensing.
+- The selected configuration supports the FortiGate VM size used in this lab and the later three-node exercise.
+- The connector is ready to be selected in the onboarding rule in Section 7.

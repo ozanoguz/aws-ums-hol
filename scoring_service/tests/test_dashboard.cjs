@@ -36,3 +36,11 @@ assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',inst
 assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',instances:[{state:'stopped'}]}},100).text,'FMG stopped');
 assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',instances:[]}},221).text,'FMG stale');
 console.log('FortiManager indicator checks passed.');
+
+const paused={transport_lost:true,url:'http://test',fresh:true,reachable:true,healthy:3,verified:3};
+assert.equal(cardStatus(paused).web,'Web last known');
+assert.equal(cardStatus(paused).phase,'Updates paused');
+assert.equal(fmgStatus(paused).text,'FMG last known');
+assert.equal(nodeClass(paused,{verified:true}),'light');
+assert.equal(gridLayout(15,1744,780).cols,5);
+console.log('Balanced grid and disconnected-state checks passed.');
