@@ -39,8 +39,6 @@ output "web_demo" {
     url                       = module.web_demo[0].url
     collector_private_ip      = module.web_demo[0].private_ip
     instance_id               = module.web_demo[0].instance_id
-    spoke_vpc_id              = module.web_demo[0].spoke_vpc_id
-    workload_subnet_id        = module.web_demo[0].workload_subnet_id
     fortimanager_cli_template = module.web_demo[0].fortimanager_cli_template
   }
 }

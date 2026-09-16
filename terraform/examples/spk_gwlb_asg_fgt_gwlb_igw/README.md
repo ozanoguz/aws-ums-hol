@@ -80,15 +80,11 @@ Security VPC with FortiGate ASG act as a shadow service. ALL internal and extern
 
 | Name | Description |
 |------|-------------|
-| <a name="output_az_name_map"></a> [az\_name\_map](#output\_az\_name\_map) | n/a |
-| <a name="output_gwlb_endps"></a> [gwlb\_endps](#output\_gwlb\_endps) | n/a |
-| <a name="output_gwlb_ips"></a> [gwlb\_ips](#output\_gwlb\_ips) | n/a |
-| <a name="output_module_prefix"></a> [module\_prefix](#output\_module\_prefix) | n/a |
-| <a name="output_route_tables"></a> [route\_tables](#output\_route\_tables) | n/a |
-| <a name="output_security_route_table"></a> [security\_route\_table](#output\_security\_route\_table) | n/a |
-| <a name="output_secvpc-output"></a> [secvpc-output](#output\_secvpc-output) | n/a |
-| <a name="output_spkvpc_rt"></a> [spkvpc\_rt](#output\_spkvpc\_rt) | n/a |
-| <a name="output_subnets"></a> [subnets](#output\_subnets) | n/a |
+| `az_name_map` | Availability Zone to GENEVE tunnel name mapping. |
+| `gwlb_ips` | GWLB node private IPs keyed by subnet ID. |
+| `web_demo` | Web URL, collector private IP, server instance ID and generated FortiManager CLI template, when enabled. |
+
+Only student-facing configuration values are printed. Route tables, subnet inventories, VPC details and endpoint diagnostics remain available in Terraform state and the AWS Console. Removing these outputs does not remove infrastructure. `gwlb_ips` is a structured map rather than a formatted text block.
 
 ## Optional live web traffic demo
 
