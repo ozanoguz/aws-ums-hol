@@ -297,15 +297,48 @@ Future matching ASG instances receive the provisioning template and policy packa
 
 ## Step 7: Install on the FortiGates Already Registered
 
-Terraform has already launched devices before this section. Updating the onboarding rule does not retroactively install the new configuration on those devices.
+::: warning Required for the FortiGates deployed in Section 9
+Complete this step for **both existing FortiGates**, even if they already appear online in FortiManager. Updating the auto-onboarding rule in Step 6 does not retroactively install templates or policies. Registration alone does not mean the inspection configuration is installed.
+:::
 
-1. Assign **GWLB-Web-Templates** to the existing demo FortiGates.
-2. Open **Install Wizard** and choose **Install Policy Package & Device Settings**.
-3. Select **GWLB-Web-Demo** and the existing demo FortiGates/root VDOM as installation targets. Ensure the rules' **Install On** settings do not exclude them.
-4. Review **Install Preview**: it must include the tunnel/routing configuration and four firewall policies, with normalized interfaces resolved to `geneve-az1` and `geneve-az2`. Confirm the management route and registration settings remain correct.
-5. Install and check the final task status for every device.
+### 7.1 Check the devices and package
 
-On a FortiGate in the root VDOM, verify:
+1. In the same ADOM used above, open **Device Manager → Device & Groups**.
+2. Confirm both demo FortiGates are authorized and online. Record their serial numbers so you can select the correct installation targets.
+3. Open **Policy & Objects → Policy Packages → GWLB-Web-Demo** and confirm policies **1010, 1011, 1020 and 1021** exist. If the package is empty, complete Step 5 before proceeding.
+
+### 7.2 Assign the provisioning template group to existing devices
+
+1. Go to **Device Manager → Provisioning Templates → Template Group**.
+2. Select **GWLB-Web-Templates** and open its device/device-group assignment control.
+3. Add both existing demo FortiGates and save the assignment.
+4. Verify both devices appear in the group's assignments and the group contains **GWLB-Web-Provisioning** with **Pre-VDOM Copy**.
+
+Assigning the group makes its configuration available for installation; saving the assignment alone is not proof that the FortiGates received it.
+
+### 7.3 Set the policy-package installation targets
+
+1. Go to **Policy & Objects → Policy Packages** and select **GWLB-Web-Demo**.
+2. Open **Installation Targets** and edit the targets.
+3. Add both existing demo FortiGates with their **root** VDOM, then save.
+4. Check the four policies' **Install On** settings include those targets.
+
+The package selected in the onboarding rule applies to future matching devices. Explicitly selecting these existing targets ensures the following installation uses the demo package for them.
+
+### 7.4 Install both the package and device settings
+
+1. From **Policy & Objects → Policy Packages**, select **GWLB-Web-Demo**, then **Install → Install Wizard**.
+2. Choose **Install Policy Package & Device Settings** so the installation includes the assigned provisioning template as well as the firewall policies.
+3. Select both existing demo FortiGates/root VDOM as targets.
+4. Generate and review **Install Preview** for each device. Confirm it includes the GENEVE tunnels, routes, syslog configuration and four firewall policies. The normalized interfaces must resolve to `geneve-az1` and `geneve-az2`.
+5. Confirm the management route through `port2` and existing FortiManager registration/UMS settings remain correct. If expected configuration is missing from the preview, return to the assignments above before installing.
+6. Install and wait for the task to finish. Check the result for **each FortiGate**; one successful device does not mean both succeeded.
+
+The **Create-Demo-Policies** script populates the FortiManager package database. Do not run it directly on a FortiGate; this installation step delivers its policies to the devices.
+
+### 7.5 Verify the configuration on both FortiGates
+
+On each FortiGate in the root VDOM, run:
 
 ```text
 show system geneve
@@ -314,7 +347,11 @@ get router info routing-table all
 show log syslogd2 setting
 ```
 
-Check the route to your FortiManager IP resolves through `port2`. If an installation fails, read its task error before proceeding to scale-out.
+Confirm both GENEVE interfaces, the four demo policies, the GWLB routes and syslog destination `10.50.0.11:5514` are present. Check the route to your FortiManager IP resolves through `port2` and both devices remain online in FortiManager.
+
+If a task fails, open its error details, correct the reported problem, then repeat the installation for the affected device. Do not delete/re-register the devices or redeploy Terraform just to trigger onboarding again.
+
+**Before continuing:** both existing FortiGates must have a successful installation and the expected configuration. Then proceed to Step 8 to test traffic. Future scale-out instances use the onboarding rule from Step 6.
 
 ### Updating an Existing Restricted Deployment
 
