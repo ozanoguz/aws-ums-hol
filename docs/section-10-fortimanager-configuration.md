@@ -5,7 +5,9 @@ After the Terraform deployment in [Section 9](./section-9-terraform-asg.md), con
 ## Objectives
 
 - Create a CLI provisioning template for GENEVE tunnels, routing and private syslog.
-- Populate a FortiManager policy package with address objects, interface mappings and firewall rules.
+- Create a template group containing the provisioning template.
+- Create an empty dedicated policy package.
+- Create and run a CLI script to populate the package with address objects, interface mappings and firewall rules.
 - Update the existing UMS onboarding rule without changing its FortiFlex licensing configuration.
 - Install the configuration on already registered devices and test the web demo.
 
@@ -124,15 +126,37 @@ config log syslogd2 filter
 end
 ```
 
-Create a **Template Group** named `GWLB-Web-Templates` under provisioning templates and add `GWLB-Web-Provisioning` to it.
-
 The collector route intentionally uses `10.50.0.11/32`, not the HTTP server's `10.50.0.10`. The demo Terraform module provides the private VPC peering route and collector security group. Management-side security groups and NACLs must also permit this UDP traffic.
 
-## Step 3: Create and Populate the Policy Package
+**Before continuing:** confirm `GWLB-Web-Provisioning` is saved as a regular CLI template with **Pre-VDOM Copy**, and both GWLB address placeholders have been replaced.
 
-First create an empty dedicated package named **GWLB-Web-Demo** under **Policy & Objects → Policy Packages**, in the same ADOM as the devices. Use it for the demo ASG; it does not reproduce unrelated policies from an existing package.
+## Step 3: Create the Template Group
 
-Then go to **Device Manager → Scripts → Create New → Script**:
+1. Go to **Device Manager → Provisioning Templates**.
+2. Create a **Template Group** named `GWLB-Web-Templates`.
+3. Add the CLI template **GWLB-Web-Provisioning** created in Step 2.
+4. Save the group.
+
+**Before continuing:** reopen `GWLB-Web-Templates` and confirm it contains `GWLB-Web-Provisioning`. Creating the group does not install it on a FortiGate; assignment and installation follow in Steps 6 and 7.
+
+## Step 4: Create an Empty Dedicated Policy Package
+
+1. Stay in the same ADOM as the demo FortiGates and onboarding rule, normally `root`.
+2. Go to **Policy & Objects → Policy Packages**.
+3. Create a new policy package named **GWLB-Web-Demo**.
+4. Save the package. Leave it empty for now; Step 5 creates its policies.
+
+Use this dedicated package for the demo ASG. It does not reproduce unrelated policies from an existing package. If `GWLB-Web-Demo` already exists, open and inspect it before proceeding; do not delete existing policies merely to make it empty.
+
+**Before continuing:** confirm `GWLB-Web-Demo` appears in the correct ADOM. Do not install an empty package or select it in the onboarding rule yet.
+
+## Step 5: Create and Run the Policy-Package CLI Script
+
+### 5.1 Create the script
+
+1. Go to **Device Manager → Scripts**.
+2. Select **Create New → Script**.
+3. Set these fields:
 
 | Field | Value |
 |---|---|
@@ -140,7 +164,7 @@ Then go to **Device Manager → Scripts → Create New → Script**:
 | Type | **CLI Script** |
 | Run Script on | **Policy Package or ADOM Database** |
 
-Paste the following script after substituting any changed demo addresses.
+4. Paste the following script after substituting any changed demo addresses, then save it as **Create-Demo-Policies**.
 
 ::: warning Script target matters
 This is a FortiManager policy-package script, not a device provisioning template. Do not select **Device Database** or **Remote FortiGate Directly**. `config dynamic interface` belongs to the FortiManager ADOM database; a device-database execution fails with `object unrecognized` on line 1.
@@ -231,9 +255,18 @@ config firewall policy
 end
 ```
 
-**Saving is not execution.** After saving, right-click `Create-Demo-Policies` → **Run Script**, select **GWLB-Web-Demo** as the target package, and run it. The target must be the package, not a FortiGate serial number. Open the execution result and confirm success.
+### 5.2 Run the saved script
 
-Refresh **Policy & Objects → Policy Packages → GWLB-Web-Demo** and verify:
+1. In **Device Manager → Scripts**, right-click **Create-Demo-Policies** and select **Run Script**.
+2. Select **GWLB-Web-Demo** as the target policy package. The target must be the package, not a FortiGate serial number.
+3. Run the script.
+4. Open the execution result and confirm success. If it fails, correct the error before continuing.
+
+**Saving is not execution.** The package remains empty until the script runs successfully.
+
+### 5.3 Verify the populated package
+
+Refresh **Policy & Objects → Policy Packages → GWLB-Web-Demo** and confirm all four policies exist:
 
 | ID | Policy | Purpose |
 |---|---|---|
@@ -246,7 +279,9 @@ All four rules disable NAT and enable all-session and session-start logging. Def
 
 No FortiGate VIP is required: the AWS Internet Gateway translates the web server's Elastic IP to its private IP before delivery into the VPC. The policies therefore match `Demo-Web`. Syslog is generated locally by FortiGate and needs no forward-traffic policy. `Demo-Syslog` documents the collector address; it may not be installed as an address object because no firewall rule references it.
 
-## Step 4: Update the Existing Auto-Onboarding Rule
+**Before continuing:** the script task must show success and the package must contain policies `1010`, `1011`, `1020` and `1021`.
+
+## Step 6: Update the Existing Auto-Onboarding Rule
 
 1. Go to **Device Manager → Device & Groups → Add Device dropdown → Auto Onboarding**.
 2. Edit the rule created in Section 7. Keep its matching API administrator, ADOM, device group, **Flex VM** licensing and FortiFlex connector settings.
@@ -258,7 +293,9 @@ The package must already contain the four rules before a new FortiGate onboards.
 
 Future matching ASG instances receive the provisioning template and policy package through onboarding. Adding a third FortiGate does not require a third GENEVE tunnel: all FortiGates use the same deployed GWLB node addresses. Recheck the addresses if the GWLB is recreated.
 
-## Step 5: Install on the FortiGates Already Registered
+**Before continuing:** reopen the onboarding rule and confirm both **GWLB-Web-Templates** and **GWLB-Web-Demo** are selected.
+
+## Step 7: Install on the FortiGates Already Registered
 
 Terraform has already launched devices before this section. Updating the onboarding rule does not retroactively install the new configuration on those devices.
 
@@ -283,7 +320,7 @@ Check the route to your FortiManager IP resolves through `port2`. If an installa
 
 Set `web_demo.allowed_client_cidrs = ["0.0.0.0/0"]` in Terraform, then review `terraform plan` and apply it. Re-run the updated policy-package script against `GWLB-Web-Demo` and install the package on existing FortiGates. Policies 1010 and 1020 now use source `all`; previously created `Demo-Clients` objects can remain unused. Keep the updated package assigned to the onboarding rule. Both the AWS security group and FortiGate policy must allow public HTTP.
 
-## Step 6: Test the Web Page and Activity Lights
+## Step 8: Test the Web Page and Activity Lights
 
 Open the `url` from `terraform output -json web_demo` using **HTTP** from an external browser or monitoring service. Click **Start traffic**. The destination is the web server's Elastic IP, not FortiManager's IP or a FortiGate management IP.
 
