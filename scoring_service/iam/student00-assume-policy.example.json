@@ -43,7 +43,10 @@
     },
     {
       "Effect": "Allow",
-      "Action": "ec2:DescribeAddresses",
+      "Action": [
+        "ec2:DescribeAddresses",
+        "ec2:DescribeInstances"
+      ],
       "Resource": "*"
     }
   ]

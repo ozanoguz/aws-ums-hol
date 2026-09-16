@@ -28,3 +28,11 @@ for(const [count,width,height] of [[35,1224,530],[35,1744,820],[15,1744,820]]) {
 }
 assert.ok(gridLayout(15,1744,820).height>gridLayout(35,1744,820).height);
 console.log('Card status and classroom viewport sizing checks passed.');
+
+const {fmgStatus}=exported.exports;
+assert.equal(fmgStatus({},100).text,'FMG unknown');
+assert.equal(fmgStatus({fortimanager:{deployed:false,checked_at:100,error:'',instances:[]}},100).text,'FMG not found');
+assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',instances:[{state:'running'}]}},100).text,'FMG deployed');
+assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',instances:[{state:'stopped'}]}},100).text,'FMG stopped');
+assert.equal(fmgStatus({fortimanager:{deployed:true,checked_at:100,error:'',instances:[]}},221).text,'FMG stale');
+console.log('FortiManager indicator checks passed.');

@@ -5,6 +5,14 @@ function nodeClass(s,n) {
   return n.health==='healthy' && n.lifecycle==='InService' ? 'light healthy' : 'light';
 }
 function selectedStudents(students,selection) { return students.filter(s=>selection===null || selection.has(s.id)); }
+function fmgStatus(s, now=Date.now()/1000) {
+  const f=s.fortimanager;
+  if(!f || f.deployed===null || f.error) return {text:'FMG unknown', good:false};
+  if(now-f.checked_at>120) return {text:'FMG stale', good:false};
+  if(!f.deployed) return {text:'FMG not found', good:false};
+  const states=[...new Set(f.instances.map(i=>i.state))];
+  return {text:states.length===1 && states[0]==='running'?'FMG deployed':`FMG ${states.length===1?states[0]:'deployed'}`, good:true};
+}
 function cardStatus(s) {
   const fresh=s.fresh && s.reachable;
   return {
@@ -21,7 +29,7 @@ function gridLayout(count,width,height) {
   const rows=Math.max(1,Math.ceil(count/cols));
   return {cols,height:Math.max(94,Math.min(240,Math.floor((available-(rows-1)*12)/rows)))};
 }
-if(typeof module!=='undefined') module.exports={studentLabel,nodeClass,selectedStudents,cardStatus,gridLayout};
+if(typeof module!=='undefined') module.exports={studentLabel,nodeClass,selectedStudents,cardStatus,gridLayout,fmgStatus};
 if(typeof document!=='undefined') {
   const $=id=>document.getElementById(id), key='ums-selected-students', events=new Map();
   let selection=null,latest=null,roster='';
@@ -62,7 +70,10 @@ if(typeof document!=='undefined') {
       const status=cardStatus(s);head.className='card-head';identity.append(label);
       if(s.account_id==='594379811663'){const badge=document.createElement('div');badge.className='badge';badge.textContent='Instructor demo';identity.append(badge);}
       web.className='web-status '+(s.reachable?'up':'down');web.textContent=(s.reachable?'● ':'○ ')+status.web;
-      head.append(identity,web);metrics.className='card-metrics';count.textContent=status.count;phase.className='phase'+(status.steps[2]?' complete':'');phase.textContent=status.phase;metrics.append(count,phase);
+      const services=document.createElement('div'),fmg=document.createElement('span'),fm=fmgStatus(s);
+      services.className='service-status';fmg.className='fmg-status'+(fm.good?' deployed':'');fmg.textContent=(fm.good?'✓ ':'○ ')+fm.text;
+      fmg.title=s.fortimanager?.error ? 'FortiManager discovery: '+s.fortimanager.error : 'AWS EC2 deployment only; not a management connectivity check';
+      services.append(fmg,web);head.append(identity,services);metrics.className='card-metrics';count.textContent=status.count;phase.className='phase'+(status.steps[2]?' complete':'');phase.textContent=status.phase;metrics.append(count,phase);
       progress.className='progress';progress.setAttribute('aria-label','Progress: two healthy, three healthy, three inspecting');
       status.steps.forEach((done,i)=>{const bar=document.createElement('span');bar.className=done?'done':'';bar.title=['2 healthy FortiGates','3 healthy FortiGates','3 verified inspecting'][i];progress.append(bar);});
       const bottom=document.createElement('div');bottom.append(metrics,progress);row.append(head,lights,bottom);list.append(row);
@@ -83,7 +94,7 @@ if(typeof document!=='undefined') {
     for(const s of data.students)for(const n of s.nodes){const k=s.id+'|'+n.id,old=events.get(k);keys.add(k);if(s.fresh&&s.reachable&&old!==undefined&&n.event>old)flashes.add(k);events.set(k,n.event);}
     for(const k of events.keys())if(!keys.has(k))events.delete(k);
     latest=data;choices();render(flashes);$('connection').textContent='● Live';
-  }catch(_){$('connection').textContent='● Disconnected';if(latest){for(const s of latest.students){s.fresh=false;s.reachable=false;}render();}}
+  }catch(_){$('connection').textContent='● Disconnected';if(latest){for(const s of latest.students){s.fresh=false;s.reachable=false;if(s.fortimanager)s.fortimanager.checked_at=0;}render();}}
   finally{setTimeout(refresh,1500);}}
   refresh();
 }

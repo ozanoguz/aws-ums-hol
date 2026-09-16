@@ -52,7 +52,7 @@ def trust(principal):
 
 def plan(accounts):
     ids = [a['account_id'] for a in accounts if a['account_id'] != HOST_ACCOUNT]
-    host_policy = policy('ec2:DescribeAddresses', '*')
+    host_policy = policy(['ec2:DescribeAddresses', 'ec2:DescribeInstances'], '*')
     if ids:
         host_policy['Statement'].insert(0, policy('sts:AssumeRole', [f'arn:aws:iam::{a}:role/{READ_ROLE}' for a in ids])['Statement'][0])
     return {
@@ -64,7 +64,7 @@ def plan(accounts):
         'host_permissions': host_policy,
         'student_role': READ_ROLE,
         'student_trust': trust({'AWS': f'arn:aws:iam::{HOST_ACCOUNT}:role/{HOST_ROLE}'}),
-        'student_permissions': policy('ec2:DescribeAddresses', '*'),
+        'student_permissions': policy(['ec2:DescribeAddresses', 'ec2:DescribeInstances'], '*'),
         'students': accounts,
     }
 

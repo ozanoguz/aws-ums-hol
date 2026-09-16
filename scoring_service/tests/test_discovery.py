@@ -72,6 +72,33 @@ class DiscoveryTests(unittest.TestCase):
         sts.assume_role.assert_not_called()
         self.assertEqual(ec2.describe_addresses.call_count,1)
 
+    def test_fmg_pagination_names_and_states(self):
+        ec2=MagicMock()
+        ec2.get_paginator.return_value.paginate.return_value=[
+            {'Reservations':[{'Instances':[{'InstanceId':'i-fgt','State':{'Name':'running'},'Tags':[{'Key':'Name','Value':'student01-FGT'}]}]}]},
+            {'Reservations':[{'Instances':[
+                {'InstanceId':'i-fmg','State':{'Name':'stopped'},'Tags':[{'Key':'Name','Value':'student01-FortiManager'}]},
+                {'InstanceId':'i-deleted','State':{'Name':'terminated'},'Tags':[{'Key':'Name','Value':'FMG'}]}]}]}]
+        d=AWSDiscovery({},session_factory=lambda **kw:None)
+        with patch.object(d,'ec2_client',return_value=ec2):
+            result=d.fortimanager({})
+        self.assertTrue(result['deployed'])
+        self.assertEqual(result['instances'],[{'id':'i-fmg','state':'stopped'}])
+    def test_fmg_checked_before_web_deployment(self):
+        d=AWSDiscovery({},session_factory=lambda **kw:None)
+        student=Student(dict(id='s',url=''))
+        result={'deployed':True,'instances':[{'id':'i-fmg','state':'running'}],'error':'','checked_at':100}
+        with patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',return_value=result):
+            d.refresh(student)
+        self.assertTrue(student.view['fortimanager']['deployed'])
+        self.assertFalse(student.view['reachable'])
+    def test_fmg_permission_error_is_unknown(self):
+        d=AWSDiscovery({},session_factory=lambda **kw:None)
+        student=Student(dict(id='s',url=''))
+        with patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',side_effect=RuntimeError()):
+            d.refresh(student)
+        self.assertIsNone(student.view['fortimanager']['deployed'])
+
     def test_no_http_until_discovered(self):
         dashboard=Dashboard([dict(id='s',name='s',url='')])
         with patch.object(dashboard.students[0],'poll') as poll:

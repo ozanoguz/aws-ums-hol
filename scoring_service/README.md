@@ -188,3 +188,12 @@ Upgrade steps:
 ### Expanded classroom cards
 
 Cards now include web reachability, current healthy/verified counts, a short deployment phase and three progress segments (2 healthy, 3 healthy, 3 inspecting). Layout adapts to viewport size and selection count: smaller groups receive larger cards; all-account views use compact cards. On dense screens the phase text is omitted while counts and progress remain. The selected accounts and evidence-based flashing behavior are unchanged. No IAM update is needed for this visual update; deploy the updated files and restart via the installer using your existing bind/port options.
+
+
+### FortiManager deployment indicator
+
+Each account card includes a steady (non-blinking) FortiManager label. The AWS check runs with URL discovery every 60 seconds, even when no demo EIP exists. Running instances show **FMG deployed**; stopped/pending instances show their EC2 state. No matching non-terminated instances yields **FMG not found**. Permission/discovery failures show **FMG unknown**, and old results become **FMG stale** after 120 seconds. This is EC2 deployment evidence, not an HTTPS, licensing, configuration or FGFM test.
+
+Identification uses the EC2 **Name** tag: case-insensitive `FortiManager` anywhere in the name, or `FMG` as a word separated by spaces/hyphens/underscores. For custom names, set `"fmg_name": "student01-manager"` (case-sensitive wildcard matching supported) on that account in `accounts.json`; alternatively set `"fmg_instance_id": "i-..."` for an exact instance. Inspect these settings if a known deployment shows not found. Terminated and shutting-down instances are excluded. The region remains eu-central-1.
+
+Before installing this update, run the updated standalone `ums_iam.py --execute` in training-admin CloudShell (preview without `--execute`). It adds **ec2:DescribeInstances** to the dedicated student read roles and student00 scoring instance role. Then install the service update on the scoring EC2 host using your existing binding options. Keep any per-account selector overrides when replacing `accounts.json`. No student-facing guide or student deployment changes are needed.

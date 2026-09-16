@@ -51,7 +51,7 @@ class AWSDiscovery:
             session_factory = boto3.Session
         self.session_factory = session_factory
 
-    def resolve(self, account):
+    def ec2_client(self, account):
         # One session per worker avoids sharing mutable boto3 Session objects.
         from botocore.config import Config
         options = Config(connect_timeout=3, read_timeout=5, retries={'mode': 'standard', 'total_max_attempts': 2})
@@ -70,11 +70,36 @@ class AWSDiscovery:
             c = sts.assume_role(**request)['Credentials']
             target = self.session_factory(region_name=region, aws_access_key_id=c['AccessKeyId'],
                                           aws_secret_access_key=c['SecretAccessKey'], aws_session_token=c['SessionToken'])
-        ec2 = target.client('ec2', config=options)
+        return target.client('ec2', config=options)
+
+    def resolve(self, account):
+        ec2 = self.ec2_client(account)
         # Existing demo module uses Name = <prefix>gwlb-demo-web on its EIP.
         name = account.get('eip_name') or '*gwlb-demo-web'
         response = ec2.describe_addresses(Filters=[{'Name': 'tag:Name', 'Values': [name]}])
         return select_address(response['Addresses'])
+
+    def fortimanager(self, account):
+        import fnmatch
+        ec2 = self.ec2_client(account)
+        filters = [{'Name': 'instance-state-name', 'Values': ['pending', 'running', 'stopping', 'stopped']}]
+        if account.get('fmg_instance_id'):
+            filters.append({'Name': 'instance-id', 'Values': [account['fmg_instance_id']]})
+        matches = []
+        for page in ec2.get_paginator('describe_instances').paginate(Filters=filters):
+            for reservation in page.get('Reservations', []):
+                for instance in reservation.get('Instances', []):
+                    name = next((t['Value'] for t in instance.get('Tags', []) if t['Key'] == 'Name'), '')
+                    state = instance.get('State', {}).get('Name', '')
+                    if state not in ('pending', 'running', 'stopping', 'stopped'):
+                        continue
+                    pattern = account.get('fmg_name')
+                    identified = (bool(account.get('fmg_instance_id')) or
+                        (fnmatch.fnmatchcase(name, pattern) if pattern else
+                         ('fortimanager' in name.lower() or bool(re.search(r'(^|[-_ ])fmg($|[-_ ])', name.lower())))))
+                    if identified:
+                        matches.append({'id': instance['InstanceId'], 'state': state})
+        return {'deployed': bool(matches), 'instances': matches, 'error': '', 'checked_at': time.time()}
 
     def refresh(self, student):
         now = time.time()
@@ -87,7 +112,13 @@ class AWSDiscovery:
             # Expose AWS error codes, never credentials or raw response bodies.
             code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
             url, status = '', f'AWS discovery failed: {code}'
+        try:
+            fmg = self.fortimanager(student.config)
+        except Exception as exc:
+            code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
+            fmg = {'deployed': None, 'instances': [], 'error': str(code), 'checked_at': time.time()}
         with student.lock:
+            student.view['fortimanager'] = fmg
             if url and getattr(student, 'last_discovered_url', '') != url:
                 student.pending.clear()
                 student.confirmed.clear()

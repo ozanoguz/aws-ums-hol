@@ -25,11 +25,11 @@ class SetupTests(unittest.TestCase):
     def test_minimal_policies(self):
         p=plan([{'account_id':'036245824663','name':'student14'}])
         self.assertEqual(p['host_permissions']['Statement'][0]['Resource'],['arn:aws:iam::036245824663:role/UMSScoringReadOnly'])
-        self.assertEqual(p['student_permissions']['Statement'][0]['Action'],'ec2:DescribeAddresses')
+        self.assertEqual(p['student_permissions']['Statement'][0]['Action'],['ec2:DescribeAddresses','ec2:DescribeInstances'])
         self.assertEqual(p['student_trust']['Statement'][0]['Principal'],{'AWS':f'arn:aws:iam::{HOST_ACCOUNT}:role/{HOST_ROLE}'})
     def test_host_uses_direct_read_only_access(self):
         p=plan([{'account_id':HOST_ACCOUNT}])
-        self.assertEqual(p['host_permissions']['Statement'],[{'Effect':'Allow','Action':'ec2:DescribeAddresses','Resource':'*'}])
+        self.assertEqual(p['host_permissions']['Statement'],[{'Effect':'Allow','Action':['ec2:DescribeAddresses','ec2:DescribeInstances'],'Resource':'*'}])
     def test_refuses_unowned_role(self):
         iam=MagicMock();iam.get_role.return_value={'Role':{'Tags':[]}}
         with self.assertRaises(RuntimeError):ensure_role(iam,'role',{}, {})
