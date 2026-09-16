@@ -26,7 +26,8 @@ Each round checks `/healthz`, sends three fresh `/probe` requests, then reads `/
 - **2 healthy:** at least two current ASG members are `InService` and GWLB `healthy`, with fresh discovery.
 - **3 healthy:** the same with three members, showing scale-out progress.
 - **3 inspected:** three currently healthy members handled instructor probes confirmed by the student's correlation service in the last 120 seconds.
-- **Flashing square:** a new match for an instructor-issued probe. Inventory alone or another user's probes never trigger a flash.
+- **Solid blue square:** an AWS-discovered pending/running FortiGate, even before the web demo responds.
+- **Blinking green square:** a currently healthy FortiGate with a matched instructor probe in the last 120 seconds and fresh web inventory. Inventory alone or another user's probes never enables green blinking. Reduced-motion preferences show solid green.
 
 First-achieved milestone times persist only during this instructor-service session. Current counts decrease after scale-in or failure. Old inventory remains visible as stale; replacement instances cannot inherit another instance's inspection evidence. Restart clears history.
 
@@ -136,7 +137,7 @@ Verify the identity is your intended training-admin session before applying. Do 
 
 The control room displays one row per student ID with FortiGate squares. Use the **Student accounts** dropdown to select any combination of students; **All** and **None** provide shortcuts. Selection is saved in this browser. Filtering changes the display only; the service continues polling every configured account.
 
-Blue squares are healthy FortiGates, green squares have recent matched probe evidence, and a flash marks a newly matched instructor probe. Gray indicates unavailable/stale data; an outlined square is a placeholder awaiting discovery. The third square fills when the third FortiGate is discovered. Detailed metrics remain available on each student's own page.
+Blue squares indicate deployed FortiGates; green squares blink while recent matched probe evidence confirms inspection. Gray indicates unavailable/stale data; an outlined square is a placeholder awaiting discovery. The third square fills when the third FortiGate is discovered. Detailed metrics remain available on each student's own page.
 
 ## Install as an automatic Linux EC2 service (recommended)
 
@@ -212,3 +213,16 @@ sudo bash install_service.sh --config /opt/ums-scoring/accounts.json --listen-ho
 ```
 
 Development render/interaction checks: `node tests/test_render.cjs`.
+
+
+### Deployment and inspection lights
+
+The service independently discovers FortiGate EC2 instances every 60 seconds using the `aws:autoscaling:groupName` tag matching `*fgt_byol_asg`. For a custom ASG name, add `"fgt_asg_name": "your-exact-asg-name"` to that account in `accounts.json`. Student00 uses the same check.
+
+Pending/running VMs are blue before policy installation or web-server bootstrap completes. Green blinking requires fresh, healthy inventory and a correlated instructor probe within 120 seconds for that specific instance. It confirms the inspected web path works, not every FortiManager setting. Stopped instances, stale evidence, discovery failures and dashboard disconnects never qualify for green. With fresh AWS deployment evidence but failed web checks, a running VM returns to blue. Scale-in removes instances on the next successful AWS refresh.
+
+This update uses the existing `ec2:DescribeInstances` permission from the FortiManager indicator update. On the scoring EC2 host, install the updated files with your existing configuration and listening options:
+
+```bash
+sudo bash install_service.sh --config /opt/ums-scoring/accounts.json --listen-host 0.0.0.0 --port 8090
+```

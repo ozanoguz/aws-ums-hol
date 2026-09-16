@@ -1,8 +1,26 @@
 function studentLabel(s) { return s.name || s.id; }
+function displayNodes(s,now=Date.now()/1000) {
+  const inventory=s.fortigates;
+  if(inventory && !inventory.error && now-inventory.checked_at<=120) {
+    const evidence=new Map(s.nodes.map(n=>[n.id,n]));
+    return inventory.instances.map(n=>({...evidence.get(n.id),id:n.id,ec2_state:n.state,deployment_fresh:true}));
+  }
+  return s.nodes;
+}
 function nodeClass(s,n) {
-  if (s.transport_lost || !s.fresh || !s.reachable) return 'light';
-  if (n.verified) return 'light verified';
-  return n.health==='healthy' && n.lifecycle==='InService' ? 'light healthy' : 'light';
+  if (s.transport_lost) return 'light';
+  if (n.ec2_state && !['running','pending'].includes(n.ec2_state)) return 'light';
+  if (s.fresh && s.reachable && n.verified) return 'light verified';
+  if (n.deployment_fresh || (s.fresh && s.reachable)) return 'light healthy';
+  return 'light';
+}
+function nodeStatus(s,n) {
+  if(s.transport_lost) return 'Last known';
+  if(!n) return 'Waiting';
+  if(n.ec2_state && !['running','pending'].includes(n.ec2_state)) return n.ec2_state;
+  if(s.fresh && s.reachable && n.verified) return 'Inspecting';
+  if(n.deployment_fresh || (s.fresh && s.reachable)) return n.ec2_state==='pending'?'Starting':'Deployed';
+  return 'Stale';
 }
 function selectedStudents(students,selection) { return students.filter(s=>selection===null || selection.has(s.id)); }
 function fmgStatus(s, now=Date.now()/1000) {
@@ -32,9 +50,9 @@ function gridLayout(count,width,height) {
   const rows=Math.max(1,Math.ceil(count/cols));
   return {cols,height:Math.max(94,Math.min(220,Math.floor((available-(rows-1)*12)/rows)))};
 }
-if(typeof module!=='undefined') module.exports={studentLabel,nodeClass,selectedStudents,cardStatus,gridLayout,fmgStatus};
+if(typeof module!=='undefined') module.exports={studentLabel,nodeClass,selectedStudents,cardStatus,gridLayout,fmgStatus,displayNodes,nodeStatus};
 if(typeof document!=='undefined') {
-  const $=id=>document.getElementById(id), key='ums-selected-students', events=new Map();
+  const $=id=>document.getElementById(id), key='ums-selected-students';
   let selection=null,latest=null,roster='';
   try { const saved=JSON.parse(localStorage.getItem(key)); if(Array.isArray(saved)) selection=new Set(saved.filter(x=>typeof x==='string')); } catch(_) {}
   function syncChoices() {
@@ -55,7 +73,7 @@ if(typeof document!=='undefined') {
     }
     syncChoices();
   }
-  function render(flashes=new Set()) {
+  function render() {
     if(!latest)return;const list=$('students');list.replaceChildren();
     const visible=selectedStudents(latest.students,selection);
     const known=visible.filter(s=>!s.transport_lost);
@@ -63,14 +81,13 @@ if(typeof document!=='undefined') {
     for(const s of visible) {
       const row=document.createElement('div'),label=document.createElement('span'),lights=document.createElement('div');
       row.className='row'+(s.account_id==='594379811663'?' instructor':'');label.className='student';label.textContent=studentLabel(s);lights.className='lights';
-      const nodes=[...s.nodes].sort((a,b)=>a.id.localeCompare(b.id));
+      const nodes=[...displayNodes(s)].sort((a,b)=>a.id.localeCompare(b.id));
       for(let i=0;i<Math.max(3,nodes.length);i++) {
         const box=document.createElement('div'),caption=document.createElement('span');box.className='node';caption.className='node-caption';caption.textContent=`FGT ${i+1}`;
         const light=document.createElement('span'),n=nodes[i];light.className=n?nodeClass(s,n):'light missing';
-        if(n&&flashes.has(s.id+'|'+n.id))light.classList.add('flash');
-        const status=s.transport_lost?'Last known':!n?'Waiting':!s.fresh||!s.reachable?'Stale':n.verified?'Inspecting':n.health==='healthy'?'Healthy':n.health;
+        const status=nodeStatus(s,n);
         const note=document.createElement('span');note.className='node-state';note.textContent=status;
-        if(n&&s.fresh&&s.reachable&&!s.transport_lost)box.classList.add(n.verified?'observed':'discovered');
+        if(n&&nodeClass(s,n)!=='light')box.classList.add(nodeClass(s,n)==='light verified'?'observed':'discovered');
         light.title=`FortiGate ${i+1}: ${status}`;light.setAttribute('role','img');light.setAttribute('aria-label',light.title);box.append(caption,light,note);lights.append(box);
       }
       const head=document.createElement('div'),identity=document.createElement('div'),web=document.createElement('span'),metrics=document.createElement('div'),count=document.createElement('span'),phase=document.createElement('span'),progress=document.createElement('div');
@@ -97,10 +114,7 @@ if(typeof document!=='undefined') {
   document.addEventListener('keydown',e=>{if(e.key==='Escape')$('selector').open=false;});
   async function refresh(){try{
     const r=await fetch('/api/state',{cache:'no-store',signal:AbortSignal.timeout(5000)});if(!r.ok)throw Error();
-    const data=await r.json(),flashes=new Set(),keys=new Set();
-    for(const s of data.students)for(const n of s.nodes){const k=s.id+'|'+n.id,old=events.get(k);keys.add(k);if(s.fresh&&s.reachable&&old!==undefined&&n.event>old)flashes.add(k);events.set(k,n.event);}
-    for(const k of events.keys())if(!keys.has(k))events.delete(k);
-    latest=data;choices();render(flashes);$('connection').textContent='● Live';$('connection').classList.remove('disconnected');
+    latest=await r.json();choices();render();$('connection').textContent='● Live';$('connection').classList.remove('disconnected');
   }catch(error){console.error('Dashboard update failed',error);$('connection').textContent='● Reconnecting';$('connection').classList.add('disconnected');if(latest){for(const s of latest.students)s.transport_lost=true;render();}}
   finally{setTimeout(refresh,1500);}}
   refresh();

@@ -101,6 +101,23 @@ class AWSDiscovery:
                         matches.append({'id': instance['InstanceId'], 'state': state})
         return {'deployed': bool(matches), 'instances': matches, 'error': '', 'checked_at': time.time()}
 
+    def fortigates(self, account):
+        """Read lab ASG members independently of the inspected web path."""
+        ec2 = self.ec2_client(account)
+        filters = [
+            {'Name': 'instance-state-name', 'Values': ['pending', 'running', 'stopping', 'stopped']},
+            {'Name': 'tag:aws:autoscaling:groupName',
+             'Values': [account.get('fgt_asg_name') or '*fgt_byol_asg']},
+        ]
+        instances = []
+        for page in ec2.get_paginator('describe_instances').paginate(Filters=filters):
+            for reservation in page.get('Reservations', []):
+                for instance in reservation.get('Instances', []):
+                    state = instance.get('State', {}).get('Name', '')
+                    if state in ('pending', 'running', 'stopping', 'stopped'):
+                        instances.append({'id': instance['InstanceId'], 'state': state})
+        return {'instances': instances, 'error': '', 'checked_at': time.time()}
+
     def refresh(self, student):
         now = time.time()
         if now - getattr(student, 'aws_checked_at', 0) < 60:
@@ -117,7 +134,13 @@ class AWSDiscovery:
         except Exception as exc:
             code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
             fmg = {'deployed': None, 'instances': [], 'error': str(code), 'checked_at': time.time()}
+        try:
+            fgt = self.fortigates(student.config)
+        except Exception as exc:
+            code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
+            fgt = {'instances': [], 'error': str(code), 'checked_at': time.time()}
         with student.lock:
+            student.view['fortigates'] = fgt
             student.view['fortimanager'] = fmg
             if url and getattr(student, 'last_discovered_url', '') != url:
                 student.pending.clear()

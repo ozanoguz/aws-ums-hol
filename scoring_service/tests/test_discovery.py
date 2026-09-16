@@ -99,6 +99,24 @@ class DiscoveryTests(unittest.TestCase):
             d.refresh(student)
         self.assertIsNone(student.view['fortimanager']['deployed'])
 
+    def test_fgt_discovery_before_web_and_instance_filter(self):
+        ec2=MagicMock()
+        ec2.get_paginator.return_value.paginate.return_value=[{'Reservations':[{'Instances':[
+            {'InstanceId':'i-new','State':{'Name':'pending'}},
+            {'InstanceId':'i-running','State':{'Name':'running'}},
+            {'InstanceId':'i-old','State':{'Name':'terminated'}}]}]}]
+        d=AWSDiscovery({},session_factory=lambda **kw:None)
+        student=Student(dict(id='s',url=''))
+        with patch.object(d,'ec2_client',return_value=ec2), patch.object(d,'resolve',return_value=('','Pending')):
+            d.refresh(student)
+        self.assertFalse(student.view['reachable'])
+        self.assertEqual([i['id'] for i in student.view['fortigates']['instances']],['i-new','i-running'])
+        filters=ec2.get_paginator.return_value.paginate.call_args.kwargs['Filters']
+        self.assertIn({'Name':'tag:aws:autoscaling:groupName','Values':['*fgt_byol_asg']},filters)
+        with patch.object(d,'ec2_client',return_value=ec2):
+            d.fortigates({'fgt_asg_name':'custom-lab'})
+        self.assertEqual(ec2.get_paginator.return_value.paginate.call_args.kwargs['Filters'][1]['Values'],['custom-lab'])
+
     def test_no_http_until_discovered(self):
         dashboard=Dashboard([dict(id='s',name='s',url='')])
         with patch.object(dashboard.students[0],'poll') as poll:

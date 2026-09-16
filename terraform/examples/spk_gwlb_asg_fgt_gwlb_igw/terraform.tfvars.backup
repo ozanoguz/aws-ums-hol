@@ -51,9 +51,9 @@ asgs = {
       internal_port = "secgrp1"
     }
     user_conf_file_path = "" # e.g. "./fgt_config.conf"
-    asg_max_size        = 1
-    asg_min_size        = 1
-    # asg_desired_capacity = 1
+    asg_max_size        = 2
+    asg_min_size        = 2
+    # asg_desired_capacity = 2
     create_dynamodb_table = true
     dynamodb_table_name   = "fgt_asg_track_table"
     ## For UMS feature:

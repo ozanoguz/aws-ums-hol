@@ -14,7 +14,7 @@ assert.equal(nodeClass(active,node),'light verified');
 assert.equal(nodeClass({...active,fresh:false},node),'light');
 assert.equal(nodeClass({...active,reachable:false},node),'light');
 assert.equal(nodeClass(active,{...node,verified:false}),'light healthy');
-assert.equal(nodeClass(active,{...node,verified:false,lifecycle:'Pending'}),'light');
+assert.equal(nodeClass(active,{...node,verified:false,lifecycle:'Pending'}),'light healthy');
 console.log('Dashboard selection and light-state checks passed.');
 
 const {cardStatus,gridLayout}=exported.exports;
@@ -44,3 +44,22 @@ assert.equal(fmgStatus(paused).text,'FMG last known');
 assert.equal(nodeClass(paused,{verified:true}),'light');
 assert.equal(gridLayout(15,1744,780).cols,5);
 console.log('Balanced grid and disconnected-state checks passed.');
+
+const {displayNodes,nodeStatus}=exported.exports;
+const deployed={fresh:false,reachable:false,nodes:[],fortigates:{checked_at:100,error:'',instances:[{id:'i-new',state:'running'}]}};
+let discovered=displayNodes(deployed,100);
+assert.equal(discovered.length,1);
+assert.equal(nodeClass(deployed,discovered[0]),'light healthy');
+assert.equal(nodeStatus(deployed,discovered[0]),'Deployed');
+assert.deepEqual(displayNodes(deployed,221),[]);
+assert.deepEqual(displayNodes({...deployed,fortigates:{...deployed.fortigates,error:'AccessDenied'}},100),[]);
+const inspecting={...deployed,...active,nodes:[{...node,id:'i-new'},{...node,id:'i-removed'}]};
+discovered=displayNodes(inspecting,100);
+assert.equal(discovered.length,1); // successful AWS discovery removes old members
+assert.equal(nodeClass(inspecting,discovered[0]),'light verified');
+assert.equal(nodeClass({...inspecting,fresh:false},discovered[0]),'light healthy');
+assert.equal(nodeClass(inspecting,{...discovered[0],ec2_state:'stopped'}),'light');
+assert.equal(nodeClass({...inspecting,transport_lost:true},discovered[0]),'light');
+const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
+assert.match(html,/light\.verified\{animation:blink 1.5s ease-in-out infinite/);
+console.log('Independent deployment, inspection, stale and scale-in checks passed.');
