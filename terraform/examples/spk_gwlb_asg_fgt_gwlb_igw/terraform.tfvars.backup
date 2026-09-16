@@ -87,3 +87,8 @@ enable_cross_zone_load_balancing = true
 general_tags = {
   "purpose" = "ASG_TEST"
 }
+
+web_demo = {
+  allowed_client_cidrs = ["0.0.0.0/0"]
+  vpc_cidr            = "10.50.0.0/16"
+}
