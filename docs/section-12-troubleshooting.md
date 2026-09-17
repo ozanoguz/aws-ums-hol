@@ -4,6 +4,8 @@
 
 | Symptom | Check |
 |---|---|
+| Stage 1 has no FortiGates | Expected with `deployment_stage = "infrastructure"`; complete FortiManager setup, then activate in Section 10, Step 7 |
+| `Output "web_demo" not found` | Check the original state/workspace, the enabled `web_demo` block and a successful apply; null outputs are omitted from state |
 | Terraform launches only one FortiGate or cannot scale to three | In `asgs.fgt_byol_asg`, verify min/desired `2` and max `3`; review and apply the updated plan before the scaling exercise |
 | Device does not register | FortiManager IP/serial, registration API key, network reachability, UMS connector and matching onboarding administrator |
 | Registration succeeds but the policy package is empty | Run the Section 10 policy script against **Policy Package or ADOM Database → GWLB-Web-Demo**; saving a script does not execute it |

@@ -80,6 +80,7 @@ Security VPC with FortiGate ASG act as a shadow service. ALL internal and extern
 
 | Name | Description |
 |------|-------------|
+| `deployment_stage` | Current stage: `infrastructure` or `active`. |
 | `az_name_map` | Availability Zone to GENEVE tunnel name mapping. |
 | `gwlb_ips` | GWLB node private IPs keyed by subnet ID. |
 | `web_demo` | Web URL, collector private IP, server instance ID and generated FortiManager CLI template, when enabled. |
@@ -89,3 +90,20 @@ Only student-facing configuration values are printed. Route tables, subnet inven
 ## Optional live web traffic demo
 
 Set `web_demo` to deploy an additional spoke web server with ASG discovery and activity lights driven by actual FortiGate syslog correlation. See [the demo setup guide](../../modules/demo/spoke_web/README.md) for tfvars, FortiManager logging setup, and network requirements. Disabled by default; no existing ASG capacity settings are changed.
+
+## Two-stage deployment
+
+For a **new lab**, set the top-level `deployment_stage = "infrastructure"` in `terraform.tfvars`. Keep `asgs.fgt_byol_asg` configured with `asg_min_size = 2`, `asg_desired_capacity = 2`, and `asg_max_size = 3`. The infrastructure stage overrides all three effective capacities to zero and disables the configured scaling policies. The ASG, launch template, GWLB, networking and enabled web demo still exist; no FortiGate instances launch.
+
+1. Review `terraform plan -out=infrastructure.plan`, then run `terraform apply infrastructure.plan`.
+2. Collect `terraform output -json gwlb_ips` and `terraform output -json web_demo`.
+3. Complete the FortiManager provisioning template, template group, populated policy package and onboarding rule in Section 10.
+4. Change the saved setting to `deployment_stage = "active"`.
+5. Review a new `terraform plan -out=activation.plan`, then `terraform apply activation.plan` using the same directory, backend and workspace. Expect ASG capacity changes, not replacement of the GWLB or VPC.
+6. Verify both FortiGates receive configuration through onboarding. The web demo can finish bootstrap once inspection and outbound access work.
+
+The default is `active` for compatibility with existing deployments. Do not set an already running lab to `infrastructure`: doing so reduces desired capacity to zero and can terminate FortiGates. Existing devices can instead use Section 10's manual installation steps. Reapplying active configuration after UMS scale-out can reset desired capacity to the value in Terraform; review capacity changes before applying.
+
+The `web_demo` input still controls whether the demo is created. A disabled demo has no saved `web_demo` output; an output-not-found error can also mean a wrong state/workspace or unapplied configuration. This stage switch does not enable the demo automatically.
+
+Run the isolated stage-expression tests without AWS credentials using `python3 tests/check_deployment_stage.py` from this example directory. These test the stage capacity logic; they do not replace reviewing the actual AWS plan.

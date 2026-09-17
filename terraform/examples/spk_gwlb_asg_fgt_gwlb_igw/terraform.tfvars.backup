@@ -2,6 +2,13 @@
 ## "<YOUR-OWN-VALUE>" are parameters that you need to specify your own value.
 ## BYOL-only lab variant: deploys only fgt_byol_asg and does not create the on-demand ASG.
 
+## Two-stage deployment (new labs)
+# Copy this file to terraform.tfvars; Terraform does not automatically load .backup files.
+# Stage 1: create infrastructure with zero FortiGates, then configure FortiManager.
+# Stage 2: change this to "active" and apply a new plan to launch the baseline below.
+# Existing running labs: use "active"; "infrastructure" requests scale-in to zero.
+deployment_stage = "infrastructure"
+
 ## Root config
 access_key = "<YOUR-OWN-VALUE>"
 secret_key = "<YOUR-OWN-VALUE>"
@@ -39,21 +46,21 @@ availability_zones = "<YOUR-OWN-VALUE>" # e.g. ["eu-central-1a", "eu-central-1b"
 fgt_intf_mode = "2-arm"
 asgs = {
   fgt_byol_asg = {
-    template_name   = "fgt_asg_template"
-    fgt_version     = "7.6.7"
-    license_type    = "byol"
-    fgt_password    = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
-    keypair_name    = "<YOUR-OWN-VALUE>" # Keypair should be created manually
-    lic_folder_path = "./license"
+    template_name               = "fgt_asg_template"
+    fgt_version                 = "7.6.7"
+    license_type                = "byol"
+    fgt_password                = "<YOUR-OWN-VALUE>" # e.g. "Fortinet2026!"
+    keypair_name                = "<YOUR-OWN-VALUE>" # Keypair should be created manually
+    lic_folder_path             = "./license"
     enable_fgt_system_autoscale = true
     intf_security_group = {
       login_port    = "secgrp1"
       internal_port = "secgrp1"
     }
-    user_conf_file_path = "" # e.g. "./fgt_config.conf"
-    asg_max_size        = 2
-    asg_min_size        = 2
-    # asg_desired_capacity = 2
+    user_conf_file_path   = "" # e.g. "./fgt_config.conf"
+    asg_max_size          = 3
+    asg_min_size          = 2
+    asg_desired_capacity  = 2
     create_dynamodb_table = true
     dynamodb_table_name   = "fgt_asg_track_table"
     ## For UMS feature:
@@ -90,5 +97,5 @@ general_tags = {
 
 web_demo = {
   allowed_client_cidrs = ["0.0.0.0/0"]
-  vpc_cidr            = "10.50.0.0/16"
+  vpc_cidr             = "10.50.0.0/16"
 }

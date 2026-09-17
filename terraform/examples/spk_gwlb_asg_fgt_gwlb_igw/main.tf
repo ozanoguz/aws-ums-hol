@@ -227,10 +227,10 @@ module "fgt_asg" {
   # Auto Scale Group
   availability_zones         = var.availability_zones
   asg_name                   = each.key
-  asg_max_size               = each.value.asg_max_size
-  asg_min_size               = each.value.asg_min_size
-  asg_desired_capacity       = lookup(each.value, "asg_desired_capacity", null)
-  scale_policies             = lookup(each.value, "scale_policies", {})
+  asg_max_size               = local.deployment_capacity[each.key].max_size
+  asg_min_size               = local.deployment_capacity[each.key].min_size
+  asg_desired_capacity       = local.deployment_capacity[each.key].desired_capacity
+  scale_policies             = var.deployment_stage == "infrastructure" ? {} : lookup(each.value, "scale_policies", {})
   create_dynamodb_table      = lookup(each.value, "create_dynamodb_table", null)
   dynamodb_table_name        = lookup(each.value, "dynamodb_table_name", null)
   primary_scalein_protection = lookup(each.value, "primary_scalein_protection", false)

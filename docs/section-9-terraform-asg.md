@@ -152,6 +152,29 @@ Save in nano with **Ctrl+O**, press **Enter**, then **Ctrl+X**. Use **Control**,
 
 ---
 
+### Select Stage 1: Infrastructure Only
+
+For a **new lab**, add this top-level setting to `terraform.tfvars`:
+
+```hcl
+deployment_stage = "infrastructure"
+```
+
+Keep the ASG values in the table above at minimum **2**, desired **2**, maximum **3**. Stage 1 overrides the effective minimum, desired and maximum to **0**, and disables configured scaling policies. Terraform still creates the ASG, launch template, GWLB and networking, but no FortiGate can launch before the onboarding configuration is ready.
+
+Ensure the top-level demo configuration is present:
+
+```hcl
+web_demo = {
+  allowed_client_cidrs = ["0.0.0.0/0"]
+  vpc_cidr            = "10.50.0.0/16"
+}
+```
+
+::: warning Existing deployments
+Do not change a running lab to `infrastructure`; zero capacity can terminate its FortiGates. Leave it at `active` (the default when omitted) and use Section 10's existing-device installation steps. Preserve your current Terraform state and workspace.
+:::
+
 ## Step 5: Initialize Terraform
 
 Run Terraform initialization from the example directory.
@@ -169,35 +192,39 @@ Confirm that Terraform downloads the required providers and modules successfully
 Generate and review the Terraform execution plan.
 
 ```bash
-terraform plan -out=lab.plan
+terraform plan -out=infrastructure.plan
 ```
 
-Review the resources that Terraform will create or modify. Confirm the plan contains the two-instance baseline, maximum capacity three, and the web-demo resources. If you edit the configuration afterward, regenerate the saved plan.
+Review the resources that Terraform will create or modify. Confirm the plan contains an empty ASG with minimum, desired and maximum capacity zero, plus the GWLB and web-demo resources. If you edit the configuration afterward, regenerate the saved plan.
 
 ---
 
-## Step 7: Apply the Terraform Configuration
+## Step 7: Apply Stage 1 — Infrastructure
 
 Deploy the infrastructure.
 
 ```bash
-terraform apply lab.plan
+terraform apply infrastructure.plan
 ```
 
 Terraform will create or update the AWS resources.
 
 ---
 
-## Step 8: Verify the Deployment
+## Step 8: Verify Stage 1
 
 After Terraform completes, verify the following:
 
-1. The Auto Scaling Group is created in AWS.
-2. Two FortiGate-VM instances are launched.
-3. Both FortiGate-VM instances can reach FortiManager.
-4. Both FortiGate-VM instances register with FortiManager.
-5. The FortiManager UMS group receives the expected instance information.
+1. The Auto Scaling Group exists with desired capacity **0** and no FortiGate instances.
+2. The GWLB and its network interfaces exist, so their private IPs can be retrieved.
+3. The web-demo infrastructure exists. Its page need not respond yet because no FortiGate is inspecting traffic.
+4. `terraform output deployment_stage` reports `infrastructure`.
 
+Record the GWLB addresses:
+
+```bash
+terraform output -json gwlb_ips
+```
 
 Record the demo output for the next section:
 
@@ -205,7 +232,7 @@ Record the demo output for the next section:
 terraform output -json web_demo
 ```
 
-The web URL may remain unavailable until Section 10 installs the inspection and outbound policies. Keep your Terraform state files; subsequent changes must use this same deployment state.
+The web URL remains unavailable until Section 10 completes FortiManager configuration, activates the ASG and installs the inspection and outbound policies through onboarding. Keep your Terraform state files; subsequent changes must use this same deployment state.
 
 ## Next: Configure Inspection and the Web Demo
 
