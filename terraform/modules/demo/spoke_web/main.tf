@@ -1,7 +1,10 @@
 terraform {
   required_version = ">= 1.3, < 2.0.0"
   required_providers {
-    aws = { source = "hashicorp/aws" }
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 6.21.0"
+    }
   }
 }
 
@@ -149,9 +152,8 @@ locals {
 resource "aws_instance" "web" {
   ami           = data.aws_ssm_parameter.al2023.value
   instance_type = "t3.micro"
-  network_interface {
+  primary_network_interface {
     network_interface_id = aws_network_interface.web.id
-    device_index         = 0
   }
   iam_instance_profile        = aws_iam_instance_profile.web.name
   user_data_replace_on_change = true

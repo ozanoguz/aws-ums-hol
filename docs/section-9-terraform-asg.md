@@ -225,18 +225,6 @@ After Terraform completes, verify the following:
 3. The web-demo infrastructure exists. Its page need not respond yet because no FortiGate is inspecting traffic.
 4. `terraform output deployment_stage` reports `infrastructure`.
 
-Record the GWLB addresses:
-
-```bash
-terraform output -json gwlb_ips
-```
-
-Record the demo output for the next section:
-
-```bash
-terraform output -json web_demo
-```
-
 The web URL remains unavailable until Section 10 completes FortiManager configuration, activates the ASG and installs the inspection and outbound policies through onboarding. Keep your Terraform state files; subsequent changes must use this same deployment state.
 
 ## Next: Configure Inspection and the Web Demo
