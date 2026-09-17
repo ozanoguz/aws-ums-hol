@@ -25,10 +25,12 @@ Suggested values:
 | Device Group | `Managed FortiGate` |
 | Install License | Flex VM |
 | Install Configuration | Manual Configuration |
-| Policy Package | `default` temporarily for initial onboarding; replaced with `GWLB-Web-Demo` in Section 10 |
+| Policy Package | `default` as a temporary placeholder; replace with `GWLB-Web-Demo` before activation in Section 10 |
 | Maximum Device Number | 4 |
 
 
 Select the FortiFlex connector/configuration prepared in Section 6. Keep the same API administrator selected here as the API key used later in `fmg_integration.ums.api_key`.
 
-At this stage, GENEVE tunnels and demo policies have not been created. Initial registration/licensing is expected, but web inspection is not ready yet. After Terraform deployment, [Section 10](./section-10-fortimanager-configuration.md) creates the provisioning template and populated policy package, updates this existing rule, and explicitly installs them on the already registered devices. Do not assume an empty/default package provides the demo policies.
+At this stage, no FortiGates are expected in a new lab. Section 9 creates infrastructure with ASG capacity held at zero. [Section 10](./section-10-fortimanager-configuration.md) creates the provisioning template and populated policy package, updates this rule, and only then activates the ASG. Do not launch FortiGates while this rule still selects the placeholder package.
+
+**Checkpoint:** the rule is saved with the correct API administrator and FortiFlex connector. Device registration and licensing are checked after Section 10 activation. For an existing deployment, updating the rule alone does not install configuration; follow Section 10, Step 8.

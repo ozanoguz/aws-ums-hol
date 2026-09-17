@@ -24,7 +24,7 @@ By the end of this section, you will be able to:
 
 ## Part 1: Scale Out the Auto Scaling Group
 
-Start with **2** healthy FortiGates. In FortiManager, use **Auto-Scale Instance Count** to increase the desired count to **3**. The Terraform ASG maximum from Section 9 must be at least 3, and the FortiFlex configuration must have capacity to license the third device.
+Start with **2** healthy FortiGates. In FortiManager, use **Auto-Scale Instance Count** to increase the desired count to **3**. The deployment must be in `active` stage after Section 10, with an effective ASG maximum of at least 3, and the FortiFlex configuration must have capacity to license the third device.
 
 Before scaling, confirm the onboarding rule already assigns the `GWLB-Web-Templates` group and populated `GWLB-Web-Demo` package. After scaling:
 

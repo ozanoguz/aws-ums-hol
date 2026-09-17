@@ -1,5 +1,7 @@
 # Section 11: Validate Auto Onboarding
 
+Complete Section 10, Step 7 (Stage 2 activation) first. Stage 1 deliberately has no FortiGates, so registration, licensing and inspection cannot be validated until activation. For an existing deployment, complete the manual installation in Section 10, Step 8 when needed.
+
 1. In FortiManager, go to:
 
    ```text

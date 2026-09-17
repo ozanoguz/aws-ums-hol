@@ -19,7 +19,7 @@ features:
   - title: UMS Integration
     details: Configure AWS SDN Connector and User Managed Scaling integration.
   - title: Terraform ASG
-    details: Deploy FortiGate Auto Scaling Group using Terraform modules.
+    details: Create infrastructure with an empty ASG, prepare FortiManager, then activate two FortiGates.
   - title: FortiFlex
     details: Configure FortiFlex connector and Flex VM licensing workflow.
 ---

@@ -15,8 +15,8 @@
 - [Section 6: Creating a FortiFlex Connector](./section-6-fortiflex-connector.md)
 - [Section 7: Create an Auto Onboarding Rule](./section-7-auto-onboarding.md)
 - [Section 8: Deploying Cloud9 instance](./section-8-deploy-cloud9.md)
-- [Section 9: Deploying Auto Scaling Group using Terraform](./section-9-terraform-asg.md)
-- [Section 10: Configure FortiManager Templates and the Policy Package](./section-10-fortimanager-configuration.md)
+- [Section 9: Stage 1 — Deploy Infrastructure with Terraform](./section-9-terraform-asg.md)
+- [Section 10: Configure FortiManager and Activate the ASG](./section-10-fortimanager-configuration.md)
 - [Section 11: Validate Auto Onboarding](./section-10-validate-auto-onboarding.md)
 - [Section 12: Scaling the FortiGate Auto Scaling Group from FortiManager](./section-11-scale-asg.md)
 - [Section 13: Troubleshooting](./section-12-troubleshooting.md)
@@ -29,6 +29,17 @@
 In this lab, you will configure FortiManager for AWS User Managed Scaling (UMS) integration by following the official Fortinet AWS Administration Guide.
 
 Each student will use an individual AWS account. AWS access keys and secret access keys have already been created by the instructor.
+
+The lab uses two Terraform stages in the same directory, backend and workspace:
+
+| Section | Stage | Expected result |
+|---|---|---|
+| 9 | `infrastructure` | GWLB, networking, web-demo infrastructure and an empty ASG; zero FortiGates |
+| 10, Steps 1–6 | Prepare FortiManager | Templates, populated policy package and onboarding rule ready using the deployed GWLB addresses |
+| 10, Step 7 | `active` | Two FortiGates launch and receive configuration through onboarding |
+| 11–12 | Validate and scale | Verify inspection, scale to three using UMS, then return to two |
+
+Section 10, Step 8 covers manual installation for already registered devices. Existing running labs should remain `active`; switching to `infrastructure` requests scale-in to zero.
 
 [Official Fortinet reference](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/467817)
 
@@ -45,7 +56,7 @@ By the end of this lab, you will be able to:
 - Configure a FortiManager AWS Cloud SDN connector.
 - Create an auto-onboarding rule.
 - Configure a FortiFlex connector in FortiManager.
-- Deploy auto-scaling in AWS using Terraform.
+- Deploy infrastructure first, then activate the FortiGate ASG after FortiManager is ready.
 - Validate that FortiManager can discover AWS Auto Scaling resources.
 - Install GENEVE, routing, syslog and the demo policy package through FortiManager.
 - Test the public HTTP web demo and identify actual inspection traffic.

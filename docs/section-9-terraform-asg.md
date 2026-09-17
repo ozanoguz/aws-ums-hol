@@ -1,6 +1,6 @@
-# Section 9: Deploying Auto Scaling Group using Terraform
+# Section 9: Stage 1 — Deploy Infrastructure with Terraform
 
-In this section, you will use the Cloud9 Terraform workstation deployed in Section 8 to download the Fortinet AWS Terraform modules and update the Terraform variables so FortiGate-VM instances launched by the Auto Scaling Group can register with FortiManager.
+In this section, use the Cloud9 Terraform workstation from Section 8 to create the GWLB, networking, web-demo infrastructure and an empty FortiGate ASG. No FortiGates launch in Stage 1. Section 10 prepares FortiManager and then activates the ASG in Stage 2.
 
 Use the Cloud9 workstation prepared in Section 8 for the commands below. Keep the Terraform configuration and state in that same workspace throughout the lab.
 
@@ -16,7 +16,7 @@ By the end of this section, you will be able to:
 - Edit the `terraform.tfvars` file for an Auto Scaling Group deployment.
 - Add FortiManager integration variables.
 - Run Terraform initialization and deployment commands from Cloud9.
-- Verify that the Auto Scaling Group deployment is created successfully.
+- Verify an empty ASG and collect the GWLB addresses before FortiManager provisioning is configured.
 
 ---
 
@@ -78,11 +78,16 @@ cd aws-ums-hol/terraform/examples/spk_gwlb_asg_fgt_gwlb_igw
 
 ## Step 4: Configure the Terraform Variables
 
-Edit the `terraform.tfvars` file using `nano`.
+For a new lab, create the working variables file from the supplied backup **only if it does not already exist**:
 
 ```bash
+if [ ! -f terraform.tfvars ]; then
+  cp terraform.tfvars.backup terraform.tfvars
+fi
 nano terraform.tfvars
 ```
+
+Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.backup`. Edit the working file and replace all `<YOUR-OWN-VALUE>` placeholders. The backup already selects `deployment_stage = "infrastructure"` and configures the later active baseline as minimum 2, desired 2, maximum 3. Preserve an existing working file and its deployment values; running labs must use `active`.
 
 ---
 
@@ -115,7 +120,7 @@ nano terraform.tfvars
 | user_conf_file_path | Must be empty | Already configured for you `""` |
 | enable_fgt_system_autoscale | Disable legacy autoscale handling because FortiManager manages UMS | `false` |
 | asg_min_size | Minimum capacity for the two-node baseline | `2` |
-| asg_desired_capacity | Initial FortiGate instance count; uncomment/add this field | `2` |
+| asg_desired_capacity | Stage 2 FortiGate instance count | `2` |
 | asg_max_size | Allow the later three-node scale-out exercise | `3` |
 
 ### FortiManager Configuration: `fmg_integration` Section
@@ -154,7 +159,7 @@ Save in nano with **Ctrl+O**, press **Enter**, then **Ctrl+X**. Use **Control**,
 
 ### Select Stage 1: Infrastructure Only
 
-For a **new lab**, add this top-level setting to `terraform.tfvars`:
+For a **new lab**, confirm this top-level setting copied from the backup is present in `terraform.tfvars`:
 
 ```hcl
 deployment_stage = "infrastructure"
@@ -236,4 +241,4 @@ The web URL remains unavailable until Section 10 completes FortiManager configur
 
 ## Next: Configure Inspection and the Web Demo
 
-Registration alone does not configure GENEVE inspection or the demo firewall policies. Continue to [Section 10: Configure FortiManager Templates and the Policy Package](./section-10-fortimanager-configuration.md). That section provides both scripts and installs them on existing devices before enabling them for future onboarding.
+Continue to [Section 10: Configure FortiManager and Activate the ASG](./section-10-fortimanager-configuration.md). Create both scripts, populate the policy package and update onboarding before changing the deployment stage to `active`. The first two FortiGates then receive their configuration through onboarding; a separate installation path covers existing devices.
