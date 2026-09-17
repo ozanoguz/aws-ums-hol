@@ -26,6 +26,8 @@ By the end of this section, you will be able to:
 
 Start with **2** healthy FortiGates. In FortiManager, use **Auto-Scale Instance Count** to increase the desired count to **3**. The deployment must be in `active` stage after Section 10, with an effective ASG maximum of at least 3, and the FortiFlex configuration must have capacity to license the third device.
 
+In **Device Manager → Device & Groups**, right-click the UMS ASG group and choose **Auto-Scale Instance Count**. Following the Fortinet procedure, set **minimum, desired and maximum to 3** to force the three-node exercise, then confirm the change. This changes the live AWS ASG bounds from the Terraform baseline.
+
 Before scaling, confirm the onboarding rule already assigns the `GWLB-Web-Templates` group and populated `GWLB-Web-Demo` package. After scaling:
 
 1. Wait for the new instance to register and receive a license.
@@ -33,7 +35,7 @@ Before scaling, confirm the onboarding rule already assigns the `GWLB-Web-Templa
 3. Wait for its GWLB target health to become healthy.
 4. Open the existing web-demo URL and select **Start traffic**. A third card appears automatically; it flashes after matched traffic reaches that device. Healthy status alone does not produce a flash. GWLB hashing and AZ eligibility can make traffic uneven.
 
-Use FortiManager for this exercise. Avoid reapplying an old Terraform plan with desired capacity 2 during scale-out; Terraform can reconcile capacity back to its configured value.
+Use FortiManager for this exercise. A new Terraform plan can propose restoring minimum/desired/maximum to the configured 2/2/3 after a UMS change. Review those differences before applying; do not use Terraform to install FortiManager policies or reuse a saved plan from before scaling.
 
 Follow the steps in the official Fortinet documentation below:
 
@@ -45,7 +47,7 @@ Follow the steps in the official Fortinet documentation below:
 
 Scaling in reduces the number of FortiGate-VM instances in the Auto Scaling Group.
 
-In this example, the Auto Scaling Group will be scaled in from **3 FortiGate-VM instances** back to the **2-instance baseline**.
+In this example, the Auto Scaling Group will be scaled in from **3 FortiGate-VM instances** back to the **2-instance baseline**. Open **Auto-Scale Instance Count** again and set **minimum, desired and maximum to 2**, then confirm. The maximum is now 2; raise it again when repeating scale-out.
 
 Follow the steps in the official Fortinet documentation below:
 

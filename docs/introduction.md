@@ -14,7 +14,7 @@
 - [Section 5: Enable the SDN Connector for UMS](./section-5-enable-ums.md)
 - [Section 6: Creating a FortiFlex Connector](./section-6-fortiflex-connector.md)
 - [Section 7: Create an Auto Onboarding Rule](./section-7-auto-onboarding.md)
-- [Section 8: Deploying Cloud9 instance](./section-8-deploy-cloud9.md)
+- [Section 8: Deploy the Cloud9 Terraform Workstation](./section-8-deploy-cloud9.md)
 - [Section 9: Stage 1 — Deploy Infrastructure with Terraform](./section-9-terraform-asg.md)
 - [Section 10: Configure FortiManager and Activate the ASG](./section-10-fortimanager-configuration.md)
 - [Section 11: Validate Auto Onboarding](./section-10-validate-auto-onboarding.md)
@@ -66,7 +66,9 @@ By the end of this lab, you will be able to:
 
 ## Lab Topology
 
-![AWS UMS lab topology](/images/labtopology.png)
+![Reference GWLB inspection architecture](/images/labtopology.png)
+
+The image shows the general multi-spoke GWLB architecture. Its `10.1.0.0/16` and `10.2.0.0/16` spokes are reference examples, not the web-demo addresses used in this lab. The deployed demo uses a separate **10.50.0.0/16** spoke: HTTP server **10.50.0.10**, private syslog collector **10.50.0.11**. The collector and HTTP service share one EC2 instance with two private addresses. FortiManager and the Terraform workstation are deployed separately and are not shown. Section 10 shows the lab's inspected HTTP and private telemetry paths.
 
 ---
 
@@ -86,7 +88,7 @@ Before starting, confirm that you have received the following from your instruct
 | AWS access key ID | Provided by instructor |
 | AWS secret access key | Provided by instructor |
 | AWS region | `eu-central-1` |
-| FortiManager URL | `https://<fortimanager-public-ip>` |
+| FortiManager URL | Obtained after deployment in Section 2 |
 | FortiFlex token ID | Provided by instructor |
 | FortiCloud API user & password | Provided by instructor |
 

@@ -15,7 +15,7 @@ By the end of this section, you will be able to:
   * Launch the Cloud9 New VPC CloudFormation template.
   * Deploy a Cloud9 Terraform workstation.
   * Open the Cloud9 environment.
-  * Verify/Install Terraform availability before continuing with the Auto Scaling Group deployment.
+  * Install and verify Terraform before continuing with the Auto Scaling Group deployment.
 
 ---
 
@@ -29,7 +29,7 @@ Confirm that you have completed the previous sections and have the following inf
 
 > Important: Use the same AWS region throughout the lab.
 
-AWS region will be used:
+Use this AWS region:
 
 `eu-central-1`
 
@@ -59,7 +59,9 @@ Example:
 
 `student01-Cloud9-New-VPC`
 
-Unless your instructor provides different values, keep the default values from the template.
+Set **EnvironmentName** to the same student-specific name. Keep the default VPC/subnet CIDRs unless instructed otherwise.
+
+The template defaults **CreateCloud9SSMPrerequisites** to `false`, which assumes `AWSCloud9SSMAccessRole` and `AWSCloud9SSMInstanceProfile` already exist. Use `false` for prepared accounts. If either prerequisite is missing, have the instructor prepare them or select `true` only when neither exists; creating duplicate named IAM resources will fail. This prerequisite setting does not remove Cloud9's restriction on new customers.
 
 ---
 

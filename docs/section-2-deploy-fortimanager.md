@@ -6,9 +6,9 @@ In this section, you will deploy FortiManager-VM in AWS using the Fortinet CSE I
 Before launching the CloudFormation template, you must subscribe to the FortiManager BYOL image in AWS Marketplace. If this step is skipped, the CloudFormation deployment may fail.
 :::
 
-## 2.1 Subscribe FortiGate & FortiManager BYOL AMI
+## 2.1 Subscribe to the FortiGate and FortiManager BYOL AMIs
 
-You will subscribe FortiGate and FortiManager BYOL AMI before deployment. The following procedure should be completed for both products. Click the links below.
+Subscribe to the FortiGate and FortiManager BYOL AMIs before deployment. The following procedure should be completed for both products. Click the links below.
 
 [AWS Marketplace : FortiManager BYOL AMI Listing](https://aws.amazon.com/marketplace/pp/prodview-l6rxheua5mbls?applicationId=AWSMPContessa&ref_=beagle&sr=0-1)
 
@@ -22,7 +22,7 @@ Follow the steps below:
 View purchase options
 ```
 
-2. Go down a little and click "Subscribe"
+2. Review the subscription terms and click "Subscribe"
 
 ```text
 Subscribe
@@ -30,7 +30,7 @@ Subscribe
 
 Wait for both Marketplace subscriptions to become active.
 
-## 2.2 FortiManager deployment in AWS
+## 2.2 FortiManager Deployment in AWS
 
 Deployment selection:
 
@@ -121,7 +121,7 @@ Suggested values:
 | PublicSubnetRouterIP | Default |
 | AZForFMG | AZ in `eu-central-1` |
 | FMGInstanceType | Default |
-| FortiManager version | `7.6.x` |
+| FortiManagerVersion | `7.6.x`; verify the deployed release is 7.6.4 or later before continuing |
 | LicenseType | `FortiFlex` |
 | FortiFlexTokenID | Provided by instructor |
 | CIDRForFMGccess | Instructor-approved management source CIDR; use the actual parameter label in the selected template |
@@ -178,6 +178,7 @@ FortiManager Password: <Instance-ID>
 ```
 
 4. Record the FortiManager access information in your private notes.
+5. Check the installed firmware version. This automatic-onboarding workflow requires **FortiManager 7.6.4 or later in the 7.6 branch** and **FortiOS 7.6.5 or later**; the Terraform lab selects FortiOS **7.6.7**. The template selects a current AMI within the chosen branch, so verify the actual version instead of assuming any 7.6 release supports the workflow. [Fortinet feature requirements](https://docs.fortinet.com/document/fortimanager/7.6.0/new-features/67082/automatically-onboard-and-register-fortigates-in-fortimanager-7-6-4)
 
 ::: danger Do Not Share
 Do not share FortiManager credentials.
@@ -191,12 +192,30 @@ This is required so FortiManager can manage the FortiGate-VM instances that will
 
 Log in to the FortiManager CLI via GUI or SSHv2 session, and run the following commands:
 
-```shell
-config sys global
+```text
+config system global
     set fgfm-allow-vm enable
 end
 ```
 
 This enables VM-device management. The API administrator, AWS connector, UMS, FortiFlex and onboarding settings in Sections 3–7 are still required.
 
-Keep the FortiManager EC2 Name tag identifiable, for example `student01-FortiManager`. Confirm the AWS network/security-group rules allow the FortiGate management path to FortiManager, in addition to your browser access.
+Keep the FortiManager EC2 Name tag identifiable, for example `student01-FortiManager`.
+
+## 2.9 Allow FortiGate Registration and Management Traffic
+
+The CloudFormation parameter `CIDRForFMGccess` controls the source range allowed into FortiManager. Setting it to your browser's public IP alone does **not** allow FortiGates in the separate security VPC to register through FortiManager's public IP.
+
+Before Stage 2, open the FortiManager EC2 instance's **Security → Security groups → Inbound rules** and ensure these paths are allowed:
+
+| Traffic | Destination port | Source |
+|---|---|---|
+| BYOL automatic registration/license request | TCP 443 | FortiGate management public egress addresses |
+| IPv4 FGFM management | TCP 541 | FortiGate management public egress addresses |
+| Browser administration | TCP 443 | Your browser/instructor management source |
+
+This lab dynamically allocates FortiGate management public IPs as the ASG launches members. For the isolated classroom deployment, permit TCP **443** and **541** from `0.0.0.0/0` so initial onboarding and later scale-out do not depend on manually adding each new IP. Keep SSH access limited to your management source. A restricted deployment needs an instructor-provided stable egress range or private management design instead.
+
+If the template's existing rule already permits all traffic from `0.0.0.0/0`, these ports are already allowed; do not add duplicate rules. Confirm API administrator trusted-host restrictions also permit the FortiGate source addresses.
+
+[Automatic registration uses TCP 443](https://docs.fortinet.com/document/fortimanager/7.6.6/administration-guide/67082/adding-fortigate-devices-using-automatic-onboarding); [FGFM uses TCP 541](https://docs.fortinet.com/document/fortimanager/7.2.0/fortimanager-ports/465971/incoming-ports).

@@ -66,7 +66,7 @@ Log in using the AWS account information provided by your instructor.
 
 Confirm that you are in the correct AWS region.
 
-AWS region will be used:
+Use this AWS region:
 
 ```text
 eu-central-1
@@ -108,7 +108,7 @@ Choose **Create key pair**.
 
 Save the downloaded `.pem` file in a secure location.
 
-You will need this file later in the lab.
+Use this key-pair name in the FortiManager stack and Terraform configuration. The private key is needed only if you use SSH.
 
 ::: warning Important
 Do not lose the private key file. You cannot download it again after creation.

@@ -1,6 +1,6 @@
 # Section 7: Create an Auto Onboarding Rule
 
-Auto onboarding allows FortiManager to automatically onboard FortiGate instances discovered through the AWS connector.
+FortiGates initiate automatic registration using the FortiManager API key supplied by Terraform. The onboarding rule selects licensing and configuration actions; the AWS SDN connector associates authorized devices with their ASG.
 
 Follow the steps in the official Fortinet documentation below:
 
@@ -22,7 +22,7 @@ Suggested values:
 | Field | Value |
 |---|---|
 | ADOM | `root` |
-| Device Group | `Managed FortiGate` |
+| Device Group | Optional; leave unassigned unless your instructor has created a custom device group |
 | Install License | Flex VM |
 | Install Configuration | Manual Configuration |
 | Policy Package | `default` as a temporary placeholder; replace with `GWLB-Web-Demo` before activation in Section 10 |

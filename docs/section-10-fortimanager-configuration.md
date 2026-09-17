@@ -14,7 +14,7 @@ After the Terraform deployment in [Section 9](./section-9-terraform-asg.md), con
 
 ## Step 1: Collect Your Deployment Values
 
-Use the same ADOM as the existing onboarding rule, normally `root`. This section assumes the lab's two-arm FortiGates with a root VDOM, `port1` for GWLB traffic and `port2` for management. It uses a dedicated policy package with policy-based NGFW and central NAT disabled.
+Use the same ADOM as the existing onboarding rule, normally `root`, with ADOM version **7.6**. This section assumes the lab's two-arm FortiGates with a root VDOM, `port1` for GWLB traffic and `port2` for management. It uses a dedicated policy package with profile-based NGFW and central NAT disabled.
 
 From the Terraform example directory, run:
 
@@ -144,7 +144,7 @@ The collector route intentionally uses `10.50.0.11/32`, not the HTTP server's `1
 
 1. Stay in the onboarding rule's ADOM, normally `root`; the new FortiGates will join this ADOM during Stage 2.
 2. Go to **Policy & Objects → Policy Packages**.
-3. Create a new policy package named **GWLB-Web-Demo**.
+3. Create a new policy package named **GWLB-Web-Demo**. Set **NGFW Mode → Profile-based** and leave **Central NAT disabled**, matching the default FortiGate VDOM settings used by these scripts.
 4. Save the package. Leave it empty for now; Step 5 creates its policies.
 
 Use this dedicated package for the demo ASG. It does not reproduce unrelated policies from an existing package. If `GWLB-Web-Demo` already exists, open and inspect it before proceeding; do not delete existing policies merely to make it empty.
@@ -323,7 +323,7 @@ For a new two-stage deployment, confirm the onboarding rule selects **GWLB-Web-T
    terraform apply activation.plan
    ```
 
-7. Wait for both FortiGates to register, receive licenses, and complete template/policy installation. Inspect the onboarding/install task results for each device.
+7. Wait for both FortiGates to register, receive licenses, and complete template/policy installation. Inspect the onboarding/install task results for each device. After the first FortiGate is authorized, the SDN connector creates the UMS ASG device group; it need not exist before activation.
 
 **Checkpoint:** if both devices are online and onboarding installed everything successfully, skip Step 8 and test traffic in Step 9. If they are online but configuration was not installed, complete Step 8. If registration or licensing failed, resolve that failure before attempting installation.
 
@@ -440,6 +440,8 @@ sudo journalctl -u gwlb-demo.service -n 100 --no-pager
 Continue to [Section 11: Validate Auto Onboarding](./section-10-validate-auto-onboarding.md).
 
 ## References
+
+- [Create policy packages and select NGFW mode](https://docs.fortinet.com/document/fortimanager/7.6.0/administration-guide/91209/create-new-policy-packages)
 
 - [FortiManager CLI template positions](https://docs.fortinet.com/document/fortimanager/7.6.6/administration-guide/456678/adding-cli-templates)
 - [Script execution targets](https://docs.fortinet.com/document/fortimanager/7.6.2/administration-guide/219334/add-a-script)

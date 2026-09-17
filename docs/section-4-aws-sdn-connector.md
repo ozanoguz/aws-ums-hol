@@ -30,5 +30,5 @@ View Connector Objects
 ```
 
 ::: tip Checkpoint
-Confirm that FortiManager can discover AWS objects through the connector.
+Confirm that FortiManager can discover AWS objects through the connector. The lab ASG does not exist until Section 9, and its FortiManager UMS group appears only after a FortiGate is authorized in Stage 2.
 :::

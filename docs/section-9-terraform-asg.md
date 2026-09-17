@@ -29,9 +29,9 @@ Confirm that you have completed the previous sections and have the following inf
 | Cloud9 environment | Cloud9 Terraform workstation deployed in Section 8 | `student01-Cloud9-New-VPC` |
 | AWS Console access | Access to the AWS account used for the lab | Instructor-provided |
 | AWS region | Region where the deployment will run | `eu-central-1` |
-| FortiManager IP address | Public or private IP address of FortiManager | `x.x.x.x` |
+| FortiManager IP address | Public IP address of FortiManager for this lab | `x.x.x.x` |
 | FortiManager serial number | FortiManager VM serial number | `FMG-VMXXXXXXXXXX` |
-| FortiManager registration password | Password used for FortiGate registration | `Fortinet2026!` |
+| FortiManager administrator password | Your current FortiManager password; BYOL registration uses the API key below | Instructor-provided or set during initial login |
 | FortiManager API admin key | API key generated from FortiManager | Created in Section 3 |
 
 ::: warning Important
@@ -55,9 +55,9 @@ cd ~
 ```
 
 
-## Step 2: Clone the Fortinet AWS Terraform Modules Repository
+## Step 2: Clone the Lab Repository
 
-Clone the Fortinet AWS Terraform modules repository.
+Clone the lab repository, which includes the Terraform modules and two-stage deployment configuration.
 
 ```bash
 mkdir -p ~/environment
@@ -87,7 +87,7 @@ fi
 nano terraform.tfvars
 ```
 
-Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.backup`. Edit the working file and replace all `<YOUR-OWN-VALUE>` placeholders. The backup already selects `deployment_stage = "infrastructure"` and configures the later active baseline as minimum 2, desired 2, maximum 3. Preserve an existing working file and its deployment values; running labs must use `active`.
+Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.backup`. Edit the working file and replace every placeholder, including `<YOUR-OWN-VALUE>`, `<FMG-IP>`, `<FMG-SN>` and `<FMG-API-KEY>`. The backup already selects `deployment_stage = "infrastructure"` and configures the later active baseline as minimum 2, desired 2, maximum 3. Preserve an existing working file and its deployment values; running labs must use `active`.
 
 ---
 
@@ -118,10 +118,12 @@ Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.back
 | fgt_password | FortiGate password | Example syntax: `"Fortinet2026!"` |
 | keypair_name | Name of the key pair | Example syntax, use your key pair name: `"student01-key"` |
 | user_conf_file_path | Must be empty | Already configured for you `""` |
-| enable_fgt_system_autoscale | Disable legacy autoscale handling because FortiManager manages UMS | `false` |
+| enable_fgt_system_autoscale | Disable legacy Lambda autoscale handling; UMS remains enabled by `fmg_integration.ums` | `false` |
 | asg_min_size | Minimum capacity for the two-node baseline | `2` |
 | asg_desired_capacity | Stage 2 FortiGate instance count | `2` |
 | asg_max_size | Allow the later three-node scale-out exercise | `3` |
+
+**Capacity note:** the 2/2/3 values above apply only in Stage 2 (`active`). Stage 1 (`infrastructure`) overrides all three to zero; leave the baseline values in the file.
 
 ### FortiManager Configuration: `fmg_integration` Section
 
@@ -130,7 +132,7 @@ Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.back
 | ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
 | sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
 | autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
-| fmg_password | FortiManager password | `"Fortinet2026!"` |
+| fmg_password | Current FortiManager password; used for PAYG, not BYOL API-key registration | `"<YOUR_FORTIMANAGER_PASSWORD>"` |
 | api_key | Created in Section 3 | `"<YOUR_FORTIMANAGER_API_KEY>"` |
 
 Replace the example values below with your own FortiManager details. This block is nested inside `asgs.fgt_byol_asg`:
@@ -224,6 +226,10 @@ After Terraform completes, verify the following:
 2. The GWLB and its network interfaces exist, so their private IPs can be retrieved.
 3. The web-demo infrastructure exists. Its page need not respond yet because no FortiGate is inspecting traffic.
 4. `terraform output deployment_stage` reports `infrastructure`.
+
+::: tip No UMS group in FortiManager yet
+**Managed FortiGate (0)** and no BYOL ASG device group are expected in Stage 1. Verify the empty ASG in the **AWS EC2 → Auto Scaling Groups** console. FortiManager creates its UMS device group after the first FortiGate is authorized in Stage 2. Do not create the UMS group manually or launch a FortiGate early to make it appear. [Fortinet group-creation behavior](https://docs.fortinet.com/document/fortimanager-public-cloud/7.6.0/aws-administration-guide/767426/scaling-out-the-auto-scaling-group)
+:::
 
 The web URL remains unavailable until Section 10 completes FortiManager configuration, activates the ASG and installs the inspection and outbound policies through onboarding. Keep your Terraform state files; subsequent changes must use this same deployment state.
 
