@@ -32,6 +32,15 @@ class ScoringTests(unittest.TestCase):
         self.assertEqual(self.s.view['healthy'],0)
         self.assertEqual(self.s.view['verified'],0)
         self.assertIsNone(self.s.history['three_healthy'])
+    def test_transient_discovery_error_keeps_recent_inventory_fresh(self):
+        data=state()
+        data['discovery_error']='AWS discovery unavailable'
+        self.s.accept(data,100)
+        self.assertTrue(self.s.view['fresh'])
+        self.assertEqual(self.s.view['healthy'],3)
+        self.s.accept(data,131)
+        self.assertFalse(self.s.view['fresh'])
+        self.assertEqual(self.s.view['healthy'],0)
     def test_expired_and_unknown_ignored(self):
         self.s.pending={'old':-21,'unknown':100}
         self.s.accept(state(probes=[dict(id='old',node='n0'),dict(id='unknown',node='x')]),100)

@@ -89,7 +89,7 @@ class Student:
 
     def accept(self, data, now):
         validate_state(data)
-        fresh = (not data['stale'] and not data['discovery_error']
+        fresh = (not data['stale']
                  and abs(now - data['now']) <= 30
                  and 0 <= data['now'] - data['discovery_at'] <= 30)
         nodes = data['nodes']

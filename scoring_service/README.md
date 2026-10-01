@@ -20,7 +20,7 @@ Open **http://127.0.0.1:8090**. Ctrl+C stops it. Optional flags: `--port 8091`, 
 
 ## Measurements
 
-Each round checks `/healthz`, sends three fresh `/probe` requests, then reads `/api/state`. Up to 16 student checks run concurrently, with three-second request timeouts, no redirects and a 1 MiB response limit. Default round interval: five seconds. Large or slow cohorts can take longer; results older than 30 seconds are stale.
+Each round checks `/healthz`, sends three fresh `/probe` requests, then reads `/api/state`. Up to 16 student checks run concurrently, with three-second request timeouts, no redirects and a 1 MiB response limit. Default round interval: five seconds. Large or slow cohorts can take longer; results older than 30 seconds are stale. A transient AWS discovery error does not invalidate a recent successful inventory snapshot, but the snapshot becomes stale once it is over 30 seconds old.
 
 - **Web reachable:** health endpoint returned `ok`.
 - **2 healthy:** at least two current ASG members are `InService` and GWLB `healthy`, with fresh discovery.
