@@ -19,10 +19,6 @@ By the end of this section, you will be able to:
 
 ---
 
-## Cloud9 Availability
-
-AWS Cloud9 is no longer available to new customers; existing eligible customers can continue using it. Confirm the lab account can create a Cloud9 environment before launching the stack. If unavailable, use the instructor-provided Linux Terraform workstation and run the same terminal commands there; do not repeatedly recreate a failing Cloud9 stack. [AWS Cloud9 availability](https://docs.aws.amazon.com/cloud9/latest/user-guide/welcome.html)
-
 ## Before You Begin
 
 Confirm that you have completed the previous sections and have the following information from your instructor:
