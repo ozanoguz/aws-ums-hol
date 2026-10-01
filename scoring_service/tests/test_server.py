@@ -1,10 +1,11 @@
 import json
+import threading
 import tempfile
 import unittest
 from pathlib import Path
 import sys
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
-from server import Student,validate_url,load_config
+from server import Dashboard,Student,validate_url,load_config
 
 def state(now=100,count=3,probes=None,stale=False):
     return dict(now=now,discovery_at=now,stale=stale,discovery_error='',nodes=[dict(id=f'n{i}',health='healthy',lifecycle='InService') for i in range(count)],probes=probes or [])
@@ -77,6 +78,26 @@ class ScoringTests(unittest.TestCase):
     def test_delayed_snapshot_stale(self):
         self.s.accept(state(),100);self.s.view['checked_at']=100;self.now=131
         self.assertFalse(self.s.snapshot()['fresh']);self.assertEqual(self.s.snapshot()['healthy'],0)
+    def test_slow_account_discovery_does_not_delay_student_poll(self):
+        discovery_started=threading.Event()
+        release_discovery=threading.Event()
+        poll_finished=threading.Event()
+        class SlowDiscovery:
+            def refresh(self, student):
+                discovery_started.set()
+                release_discovery.wait(2)
+        dashboard=Dashboard([dict(id='s1',url='http://example.test')],interval=2,discovery=SlowDiscovery())
+        dashboard.students[0].poll=lambda:poll_finished.set()
+        thread=threading.Thread(target=dashboard.run)
+        thread.start()
+        try:
+            self.assertTrue(discovery_started.wait(1))
+            self.assertTrue(poll_finished.wait(1))
+        finally:
+            release_discovery.set()
+            dashboard.stop.set()
+            thread.join(2)
+        self.assertFalse(thread.is_alive())
     def test_old_cached_response_is_stale(self):
         self.s.accept(state(now=50),100)
         self.assertFalse(self.s.view['fresh'])

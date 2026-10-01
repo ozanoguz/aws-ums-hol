@@ -173,20 +173,42 @@ class Dashboard:
     def __init__(self, students, interval=5, workers=16, discovery=None):
         self.students = [Student(s) for s in students]
         self.discovery = discovery
+        self.discovery_pending = set()
+        self.discovery_lock = threading.Lock()
         self.interval, self.workers = interval, workers
         self.stop = threading.Event()
         self.started = time.time()
 
     def check_student(self, student):
-        if self.discovery:
-            self.discovery.refresh(student)
         if student.config.get('url'):
             student.poll()
 
+    def refresh_student(self, student):
+        try:
+            self.discovery.refresh(student)
+        except Exception:
+            logging.exception('AWS discovery failed for %s', student.config['id'])
+        finally:
+            with self.discovery_lock:
+                self.discovery_pending.discard(student)
+
+    def schedule_discovery(self, pool):
+        if not self.discovery:
+            return
+        now = time.time()
+        with self.discovery_lock:
+            for student in self.students:
+                if student in self.discovery_pending or now - getattr(student, 'aws_checked_at', 0) < 60:
+                    continue
+                self.discovery_pending.add(student)
+                pool.submit(self.refresh_student, student)
+
     def run(self):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=self.workers) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.workers) as pool, \
+                concurrent.futures.ThreadPoolExecutor(max_workers=min(8, self.workers)) as discovery_pool:
             while not self.stop.is_set():
                 started = time.monotonic()
+                self.schedule_discovery(discovery_pool)
                 tasks = [pool.submit(self.check_student, s) for s in self.students]
                 for future in concurrent.futures.as_completed(tasks):
                     try:
