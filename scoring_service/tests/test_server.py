@@ -98,6 +98,36 @@ class ScoringTests(unittest.TestCase):
             dashboard.stop.set()
             thread.join(2)
         self.assertFalse(thread.is_alive())
+    def test_poll_discards_response_after_url_replacement(self):
+        self.s.config['url']='http://old.example.test'
+        def get(url,path):
+            if path=='/healthz':return True
+            if path=='/probe':return dict(id='p',status='served')
+            with self.s.lock:self.s.config['url']='http://new.example.test'
+            return state()
+        self.s.poll(get)
+        self.assertEqual(self.s.view['checked_at'],0)
+        self.assertFalse(self.s.view['reachable'])
+    def test_roster_sized_poll_capacity_is_bounded(self):
+        roster=[dict(id=f's{i}',url='') for i in range(35)]
+        dashboard=Dashboard(roster)
+        self.assertEqual(dashboard.workers,35)
+        self.assertEqual(dashboard.interval,10)
+        phases=sorted(dashboard.next_poll.values())
+        self.assertAlmostEqual(phases[-1]-phases[0],10*34/35,places=2)
+        larger=Dashboard([dict(id=f's{i}',url='') for i in range(100)])
+        self.assertEqual(larger.workers,64)
+    def test_poll_scheduler_does_not_queue_over_worker_limit(self):
+        class Queue:
+            def __init__(self):self.tasks=[]
+            def submit(self,fn,student):self.tasks.append((fn,student))
+        dashboard=Dashboard([dict(id=f's{i}',url='') for i in range(5)],workers=2)
+        for student in dashboard.students:dashboard.next_poll[student]=0
+        queue=Queue()
+        dashboard.schedule_polls(queue)
+        dashboard.schedule_polls(queue)
+        self.assertEqual(len(queue.tasks),2)
+        self.assertEqual(len(dashboard.poll_pending),2)
     def test_old_cached_response_is_stale(self):
         self.s.accept(state(now=50),100)
         self.assertFalse(self.s.view['fresh'])

@@ -20,7 +20,9 @@ Open **http://127.0.0.1:8090**. Ctrl+C stops it. Optional flags: `--port 8091`, 
 
 ## Measurements
 
-Each round checks `/healthz`, sends three fresh `/probe` requests, then reads `/api/state`. Up to 16 student checks run concurrently, with three-second request timeouts, no redirects and a 1 MiB response limit. AWS account discovery runs in a separate worker pool so slow AssumeRole or EC2 calls do not delay web checks. Default round interval: five seconds. Large or slow cohorts can take longer; results older than 30 seconds are stale. A transient AWS discovery error does not invalidate a recent successful inventory snapshot, but the snapshot becomes stale once it is over 30 seconds old.
+Each student check calls `/healthz`, sends three fresh `/probe` requests, then reads `/api/state`. Requests for one student are sequential, use three-second timeouts, disable redirects and limit responses to 1 MiB. Checks are phased across the interval, with at most one poll per account in flight. The default interval is 10 seconds. Poll concurrency defaults to the roster size, with a minimum of 16 and maximum of 64 workers; use `--workers` (1–200) to tune it for the host. Results older than 30 seconds are stale. A transient AWS discovery error does not invalidate a recent successful inventory snapshot, but the snapshot becomes stale once it is over 30 seconds old.
+
+AWS account discovery runs independently from HTTP polling with at most eight accounts refreshing concurrently. Each account is refreshed every 60 seconds using one STS session reused for its EIP, FortiManager and FortiGate reads. This limits role assumptions to one per remote account per refresh and prevents slow AWS calls from delaying known student URLs.
 
 - **Web reachable:** health endpoint returned `ok`.
 - **2 healthy:** at least two current ASG members are `InService` and GWLB `healthy`, with fresh discovery.
@@ -59,7 +61,7 @@ Edit `accounts.json`: keep `role_name` as `UMSScoringReadOnly` after running the
 .venv/bin/python server.py --aws-config accounts.json
 ```
 
-The standard AWS credential chain supplies student00's credentials (EC2 instance profile in deployment, or `AWS_PROFILE` for local testing). The service calls STS AssumeRole and `ec2:DescribeAddresses` in each listed account every 60 seconds, matching EIPs tagged `Name = *gwlb-demo-web`. Only associated EIPs are eligible. HTTP checks continue every polling round once a URL is known. Temporary STS credentials are obtained for each discovery and never saved to disk or exposed in the dashboard.
+The standard AWS credential chain supplies student00's credentials (EC2 instance profile in deployment, or `AWS_PROFILE` for local testing). The service calls STS AssumeRole and EC2 read APIs in each listed account every 60 seconds, matching EIPs tagged `Name = *gwlb-demo-web`. Only associated EIPs are eligible. HTTP checks continue on their own schedule once a URL is known. Temporary STS credentials are obtained for each discovery and never saved to disk or exposed in the dashboard.
 
 Student00 uses the scoring instance role directly for EC2 address discovery; other accounts use the read-only cross-account role. Each account appears before deployment. Missing EIPs show **Awaiting URL**, access failures show the AWS error code, and new EIPs are discovered automatically without restarting. Multiple matching EIPs are treated as ambiguous, not arbitrarily selected. In that case add `"eip_name": "<exact Name tag>"` to the account entry. When a deployment's URL changes, its current evidence and session milestones reset. Temporary discovery failures preserve history but suspend current success indications until discovery recovers. Removing/replacing URLs prevents continued polling of a known-stale EIP after a discovery result says it is gone.
 

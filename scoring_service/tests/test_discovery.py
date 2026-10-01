@@ -26,20 +26,20 @@ class DiscoveryTests(unittest.TestCase):
     def test_pending_discovered_and_replaced(self):
         student=Student(dict(id='s',name='s',account_id='123456789012',url=''))
         discovery=AWSDiscovery({},session_factory=lambda **kw:None)
-        with patch.object(discovery,'resolve',return_value=('', 'Pending')):
+        with patch.object(discovery,'ec2_client',return_value=MagicMock()), patch.object(discovery,'resolve',return_value=('', 'Pending')):
             discovery.refresh(student)
         self.assertFalse(student.view['reachable'])
         student.aws_checked_at=0
-        with patch.object(discovery,'resolve',return_value=('http://203.0.113.1','Found')):
+        with patch.object(discovery,'ec2_client',return_value=MagicMock()), patch.object(discovery,'resolve',return_value=('http://203.0.113.1','Found')):
             discovery.refresh(student)
         student.history['three_healthy']=100
         student.aws_checked_at=0
-        with patch.object(discovery,'resolve',side_effect=RuntimeError()):
+        with patch.object(discovery,'ec2_client',return_value=MagicMock()), patch.object(discovery,'resolve',side_effect=RuntimeError()):
             discovery.refresh(student)
         self.assertEqual(student.history['three_healthy'],100)
         self.assertEqual(student.view['url'],'')
         student.aws_checked_at=0
-        with patch.object(discovery,'resolve',return_value=('http://203.0.113.2','Found')):
+        with patch.object(discovery,'ec2_client',return_value=MagicMock()), patch.object(discovery,'resolve',return_value=('http://203.0.113.2','Found')):
             discovery.refresh(student)
         self.assertIsNone(student.history['three_healthy'])
     def test_role_and_tag_filter(self):
@@ -55,6 +55,22 @@ class DiscoveryTests(unittest.TestCase):
         self.assertEqual(base.client.return_value.assume_role.call_args.kwargs['RoleArn'],'arn:aws:iam::123456789012:role/LabReadRole')
         self.assertEqual(factory.call_args.kwargs['region_name'],'eu-central-1')
         self.assertEqual(target.client.return_value.describe_addresses.call_args.kwargs['Filters'],[{'Name':'tag:Name','Values':['*gwlb-demo-web']}])
+
+    def test_refresh_reuses_one_assumed_role_session(self):
+        base,target,sts,ec2=MagicMock(),MagicMock(),MagicMock(),MagicMock()
+        base.client.return_value=sts
+        sts.assume_role.return_value={'Credentials':{'AccessKeyId':'key','SecretAccessKey':'secret','SessionToken':'token'}}
+        target.client.return_value=ec2
+        ec2.describe_addresses.return_value={'Addresses':[dict(PublicIp='203.0.113.9',AssociationId='a',NetworkInterfaceId='eni')]}
+        ec2.get_paginator.return_value.paginate.return_value=[]
+        factory=MagicMock(side_effect=[base,target])
+        module=types.ModuleType('botocore.config');module.Config=MagicMock()
+        discovery=AWSDiscovery(dict(role_name='LabReadRole',region='eu-central-1'),session_factory=factory)
+        student=Student(dict(id='s',account_id='123456789012',url=''))
+        with patch.dict(sys.modules,{'botocore.config':module}):
+            discovery.refresh(student)
+        self.assertEqual(sts.assume_role.call_count,1)
+        self.assertEqual(factory.call_count,2)
 
     def test_student00_uses_local_instance_role(self):
         base=MagicMock()
@@ -88,14 +104,14 @@ class DiscoveryTests(unittest.TestCase):
         d=AWSDiscovery({},session_factory=lambda **kw:None)
         student=Student(dict(id='s',url=''))
         result={'deployed':True,'instances':[{'id':'i-fmg','state':'running'}],'error':'','checked_at':100}
-        with patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',return_value=result):
+        with patch.object(d,'ec2_client',return_value=MagicMock()),patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',return_value=result):
             d.refresh(student)
         self.assertTrue(student.view['fortimanager']['deployed'])
         self.assertFalse(student.view['reachable'])
     def test_fmg_permission_error_is_unknown(self):
         d=AWSDiscovery({},session_factory=lambda **kw:None)
         student=Student(dict(id='s',url=''))
-        with patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',side_effect=RuntimeError()):
+        with patch.object(d,'ec2_client',return_value=MagicMock()),patch.object(d,'resolve',return_value=('','Pending')),patch.object(d,'fortimanager',side_effect=RuntimeError()):
             d.refresh(student)
         self.assertIsNone(student.view['fortimanager']['deployed'])
 

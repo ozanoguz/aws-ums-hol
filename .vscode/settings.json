@@ -7,6 +7,18 @@
         "/^python3 -m unittest discover -s scoring_service/tests -v && node scoring_service/tests/test_dashboard\\.cjs && node scoring_service/tests/test_render\\.cjs$/": {
             "approve": true,
             "matchCommandLine": true
+        },
+        "/^python3 -m unittest discover -s scoring_service/tests -p 'test_server\\.py' -v$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -m unittest discover -s scoring_service/tests -p 'test_discovery\\.py' -v$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^python3 -m unittest discover -s scoring_service/tests -p 'test_server\\.py' -v && python3 -m unittest discover -s scoring_service/tests -p 'test_discovery\\.py' -v$/": {
+            "approve": true,
+            "matchCommandLine": true
         }
     }
 }

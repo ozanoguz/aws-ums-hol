@@ -72,16 +72,16 @@ class AWSDiscovery:
                                           aws_secret_access_key=c['SecretAccessKey'], aws_session_token=c['SessionToken'])
         return target.client('ec2', config=options)
 
-    def resolve(self, account):
-        ec2 = self.ec2_client(account)
+    def resolve(self, account, ec2=None):
+        ec2 = self.ec2_client(account) if ec2 is None else ec2
         # Existing demo module uses Name = <prefix>gwlb-demo-web on its EIP.
         name = account.get('eip_name') or '*gwlb-demo-web'
         response = ec2.describe_addresses(Filters=[{'Name': 'tag:Name', 'Values': [name]}])
         return select_address(response['Addresses'])
 
-    def fortimanager(self, account):
+    def fortimanager(self, account, ec2=None):
         import fnmatch
-        ec2 = self.ec2_client(account)
+        ec2 = self.ec2_client(account) if ec2 is None else ec2
         filters = [{'Name': 'instance-state-name', 'Values': ['pending', 'running', 'stopping', 'stopped']}]
         if account.get('fmg_instance_id'):
             filters.append({'Name': 'instance-id', 'Values': [account['fmg_instance_id']]})
@@ -101,9 +101,9 @@ class AWSDiscovery:
                         matches.append({'id': instance['InstanceId'], 'state': state})
         return {'deployed': bool(matches), 'instances': matches, 'error': '', 'checked_at': time.time()}
 
-    def fortigates(self, account):
+    def fortigates(self, account, ec2=None):
         """Read lab ASG members independently of the inspected web path."""
-        ec2 = self.ec2_client(account)
+        ec2 = self.ec2_client(account) if ec2 is None else ec2
         filters = [
             {'Name': 'instance-state-name', 'Values': ['pending', 'running', 'stopping', 'stopped']},
             {'Name': 'tag:aws:autoscaling:groupName',
@@ -124,21 +124,29 @@ class AWSDiscovery:
             return
         student.aws_checked_at = now
         try:
-            url, status = self.resolve(student.config)
+            ec2 = self.ec2_client(student.config)
         except Exception as exc:
-            # Expose AWS error codes, never credentials or raw response bodies.
             code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
             url, status = '', f'AWS discovery failed: {code}'
-        try:
-            fmg = self.fortimanager(student.config)
-        except Exception as exc:
-            code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
             fmg = {'deployed': None, 'instances': [], 'error': str(code), 'checked_at': time.time()}
-        try:
-            fgt = self.fortigates(student.config)
-        except Exception as exc:
-            code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
             fgt = {'instances': [], 'error': str(code), 'checked_at': time.time()}
+        else:
+            try:
+                url, status = self.resolve(student.config, ec2=ec2)
+            except Exception as exc:
+                # Expose AWS error codes, never credentials or raw response bodies.
+                code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
+                url, status = '', f'AWS discovery failed: {code}'
+            try:
+                fmg = self.fortimanager(student.config, ec2=ec2)
+            except Exception as exc:
+                code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
+                fmg = {'deployed': None, 'instances': [], 'error': str(code), 'checked_at': time.time()}
+            try:
+                fgt = self.fortigates(student.config, ec2=ec2)
+            except Exception as exc:
+                code = getattr(exc, 'response', {}).get('Error', {}).get('Code', type(exc).__name__)
+                fgt = {'instances': [], 'error': str(code), 'checked_at': time.time()}
         with student.lock:
             student.view['fortigates'] = fgt
             student.view['fortimanager'] = fmg

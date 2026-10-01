@@ -122,11 +122,17 @@ class Student:
 
     def poll(self, getter=fetch, probe_count=3):
         # Only one worker owns a student; serialize snapshots with its updates.
+        with self.lock:
+            origin = self.config.get('url')
+        if not origin:
+            return
         now = self.clock()
         try:
-            getter(self.config['url'], '/healthz')
+            getter(origin, '/healthz')
         except Exception as exc:
             with self.lock:
+                if self.config.get('url') != origin:
+                    return
                 self.view.update(checked_at=now, reachable=False, fresh=False, healthy=0, verified=0,
                                  error=f'Web service unreachable: {type(exc).__name__}')
             return
@@ -134,7 +140,7 @@ class Student:
         new_probes = []
         for _ in range(probe_count):
             try:
-                result = getter(self.config['url'], '/probe')
+                result = getter(origin, '/probe')
                 if not isinstance(result, dict) or not isinstance(result.get('id'), str) or not result['id'] or result.get('status') != 'served':
                     raise ValueError('Invalid probe response')
                 new_probes.append((result['id'], self.clock()))
@@ -142,8 +148,10 @@ class Student:
                 errors.append(f'Probe failed: {type(exc).__name__}')
                 break
         try:
-            data = validate_state(getter(self.config['url'], '/api/state'))
+            data = validate_state(getter(origin, '/api/state'))
             with self.lock:
+                if self.config.get('url') != origin:
+                    return
                 self.pending.update(new_probes)
                 self.view.update(checked_at=self.clock(), reachable=True)
                 self.accept(data, self.clock())
@@ -151,6 +159,8 @@ class Student:
                     self.view['error'] = '; '.join(filter(None, [self.view['error'], *errors]))
         except Exception as exc:
             with self.lock:
+                if self.config.get('url') != origin:
+                    return
                 self.pending.update(new_probes)
                 self.view.update(checked_at=self.clock(), reachable=True, fresh=False, healthy=0, verified=0,
                                  error=f'Inventory unavailable: {type(exc).__name__}')
@@ -170,12 +180,24 @@ class Student:
 
 
 class Dashboard:
-    def __init__(self, students, interval=5, workers=16, discovery=None):
+    def __init__(self, students, interval=10, workers=None, discovery=None):
         self.students = [Student(s) for s in students]
         self.discovery = discovery
         self.discovery_pending = set()
         self.discovery_lock = threading.Lock()
+        self.poll_pending = set()
+        self.poll_lock = threading.Lock()
         self.interval, self.workers = interval, workers
+        if self.workers is None:
+            self.workers = min(64, max(16, len(self.students)))
+        if not 1 <= self.workers <= 200:
+            raise ValueError('workers must be between 1 and 200')
+        started = time.monotonic()
+        student_count = max(1, len(self.students))
+        self.next_poll = {
+            student: started + interval * index / student_count
+            for index, student in enumerate(self.students)
+        }
         self.stop = threading.Event()
         self.started = time.time()
 
@@ -202,20 +224,39 @@ class Dashboard:
                     continue
                 self.discovery_pending.add(student)
                 pool.submit(self.refresh_student, student)
+    def poll_student(self, student):
+        try:
+            self.check_student(student)
+        except Exception:
+            logging.exception('Student polling failed for %s', student.config['id'])
+        finally:
+            with self.poll_lock:
+                self.poll_pending.discard(student)
+                self.next_poll[student] = time.monotonic() + self.interval
+
+    def schedule_polls(self, pool):
+        now = time.monotonic()
+        with self.poll_lock:
+            available = self.workers - len(self.poll_pending)
+            if available <= 0:
+                return
+            due = sorted(
+                (student for student in self.students
+                 if student not in self.poll_pending and self.next_poll[student] <= now),
+                key=self.next_poll.__getitem__,
+            )
+            for student in due[:available]:
+                self.poll_pending.add(student)
+                pool.submit(self.poll_student, student)
 
     def run(self):
+        discovery_workers = min(8, max(1, len(self.students)))
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.workers) as pool, \
-                concurrent.futures.ThreadPoolExecutor(max_workers=min(8, self.workers)) as discovery_pool:
+                concurrent.futures.ThreadPoolExecutor(max_workers=discovery_workers) as discovery_pool:
             while not self.stop.is_set():
-                started = time.monotonic()
                 self.schedule_discovery(discovery_pool)
-                tasks = [pool.submit(self.check_student, s) for s in self.students]
-                for future in concurrent.futures.as_completed(tasks):
-                    try:
-                        future.result()
-                    except Exception:
-                        logging.exception('Student polling failed')
-                self.stop.wait(max(0.1, self.interval - (time.monotonic() - started)))
+                self.schedule_polls(pool)
+                self.stop.wait(0.1)
 
     def snapshot(self):
         return {'now': time.time(), 'started_at': self.started, 'students': [s.snapshot() for s in self.students]}
@@ -257,10 +298,13 @@ def main():
     inputs.add_argument('--aws-config', help='Discover URLs from cross-account roles using accounts.json')
     parser.add_argument('--host', default='127.0.0.1')
     parser.add_argument('--port', type=int, default=8090)
-    parser.add_argument('--interval', type=float, default=5)
+    parser.add_argument('--interval', type=float, default=10)
+    parser.add_argument('--workers', type=int, help='Maximum concurrent student polls (default: roster size, capped at 64)')
     args = parser.parse_args()
     if args.interval < 2:
         parser.error('--interval must be at least 2 seconds')
+    if args.workers is not None and not 1 <= args.workers <= 200:
+        parser.error('--workers must be between 1 and 200')
     try:
         discovery = None
         if args.aws_config:
@@ -272,7 +316,7 @@ def main():
             students = load_config(args.config)
     except (OSError, ValueError, TypeError, ImportError) as exc:
         parser.error(str(exc))
-    dashboard = Dashboard(students, interval=args.interval, discovery=discovery)
+    dashboard = Dashboard(students, interval=args.interval, workers=args.workers, discovery=discovery)
     server = ThreadingHTTPServer((args.host, args.port), handler(dashboard))
     thread = threading.Thread(target=dashboard.run, daemon=True)
     thread.start()
