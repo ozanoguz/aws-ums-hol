@@ -131,7 +131,7 @@ Terraform automatically loads `terraform.tfvars`, but not `terraform.tfvars.back
 |---|---|---|
 | ip | FortiManager public IP address | `"FORTIMANAGER PUBLIC IP"` |
 | sn | FortiManager Serial Number | `"FMVMELTMXXXXXXXX"` |
-| autoscale_psksecret | Pre-shared Key | `"Fortinet2026!"` |
+| autoscale_psksecret | Pre-shared Key for 'config system autoscale' | `"Fortinet2026!"` |
 | fmg_password | Current FortiManager password; used for PAYG, not BYOL API-key registration | `"<YOUR_FORTIMANAGER_PASSWORD>"` |
 | api_key | Created in Section 3 | `"<YOUR_FORTIMANAGER_API_KEY>"` |
 
