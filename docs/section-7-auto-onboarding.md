@@ -13,7 +13,7 @@ Follow the steps in the official Fortinet documentation below:
 | Type | Administrator |
 | Administrator | API administrator created earlier |
 | Platform | All platforms (you can leave as none too) |
-| Device Name Prefix | `student<number>-fgt` |
+| Device Name Prefix | Leave blank |
 
 ## Configure the Onboarding Action
 
