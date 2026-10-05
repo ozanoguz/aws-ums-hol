@@ -22,7 +22,7 @@ Suggested values:
 | Field | Value |
 |---|---|
 | ADOM | `root` |
-| Device Group | Optional; leave unassigned unless your instructor has created a custom device group |
+| Device Group | Choose "Managed FortiGate" |
 | Install License | Flex VM |
 | Install Configuration | Manual Configuration |
 | Policy Package | `default` as a temporary placeholder; replace with `GWLB-Web-Demo` before activation in Section 10 |
