@@ -24,12 +24,6 @@ terraform output -json web_demo
 
 Record `url` and `collector_private_ip`. If Terraform reports `Output "web_demo" not found`, check that the demo is enabled, its configuration has been applied, and you are using the original directory, backend and workspace. A disabled (`null`) demo is omitted from the saved outputs. Restore the `web_demo` block from Section 9 if needed, then review and apply the plan before continuing. The HTTP server uses `10.50.0.10` and the private collector uses `10.50.0.11` when `web_demo.vpc_cidr` is `10.50.0.0/16`.
 
-Find the GWLB node addresses in the AWS Console:
-
-1. Under **EC2 → Load Balancers**, select this lab's **Gateway Load Balancer** and note its VPC, Availability Zones, subnets and ARN suffix (`gwy/name/id`).
-2. Under **EC2 → Network Interfaces**, filter by that VPC. Locate the load balancer interfaces whose descriptions identify the same GWLB, usually `ELB gwy/name/id`.
-3. Match each interface's subnet/AZ to `availability_zones[0]` (AZ1) and `availability_zones[1]` (AZ2) in Terraform, and record its primary private IPv4 address. Use the GWLB node interfaces, not the FortiGate interfaces or GWLB endpoint interfaces.
-
 | Script value | Replace with |
 |---|---|
 | `<GWLB_NODE_AZ1_PRIVATE_IP>` | Your GWLB node's private IP in AZ1 |
