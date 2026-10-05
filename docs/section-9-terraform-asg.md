@@ -145,7 +145,7 @@ fmg_integration = {
   ums = {
     autoscale_psksecret = "<YOUR_AUTOSCALE_PSK>"
     hb_interval         = 10
-    fmg_password        = "<YOUR_FORTIMANAGER_PASSWORD>" # Used for PAYG; keep schema for this BYOL lab
+    fmg_password        = ""
     api_key             = "<YOUR_FORTIMANAGER_API_KEY>"
   }
 }
