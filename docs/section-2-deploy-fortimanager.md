@@ -161,7 +161,7 @@ Suggested values:
 
 After the stack is complete:
 
-1. Open the completed CloudFormation stack and review **Outputs** and **Resources**. Follow its EC2 instance resource to the EC2 console.
+1. Open the EC2 console to find out FortiManager public IP.
 
 2. Find the public IP assigned to FortiManager.
 
